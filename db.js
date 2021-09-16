@@ -2,7 +2,7 @@
 
 const source = './elibrary.sqlite'
 
-const sqlite = require('sqlite3').verbose();
+const sqlite = require('sqlite3'); // TODO: verbose?
 const db = new sqlite.Database(source, 
 (err) => { if (err) throw err; });
 
