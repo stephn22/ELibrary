@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="" name="description">
+    <meta content="Stefano Crotti" name="author">
+
+    <!------------------------------------ STYLESHEET ----------------------------------->
+
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" rel="stylesheet">
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400&family=Roboto:wght@100;300&display=swap"
+            rel="stylesheet">
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap" rel="stylesheet">
+    <link href="styles/login.css" rel="stylesheet" type="text/css">
+
+    <!------------------------------------- SCRIPTS ------------------------------------>
+
+    <script crossorigin="anonymous" defer
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script defer src="scripts/login.js"></script>
+
+    <!---------------------------------------------------------------------------------->
+
+    <title>ELibrary - Accedi</title>
+    <link href="images/icons/book_white_24dp.svg" rel="icon" type="image/svg"/>
+</head>
+
+<body class="text-center">
+<main class="form-signin">
+
+    <a class="text-center float" href="index.html">
+        <img alt="book_black" class="mb-4" height="44" src="images/icons/book_black_24dp.svg" width="50">
+    </a>
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button aria-controls="login" aria-selected="true" class="nav-link active" data-bs-target="#login-panel"
+                    data-bs-toggle="tab" id="login-tab" role="tab" type="button">
+                Login
+            </button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button aria-controls="signup" aria-selected="false" class="nav-link" data-bs-target="#signup-panel"
+                    data-bs-toggle="tab" id="signup-tab" role="tab" type="button">
+                Iscriviti
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myContent">
+
+        <!-- LOGIN TAB -->
+        <div aria-labelledby="login-tab" class="tab-pane fade show active" id="login-panel" role="tabpanel">
+            <!-- LOGIN FORM -->
+            <form action="#" autocomplete="on" method="post">
+                <!-- Email -->
+                <div class="form-floating">
+                    <input class="form-control" id="floatingInputEmail" placeholder="email@example.com" required
+                           type="email">
+                    <label for="floatingInputEmail">Email</label>
+                </div>
+
+                <!-- Password -->
+                <div class="form-floating">
+                    <input class="form-control" id="floatingPassword" placeholder="Password" required
+                           type="password">
+                    <label for="floatingPassword">Password</label>
+                </div>
+
+                <!-- Checkbox ricordami -->
+                <div class="form-check checkbox mb-3">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="remember-me">Ricordami
+                    </label>
+                </div>
+                <button class="w-100 btn btn-lg btn-outline-light" id="submit-btn-login" type="submit">Accedi</button>
+            </form>
+        </div>
+
+        <!-- SIGNUP TAB -->
+        <div aria-labelledby="signup-tab" class="tab-pane fade" id="signup-panel" role="tabpanel">
+            <!-- SIGNUP FORM -->
+            <form action="#" autocomplete="on" method="post">
+                <!-- FName -->
+                <div class="form-floating">
+                    <input class="form-control" id="floatingInputFName" placeholder="Nome" required type="text">
+                    <label for="floatingInputFName">Nome</label>
+                </div>
+
+                <!-- LName -->
+                <div class="form-floating">
+                    <input class="form-control" id="floatingInputLName" placeholder="Cognome" required type="text">
+                    <label for="floatingInputLName">Cognome</label>
+                </div>
+
+                <!-- Email -->
+                <div class="form-floating">
+                    <input class="form-control" id="signupEmail" placeholder="email@example.com" required
+                           type="email">
+                    <label for="signupEmail">Email</label>
+                </div>
+
+                <!-- Password -->
+                <div class="form-floating">
+                    <input class="form-control" id="signupPassword" placeholder="Password" required type="password">
+                    <label for="signupPassword">Password</label>
+                </div>
+
+                <!-- Password -->
+                <div class="form-floating">
+                    <input class="form-control" id="confirmPassword" placeholder="Conferma password" required
+                           type="password">
+                    <label for="confirmPassword">Conferma password</label>
+                </div>
+
+                <!-- Address TODO: localizzazione -->
+                <div class="form-floating">
+                    <input class="form-control" id="floatingInputAddress" placeholder="Indirizzo" required
+                           type="text">
+                    <label for="floatingInputAddress">Indirizzo</label>
+                </div>
+
+                <button class="w-100 btn btn-lg btn-outline-light" id="submit-btn-signup" type="submit">Registrati
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <p class="mt-5 mb-3 text-muted">&copy ELibrary - 2021</p>
+
+</main>
+
+</body>
+
+</html>

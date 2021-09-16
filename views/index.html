@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="" name="description">
+    <meta content="Stefano Crotti" name="author">
+
+    <!------------------------------------ STYLESHEET ----------------------------------->
+
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" rel="stylesheet">
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400&family=Roboto:wght@100;300&display=swap"
+            rel="stylesheet">
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap" rel="stylesheet">
+    <link href="public/stylesheets/index.css" rel="stylesheet" type="text/css">
+
+    <!------------------------------------- SCRIPTS ------------------------------------>
+
+    <script crossorigin="anonymous" defer
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!---------------------------------------------------------------------------------->
+
+    <title>ELibrary - Home</title>
+    <link href="public/images/icons/book_white_24dp.svg" rel="icon" type="image/svg"/>
+</head>
+
+<body>
+<header>
+
+    <!-- Navbar -->
+
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+            <!-- Title and logo -->
+
+            <a class="navbar-brand navbar-title" href="index.html">
+                <img alt="book_white_24dp" class="d-inline-block align-text-top"
+                     height="24" src="public/images/icons/book_white_24dp.svg" width="30">
+                ELibrary</a>
+            <button aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"
+                    class="navbar-toggler"
+                    data-bs-target="#navbarCollapse" data-bs-toggle="collapse" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a aria-current="page" class="nav-link active navbar-title" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link navbar-title" href="#">Libri</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link navbar-title" href="#">EBooks</a>
+                    </li>
+                </ul>
+
+                <!-- Search, Login and Sign Up -->
+
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                    <input aria-label="Ricerca" class="form-control form-control-dark" id="search" placeholder="Ricerca"
+                           type="search">
+                </form>
+
+                <div class="text-end">
+                    <a class="btn btn-outline-light me2" href="login.html" id="login-btn" type="button">Login</a>
+
+                    <a class="btn btn-outline-light me2" href="#" id="signup-btn" type="button">Iscriviti</a>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+
+    <!-- Carousel -->
+
+    <div class="carousel slide" data-bs-ride="carousel" id="myCarousel">
+        <div class="carousel-indicators">
+            <button aria-current="true" aria-label="Slide 1" class="active" data-bs-slide-to="0"
+                    data-bs-target="#myCarousel" type="button"></button>
+            <button aria-label="Slide 2" data-bs-slide-to="1" data-bs-target="#myCarousel" type="button"></button>
+            <button aria-label="Slide 3" data-bs-slide-to="2" data-bs-target="#myCarousel" type="button"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img alt="slide 0" src="public/images/carousel/slide_0.jpg">
+
+                <div class="container">
+                    <div class="carousel-caption text-start">
+                        <h1>Iscriviti.</h1>
+                        <p>Registrati gratuitamente e inizia a leggere subito.</p>
+                        <p><a class="btn btn-lg btn-outline-light" href="#">Registrati</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img alt="slide 2" src="public/images/carousel/slide_2.png">
+
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h1>Scopri i nuovi arrivi.</h1>
+                        <p>Nuovi ebook e libri pronti da leggere</p>
+                        <p><a class="btn btn-lg btn-outline-light" href="#">Scopri</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img alt="slide 1" src="public/images/carousel/slide_1.jpg">
+
+                <div class="container">
+                    <div class="carousel-caption text-end">
+                        <h1>One more for good measure.</h1>
+                        <p>Some representative placeholder content for the third slide of this carousel.</p>
+                        <p><a class="btn btn-lg btn-outline-light" href="#">Browse gallery</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" data-bs-slide="prev" data-bs-target="#myCarousel" type="button">
+            <span aria-hidden="true" class="carousel-control-prev-icon"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" data-bs-slide="next" data-bs-target="#myCarousel" type="button">
+            <span aria-hidden="true" class="carousel-control-next-icon"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <div class="container marketing">
+
+        <!-- Three columns of text below the carousel -->
+        <div class="row">
+            <div class="col-lg-4">
+                <img alt="witcher-books" class="bd-placeholder-img rounded-circle"
+                     src="public/images/witcher-books.jpg">
+
+                <h2>The Witcher</h2>
+                <p class="home-text">The Witcher è una serie di romanzi e racconti fantasy scritta dall'autore
+                    polacco Andrzej Sapkowski tra il 1990 e il 1999 e nel 2013.
+                    La serie è composta da 6 romanzi e narra le avventure di Geralt di Rivia, uno degli ultimi
+                    strighi (Witcher) della sua epoca.</p>
+                <p><a class="btn btn-outline-light" href="#">Vedi &raquo;</a></p>
+            </div><!-- /.col-lg-4 -->
+            <div class="col-lg-4">
+                <img alt="lord-of-the-rings-books" class="bd-placeholder-img rounded-circle"
+                     src="public/images/lord-of-the-rings.jpg">
+
+                <h2>Il Signore degli Anelli</h2>
+                <p class="home-text">Il Signore degli Anelli. è un romanzo high fantasy epico scritto da J. R. R.
+                    Tolkien e ambientato alla fine della Terza Era dell'immaginaria Terra di Mezzo.</p>
+                <p><a class="btn btn-outline-light" href="#">Vedi &raquo;</a></p>
+            </div><!-- /.col-lg-4 -->
+            <div class="col-lg-4">
+                <img alt="harry-potter-books" class="bd-placeholder-img rounded-circle"
+                     src="public/images/harry-potter-books.jpg">
+
+                <h2>Harry Potter</h2>
+                <p class="home-text">Harry Potter è una serie di romanzi fantasy scritta da J. K. Rowling. La saga è
+                    incentrata sulle avventure del giovane mago Harry Potter e dei suoi migliori amici Ron Weasley e
+                    Hermione Granger,
+                    studenti della Scuola di Magia e Stregoneria di Hogwarts, ed è ambientata principalmente
+                    nell'immaginario mondo magico.</p>
+                <p><a class="btn btn-outline-light" href="#">Vedi &raquo;</a></p>
+            </div><!-- /.col-lg-4 -->
+        </div><!-- /.row -->
+
+
+        <!-- START THE FEATURETTES -->
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette">
+            <div class="col-md-7">
+                <h2 class="featurette-heading">EBook: <span class="text-muted">leggi quando vuoi, dove vuoi.</span></h2>
+                <p class="lead">Prenota o compra i tuoi ebook preferiti.</p>
+            </div>
+            <div class="col-md-5">
+                <svg aria-label="Placeholder: 500x500"
+                     class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
+                     focusable="false" height="500" preserveAspectRatio="xMidYMid slice" role="img"
+                     width="500" xmlns="http://www.w3.org/2000/svg">
+                    <title>Placeholder</title>
+                    <rect fill="#eee" height="100%" width="100%"/>
+                    <text dy=".3em" fill="#aaa" x="50%"
+                          y="50%">500x500
+                    </text>
+                </svg>
+
+            </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette">
+            <div class="col-md-7 order-md-2">
+                <h2 class="featurette-heading">Libri: <span
+                        class="text-muted">prenotazione con ritiro in negozio.</span></h2>
+                <p class="lead">Scegli i libri che vuoi leggere e ritirali entro 1 settimana</p>
+            </div>
+            <div class="col-md-5 order-md-1">
+                <svg aria-label="Placeholder: 500x500"
+                     class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
+                     focusable="false" height="500" preserveAspectRatio="xMidYMid slice" role="img"
+                     width="500" xmlns="http://www.w3.org/2000/svg">
+                    <title>Placeholder</title>
+                    <rect fill="#eee" height="100%" width="100%"/>
+                    <text dy=".3em" fill="#aaa" x="50%"
+                          y="50%">500x500
+                    </text>
+                </svg>
+
+            </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <!-- /END THE FEATURETTES -->
+
+    </div><!-- /.container -->
+</main>
+
+<!-- FOOTER -->
+<footer class="container">
+    <p class="float-end"><a href="#">
+        <img alt="arrow_upward" src="public/images/icons/arrow_upward_black_24dp.svg" title="Torna in alto">
+    </a></p>
+    <p id="footer-text">&copy; 2021 Stefano Crotti &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a>
+    </p>
+
+    <!--  TODO: github icon  -->
+    <div class="text-center float">
+        <a class="social-link" href="https://www.facebook.com/" title="Facebook">
+            <img alt="facebook" class="social" src="public/images/icons/facebook.svg">
+        </a>
+
+        <a class="social-link" href="https://twitter.com" title="Twitter">
+            <img alt="twitter" class="social" src="public/images/icons/twitter.svg">
+        </a>
+
+        <a class="social-link" href="https://www.linkedin.com/" title="Linkedin">
+            <img alt="linkedin" class="social" src="public/images/icons/linkedin.svg">
+        </a>
+
+        <a class="social-link" href="https://web.telegram.org/" title="Telegram">
+            <img alt="telegram" class="social" src="public/images/icons/telegram.svg">
+        </a>
+    </div>
+
+</footer>
+</body>
+
+</html>
