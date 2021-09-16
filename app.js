@@ -2,7 +2,7 @@
 
 /************** IMPORT *************/
 const express = require('express');
-const morgan = require('morgan');
+const logger = require('morgan');
 const path = require('path');
 const indexRoutes = require('./routes/index');
 
@@ -15,7 +15,7 @@ const port = 3000;
 
 /************** MIDDLEWARE *************/
 
-app.use(morgan('dev'));
+app.use(logger('dev'));
 app.use(express.json());
 
 app.use(express.urlencoded({extended: false}));
