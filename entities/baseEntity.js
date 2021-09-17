@@ -12,4 +12,4 @@ class BaseEntity {
     }
 }
 
-export default BaseEntity;
+module.exports = BaseEntity;

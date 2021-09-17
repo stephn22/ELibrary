@@ -1,4 +1,4 @@
-import baseEntity from './baseEntity.js';
+const baseEntity = require('./baseEntity');
 
 /**
  * @class Book represents a book entity.
@@ -31,4 +31,4 @@ class Book extends baseEntity {
     }
 }
 
-export default Book;
+module.exports = Book;

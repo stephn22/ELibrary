@@ -1,10 +1,10 @@
 "use strict";
 
-import { get, run } from '../db.js';
-import { compareSync, hashSync } from 'bcrypt';
-import { CUSTOMER } from '../entities/constants/user-type.js';
+const db = require('../db').default;
+const crypt = require('bcrypt');
+const Type = require('../entities/constants/user-type').default;
 
-import User from '../entities/user.js';
+const User = require('../entities/user').default;
 
 // TODO: check
 
@@ -13,19 +13,19 @@ import User from '../entities/user.js';
  * @param {User} user user to be created into db.
  * @returns {Promise.<number>} id of user created.
  */
- export function addUser (user) {
+exports.addUser = function(user) {
     return new Promise((resolve, reject) => {
         const query = "INSERT INTO users (fname, lname, email, password, address, type) VALUES (?, ?, ?, ?, ?, ?)";
 
         user.password = hashSync(user.password, 10);
 
-        run(query, [
+        db.run(query, [
             user.fname,
             user.lname,
             user.email,
             user.password,
             user.address,
-            CUSTOMER], (err) => {
+            Type.CUSTOMER], (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -40,7 +40,7 @@ import User from '../entities/user.js';
  * @param {User} user user to be updated.
  * @returns {Promise.<number>} id of updated user.
  */
-export function updateUser (user) {
+exports.updateUser = function(user) {
     return new Promise((resolve, reject) => {
         const query = "UPDATE users SET fname = ?, lname = ?, email = ?, password = ?, address = ?, type = ? WHERE id = ?";
         user.password = hashSync(user.password, 10);
@@ -67,7 +67,7 @@ export function updateUser (user) {
  * @param {number} id id of user to be deleted.
  * @returns {Promise.<number>} id of customer deleted.
  */
-export function deleteUser (id) {
+exports.deleteUser = function(id) {
     return new Promise((resolve, reject) => {
         const query = "DELETE FROM users WHERE id = ?";
 
@@ -86,7 +86,7 @@ export function deleteUser (id) {
  * @param {number} id id of user.
  * @returns {Promise.<number>} user
  */
-export function getUserById (id) {
+exports.getUserById = function(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM users WHERE id = ?";
 
@@ -118,7 +118,7 @@ export function getUserById (id) {
  * @param {string} password password of user.
  * @returns {Promise.<User>} user.
  */
-export function getUserByEmailAndPassword (email, password) {
+exports.getUserByEmailAndPassword = function(email, password) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM users WHERE email = ?";
 

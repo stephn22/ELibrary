@@ -1,23 +1,20 @@
 "use strict";
 
-/************** IMPORT *************/
+/************** IMPORTS *************/
 
-import createError from "http-errors";
-import express, { json, urlencoded, static } from 'express';
-import session from 'express-session';
-import moment from 'moment';
-import logger from 'morgan';
-import passport from 'passport';
-import { join } from 'path';
-import { Strategy as LocalStrategy } from 'passport-local';
-
-import sqlite from 'sqlite3';
-
+const express = require('express');
+const logger = require('morgan');
+const passport = require('passport');
+const session = require('express-session');
+const moment = require('moment');
+const LocalStrategy = require('passport-local').Strategy;
+const path = require('path');
 const userDao = require('./models/user-dao.js');
+const createError = require('http-errors');
 
 // routes
-const indexRouter = require('./routes/index.js').default;
-const sessionsRouter = require('./routes/sessions.js').default;
+const indexRouter = require('./routes/index.js');
+const sessionsRouter = require('./routes/sessions.js');
 
 
 /************** INIT *************/
@@ -28,13 +25,14 @@ const port = 3000;
 /************** MIDDLEWARE *************/
 
 app.use(logger("dev"));
-app.use(json());
-app.use(urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 // TODO: cookieParser
 
-app.use(static(join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.set("views", join(__dirname, "views"));
+app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 // default variables for views
@@ -122,4 +120,4 @@ app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
 
-export default app;
+module.exports = app;

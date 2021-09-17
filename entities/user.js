@@ -1,4 +1,4 @@
-import baseEntity from './baseEntity.js';
+const baseEntity = require('./baseEntity');
 
 /**
  * @class User represents an user entity
@@ -27,4 +27,4 @@ class User extends baseEntity {
     }
 }
 
-export default User;
+module.exports = User;

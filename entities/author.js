@@ -1,4 +1,4 @@
-import baseEntity from './baseEntity.js';
+const baseEntity = require('./baseEntity');
 
 class Author extends baseEntity {
     constructor (id, name) {
@@ -6,3 +6,5 @@ class Author extends baseEntity {
         this.name = name;
     }
 }
+
+module.exports = Author;

@@ -1,4 +1,4 @@
-import baseEntity from './baseEntity.js';
+const baseEntity = require('./baseEntity');
 
 /**
  * @class Order represents an order entity
@@ -27,4 +27,4 @@ class Order extends baseEntity {
     }
 }
 
-export default Order;
+module.exports = Order;

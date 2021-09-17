@@ -2,6 +2,13 @@ body {
     padding-top: 3rem;
     padding-bottom: 3rem;
     color: #5a5a5a;
+    -ms-overflow-style: none;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+body::-webkit-scrollbar {
+    display: none;
 }
 
 main {

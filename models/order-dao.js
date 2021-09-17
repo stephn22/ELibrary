@@ -2,7 +2,7 @@
 
 const db = require('../db.js').default;
 
-import Order from '../entities/order.js';
+const Order = require('../entities/order');
 
 // TODO: customer can order more than one book?
 
@@ -11,7 +11,7 @@ import Order from '../entities/order.js';
  * @param {Order} order order to be inserted into database.
  * @returns {Promise.<Order>} id of order that was inserted.
  */
-export function addOrder(order) {
+exports.addOrder = function(order) {
     return new Promise((resolve, reject) => {
         const query = "INSERT INTO orders (customer_id, date, book, price, address, status) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -36,7 +36,7 @@ export function addOrder(order) {
  * @param {Order} order order to be updated in database.
  * @returns {Promise.<number>} id of updated order.
  */
-export function updateOrder(order) {
+exports.updateOrder = function(order) {
     return new Promise((resolve, reject) => {
         const query = "UPDATE orders SET customer_id = ?, date = ?, book = ?, price = ?, address = ?, status = ? WHERE id = ?";
 
@@ -63,7 +63,7 @@ export function updateOrder(order) {
  * @param {number} id id of order to be deleted.
  * @returns {Promise.<number>} id of deleted order.
  */
-export function deleteOrder(id) {
+exports.deleteOrder = function(id) {
     return new Promise((resolve, reject) => {
         const query = "DELETE FROM orders WHERE id = ?";
 
@@ -82,7 +82,7 @@ export function deleteOrder(id) {
  * @param {number} id id of order.
  * @returns {Promise.<number>} order.
  */
-export function getOrderById(id) {
+exports.getOrderById = function(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM orders WHERE id = ?";
 
@@ -111,7 +111,7 @@ export function getOrderById(id) {
  * Returns all orders in database as array.
  * @returns {Promise.<Order[]>} array of orders.
  */
-export function getAllOrders() {
+exports.getAllOrders = function() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM orders";
 

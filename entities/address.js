@@ -1,4 +1,4 @@
-import baseEntity from './baseEntity.js';
+const baseEntity = require('./baseEntity');
 
 /**
  * @class Address represents an address entity.
@@ -19,4 +19,4 @@ class Address extends baseEntity {
     }
 }
 
-export default Address;
+module.exports = Address;

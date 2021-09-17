@@ -1,15 +1,15 @@
 "use strict";
 
-const db = require('../db.js').default;
+const db = require('../db.js');
 
-import Book from '../entities/book.js';
+const Book = require('../entities/book');
 
 /**
  * Add book to database.
  * @param {Book} book book to add to database
  * @returns {Promise.<number>} id of book.
  */
- export function addBook(book) {
+ exports.addBook = function(book) {
     return new Promise((resolve, reject) => {
         const query = "INSERT INTO books (title, author_id, isbn, publisher, datePub, description, imgUrl, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -36,7 +36,7 @@ import Book from '../entities/book.js';
  * @param {Book} book book to be updated
  * @returns {Promise.<number>} id of updated book.
  */
-export function updateBook(book) {
+exports.updateBook = function(book) {
     return new Promise((resolve, reject) => {
         const query = "UPDATE books SET title = ?, author = ?, isbn = ?, publisher = ?, datePub = ?, description = ?, imgUrl = ?, price = ? WHERE id = ?";
 
@@ -64,7 +64,7 @@ export function updateBook(book) {
  * @param {number} id id of book.
  * @returns {Promise.<number>} id of deleted book.
  */
-export function deleteBook(id) {
+exports.deleteBook = function(id) {
     return new Promise((resolve, reject) => {
         const query = "DELETE FROM books WHERE id = ?";
 
@@ -83,7 +83,7 @@ export function deleteBook(id) {
  * @param {number} id id of book.
  * @returns {Promise.<Book>} book.
  */
-export function getBookById(id) {
+exports.getBookById = function(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM books WHERE id = ?";
 
@@ -114,7 +114,7 @@ export function getBookById(id) {
  * Return all books in database as array.
  * @returns {Promise.<Book[]>} array of books.
  */
-export function getAllBooks() {
+exports.getAllBooks = function() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM books";
 

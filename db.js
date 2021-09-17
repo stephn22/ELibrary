@@ -2,8 +2,9 @@
 
 const source = './elibrary.sqlite'
 
-import { Database } from 'sqlite3'; // TODO: verbose?
-const db = new Database(source, 
+const sqlite = require('sqlite3')
+
+const db = new sqlite.Database(source, 
 (err) => { if (err) throw err; });
 
-export default db;
+module.exports = db;

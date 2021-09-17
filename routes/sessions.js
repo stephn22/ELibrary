@@ -1,8 +1,8 @@
 "use strict";
 
-import { Router } from 'express';
-const router = Router();
-import { authenticate } from 'passport';
+const express = require('express');
+const router = express.Router();
+const passport = require('passport');
 
 // login
 router.get("/login", (_req, res, _next) => {
@@ -10,7 +10,7 @@ router.get("/login", (_req, res, _next) => {
 });
 
 router.post("/sessions", (req, res, next) => {
-    authenticate("local", (err, user, info) => {
+    passport.authenticate("local", (err, user, info) => {
         if (err) {
             return next(err);
         }
@@ -24,6 +24,8 @@ router.post("/sessions", (req, res, next) => {
                 return next(err);
             }
             res.redirect("/");
+
+            // TODO: log user in user types etc
         });
     })(req, res, next);
 });
@@ -33,4 +35,4 @@ router.delete("/sessions", (req, res, _next) => {
     res.end();
 });
 
-export default router;
+module.exports = router;
