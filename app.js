@@ -1,12 +1,12 @@
 "use strict";
 
 /************** IMPORT *************/
-const express = require('express');
-const logger = require('morgan');
-const path = require('path');
-const indexRoutes = require('./routes/index');
+import express, { json, urlencoded, static } from 'express';
+import logger from 'morgan';
+import { join } from 'path';
+import indexRoutes from './routes/index';
 
-const sqlite = require('sqlite3');
+import sqlite from 'sqlite3';
 
 /************** INIT *************/
 
@@ -15,14 +15,14 @@ const port = 3000;
 
 /************** MIDDLEWARE *************/
 
-app.use(logger('dev'));
-app.use(express.json());
+app.use(logger("dev"));
+app.use(json());
 
-app.use(express.urlencoded({extended: false}));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(urlencoded({extended: false}));
+app.use(static(join(__dirname, "public")));
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set("views", join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 /************** ROUTES *************/
 
@@ -33,4 +33,4 @@ app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
 
-module.exports = app;
+export default app;

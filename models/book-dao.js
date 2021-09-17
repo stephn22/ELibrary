@@ -1,8 +1,8 @@
 "use strict";
 
-const db = require('../db.js');
+const db = require('../db.js').default;
 
-import Book from "../entities/book.js";
+import Book from '../entities/book.js';
 
 /**
  * Add book to database.

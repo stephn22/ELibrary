@@ -1,6 +1,6 @@
 "use strict";
 
-const db = require('../db');
+const db = require('../db.js').default;
 
 import { Order } from '../entities/order.js';
 
