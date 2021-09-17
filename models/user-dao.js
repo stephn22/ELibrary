@@ -2,13 +2,15 @@
 
 import { get, run } from '../db.js';
 import { compareSync, hashSync } from 'bcrypt';
-import { CUSTOMER } from '../entities/constants/user-type';
+import { CUSTOMER } from '../entities/constants/user-type.js';
 
-import User from '../entities/user';
+import User from '../entities/user.js';
+
+// TODO: check
 
 /**
  * Add user to database.
- * @param {User} user to be created into db.
+ * @param {User} user user to be created into db.
  * @returns {Promise.<number>} id of user created.
  */
  export function addUser (user) {
@@ -27,7 +29,7 @@ import User from '../entities/user';
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(this.id);
+                    resolve(user.id);
                 }
             });
     });
@@ -35,7 +37,7 @@ import User from '../entities/user';
 
 /**
  * Update an existing user.
- * @param {User} user to be updated.
+ * @param {User} user user to be updated.
  * @returns {Promise.<number>} id of updated user.
  */
 export function updateUser (user) {
@@ -54,7 +56,7 @@ export function updateUser (user) {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(this.id);
+                    resolve(user.id);
                 }
             });
     });
@@ -73,7 +75,7 @@ export function deleteUser (id) {
             if (err) {
                 reject(err);
             } else {
-                resolve(this.id);
+                resolve(id);
             }
         });
     });
@@ -81,7 +83,7 @@ export function deleteUser (id) {
 
 /**
  * Find user by id.
- * @param {number} id of user.
+ * @param {number} id id of user.
  * @returns {Promise.<number>} user
  */
 export function getUserById (id) {
@@ -112,8 +114,8 @@ export function getUserById (id) {
 
 /**
  * Get user by email and password.
- * @param {string} email of user.
- * @param {string} password of user.
+ * @param {string} email email of user.
+ * @param {string} password password of user.
  * @returns {Promise.<User>} user.
  */
 export function getUserByEmailAndPassword (email, password) {

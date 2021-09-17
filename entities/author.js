@@ -1,4 +1,4 @@
-const baseEntity = require('./baseEntity.js');
+import baseEntity from './baseEntity.js';
 
 class Author extends baseEntity {
     constructor (id, name) {

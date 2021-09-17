@@ -2,21 +2,21 @@
 
 const db = require('../db.js').default;
 
-import { Order } from '../entities/order.js';
+import Order from '../entities/order.js';
 
 // TODO: customer can order more than one book?
 
 /**
  * Inserts a new order into the database.
- * @param {Order} order to be inserted into database.
- * @returns {Promise.<Order>} order that was inserted.
+ * @param {Order} order order to be inserted into database.
+ * @returns {Promise.<Order>} id of order that was inserted.
  */
 export function addOrder(order) {
     return new Promise((resolve, reject) => {
-        const query = "INSERT INTO orders (customer, date, book, price, address, status) VALUES (?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO orders (customer_id, date, book, price, address, status) VALUES (?, ?, ?, ?, ?, ?)";
 
-        db.query(query, [
-            order.customer,
+        db.run(query, [
+            order.customer_id,
             order.date,
             order.book,
             order.price,
@@ -25,7 +25,7 @@ export function addOrder(order) {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(this.id);
+                    resolve(order.id);
                 }
             });
     });
@@ -33,26 +33,26 @@ export function addOrder(order) {
 
 /**
  * Update an existing order in the database.
- * @param {Order} order to be updated in database.
+ * @param {Order} order order to be updated in database.
  * @returns {Promise.<number>} id of updated order.
  */
 export function updateOrder(order) {
     return new Promise((resolve, reject) => {
-        const query = "UPDATE orders SET customer = ?, date = ?, book = ?, price = ?, address = ?, status = ? WHERE id = ?";
+        const query = "UPDATE orders SET customer_id = ?, date = ?, book = ?, price = ?, address = ?, status = ? WHERE id = ?";
 
-        db.query(query, [
-            order.customer,
+        db.run(query, [
+            order.customer_id,
             order.date,
             order.book,
             order.price,
-            order.address,
+            order.address_id,
             order.status,
             order.id
         ], (err) => {
             if (err) {
                 reject(err);
             } else {
-                resolve(this.id);
+                resolve(order.id);
             }
         });
     });
@@ -60,7 +60,7 @@ export function updateOrder(order) {
 
 /**
  * Delete an existing order from the database.
- * @param {number} id of order to be deleted.
+ * @param {number} id id of order to be deleted.
  * @returns {Promise.<number>} id of deleted order.
  */
 export function deleteOrder(id) {
@@ -71,7 +71,7 @@ export function deleteOrder(id) {
             if (err) {
                 reject(err);
             } else {
-                resolve(this.id);
+                resolve(id);
             }
         });
     });
@@ -79,7 +79,7 @@ export function deleteOrder(id) {
 
 /**
  * Find an order by id.
- * @param {number} id of order.
+ * @param {number} id id of order.
  * @returns {Promise.<number>} order.
  */
 export function getOrderById(id) {
@@ -94,11 +94,11 @@ export function getOrderById(id) {
             } else {
                 const order = new Order(
                     row.id, 
-                    row.customer, 
+                    row.customer_id, 
                     row.date, 
                     row.book, 
                     row.price, 
-                    row.address, 
+                    row.address_id, 
                     row.status);
 
                 resolve(order);
@@ -109,7 +109,7 @@ export function getOrderById(id) {
 
 /**
  * Returns all orders in database as array.
- * @returns {Promise.<Order[]>} all orders.
+ * @returns {Promise.<Order[]>} array of orders.
  */
 export function getAllOrders() {
     return new Promise((resolve, reject) => {
@@ -124,11 +124,11 @@ export function getAllOrders() {
                 rows.forEach((row) => {
                     const order = new Order(
                         row.id, 
-                        row.customer, 
+                        row.customer_id, 
                         row.date, 
                         row.book, 
                         row.price, 
-                        row.address, 
+                        row.address_id, 
                         row.status);
 
                     orders.push(order);

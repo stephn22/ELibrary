@@ -6,16 +6,16 @@ import Book from '../entities/book.js';
 
 /**
  * Add book to database.
- * @param {Book} book to add to database
+ * @param {Book} book book to add to database
  * @returns {Promise.<number>} id of book.
  */
  export function addBook(book) {
     return new Promise((resolve, reject) => {
-        const query = "INSERT INTO books (title, author, isbn, publisher, datePub, description, imgUrl, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO books (title, author_id, isbn, publisher, datePub, description, imgUrl, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         db.run(query, [
             book.title, 
-            book.author, 
+            book.author_id, 
             book.isbn, 
             book.publisher, 
             book.datePub, 
@@ -25,7 +25,7 @@ import Book from '../entities/book.js';
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(this.id);
+                    resolve(book.id);
                 }
             });
     });
@@ -33,7 +33,7 @@ import Book from '../entities/book.js';
 
 /**
  * Update a book in database.
- * @param {Book} book to be updated
+ * @param {Book} book book to be updated
  * @returns {Promise.<number>} id of updated book.
  */
 export function updateBook(book) {
@@ -53,7 +53,7 @@ export function updateBook(book) {
             if (err) {
                 reject(err);
             } else {
-                resolve(this.id);
+                resolve(book.id);
             }
         });
     });
@@ -61,7 +61,7 @@ export function updateBook(book) {
 
 /**
  * Delete a book from database.
- * @param {number} id of book.
+ * @param {number} id id of book.
  * @returns {Promise.<number>} id of deleted book.
  */
 export function deleteBook(id) {
@@ -72,7 +72,7 @@ export function deleteBook(id) {
             if (err) {
                 reject(err);
             } else {
-                resolve(this.id);
+                resolve(id);
             }
         });
     });
@@ -80,7 +80,7 @@ export function deleteBook(id) {
 
 /**
  * Find book by id.
- * @param {number} id of book.
+ * @param {number} id id of book.
  * @returns {Promise.<Book>} book.
  */
 export function getBookById(id) {
@@ -96,7 +96,7 @@ export function getBookById(id) {
                 const book = new Book(
                     row.id, 
                     row.title, 
-                    row.author, 
+                    row.author_id, 
                     row.isbn, 
                     row.publisher, 
                     row.datePub, 
@@ -127,7 +127,7 @@ export function getAllBooks() {
             const books = rows.map(row => (new Book(
                 row.id,
                 row.title,
-                row.author,
+                row.author_id,
                 row.isbn,
                 row.publisher,
                 row.datePub,
