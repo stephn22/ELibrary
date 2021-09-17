@@ -6,9 +6,6 @@ import { CUSTOMER } from '../entities/constants/user-type';
 
 import User from '../entities/user';
 
-
-// TODO: check promises
-
 /**
  * Find user by id.
  * @param {*} id of user.
@@ -25,7 +22,15 @@ export function getUserById (id) {
                 resolve({ error: "User not found" });
             } else {
                 // no need to add password to user object
-                const user = new User(row.id, row.fname, row.lname, row.email, undefined, row.address, row.type);
+                const user = new User(
+                    row.id, 
+                    row.fname, 
+                    row.lname, 
+                    row.email, 
+                    undefined, 
+                    row.address, 
+                    row.type);
+
                 resolve(user);
             }
         });
@@ -60,11 +65,11 @@ export function getUserByEmailAndPassword (email, password) {
 }
 
 /**
- * Create user.
+ * Add user to database.
  * @param {*} user to be created into db.
  * @returns id of user created.
  */
-export function createUser (user) {
+export function addUser (user) {
     return new Promise((resolve, reject) => {
         const query = "INSERT INTO users (fname, lname, email, password, address, type) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -116,7 +121,7 @@ export function updateUser (user) {
 /**
  * Delete user (by id).
  * @param {*} id id of user to be deleted.
- * @returns 
+ * @returns id of customer deleted.
  */
 export function deleteUser (id) {
     return new Promise((resolve, reject) => {
@@ -126,7 +131,7 @@ export function deleteUser (id) {
             if (err) {
                 reject(err);
             } else {
-                resolve(id);
+                resolve(this.id);
             }
         });
     });
