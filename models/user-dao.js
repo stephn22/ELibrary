@@ -7,9 +7,82 @@ import { CUSTOMER } from '../entities/constants/user-type';
 import User from '../entities/user';
 
 /**
+ * Add user to database.
+ * @param {User} user to be created into db.
+ * @returns {Promise.<number>} id of user created.
+ */
+ export function addUser (user) {
+    return new Promise((resolve, reject) => {
+        const query = "INSERT INTO users (fname, lname, email, password, address, type) VALUES (?, ?, ?, ?, ?, ?)";
+
+        user.password = hashSync(user.password, 10);
+
+        run(query, [
+            user.fname,
+            user.lname,
+            user.email,
+            user.password,
+            user.address,
+            CUSTOMER], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(this.id);
+                }
+            });
+    });
+}
+
+/**
+ * Update an existing user.
+ * @param {User} user to be updated.
+ * @returns {Promise.<number>} id of updated user.
+ */
+export function updateUser (user) {
+    return new Promise((resolve, reject) => {
+        const query = "UPDATE users SET fname = ?, lname = ?, email = ?, password = ?, address = ?, type = ? WHERE id = ?";
+        user.password = hashSync(user.password, 10);
+
+        run(query, [
+            user.fname,
+            user.lname,
+            user.email,
+            user.password,
+            user.address,
+            user.type,
+            user.id], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(this.id);
+                }
+            });
+    });
+}
+
+/**
+ * Delete user (by id).
+ * @param {number} id id of user to be deleted.
+ * @returns {Promise.<number>} id of customer deleted.
+ */
+export function deleteUser (id) {
+    return new Promise((resolve, reject) => {
+        const query = "DELETE FROM users WHERE id = ?";
+
+        run(query, [id], (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(this.id);
+            }
+        });
+    });
+}
+
+/**
  * Find user by id.
- * @param {*} id of user.
- * @returns user
+ * @param {number} id of user.
+ * @returns {Promise.<number>} user
  */
 export function getUserById (id) {
     return new Promise((resolve, reject) => {
@@ -39,9 +112,9 @@ export function getUserById (id) {
 
 /**
  * Get user by email and password.
- * @param {*} email of user.
- * @param {*} password of user.
- * @returns user
+ * @param {string} email of user.
+ * @param {string} password of user.
+ * @returns {Promise.<User>} user.
  */
 export function getUserByEmailAndPassword (email, password) {
     return new Promise((resolve, reject) => {
@@ -59,79 +132,6 @@ export function getUserByEmailAndPassword (email, password) {
                 const check = compareSync(password, row.password);
 
                 resolve({ user, check });
-            }
-        });
-    });
-}
-
-/**
- * Add user to database.
- * @param {*} user to be created into db.
- * @returns id of user created.
- */
-export function addUser (user) {
-    return new Promise((resolve, reject) => {
-        const query = "INSERT INTO users (fname, lname, email, password, address, type) VALUES (?, ?, ?, ?, ?, ?)";
-
-        user.password = hashSync(user.password, 10);
-
-        run(query, [
-            user.fname,
-            user.lname,
-            user.email,
-            user.password,
-            user.address,
-            CUSTOMER], (err) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(this.id);
-                }
-            });
-    });
-}
-
-/**
- * Update an existing user.
- * @param {*} user to be updated.
- * @returns id of updated user.
- */
-export function updateUser (user) {
-    return new Promise((resolve, reject) => {
-        const query = "UPDATE users SET fname = ?, lname = ?, email = ?, password = ?, address = ?, type = ? WHERE id = ?";
-        user.password = hashSync(user.password, 10);
-
-        run(query, [
-            user.fname,
-            user.lname,
-            user.email,
-            user.password,
-            user.address,
-            user.type,
-            user.id], (err) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(this.id);
-                }
-            });
-    });
-}
-
-/**
- * Delete user (by id).
- * @param {*} id id of user to be deleted.
- * @returns id of customer deleted.
- */
-export function deleteUser (id) {
-    return new Promise((resolve, reject) => {
-        const query = "DELETE FROM users WHERE id = ?";
-
-        run(query, [id], (err) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(this.id);
             }
         });
     });
