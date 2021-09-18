@@ -12,6 +12,8 @@ const path = require('path');
 const userDao = require('./models/user-dao.js');
 const createError = require('http-errors');
 
+require('dotenv').config();
+
 // routes
 const indexRouter = require('./routes/index.js');
 const sessionsRouter = require('./routes/sessions.js');
@@ -78,7 +80,7 @@ passport.deserializeUser(function (id, done) {
 
 app.use(session({
     //store: new FileStore(), // by default, Passport uses a MemoryStore to keep track of the sessions - if you want to use this, launch nodemon with the option: --ignore sessions/
-    secret: "secret", // TODO: change this
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
 }));
