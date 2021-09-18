@@ -1,8 +1,9 @@
-<%- include('authentication-header', {"Login"}); -%>
+<%- include('authentication-header', {title: "Login"}); -%>
 
+<!-- FIXME: content not centered -->
 <main class="form-signin">
 
-    <a class="text-center float" href="index.html">
+    <a class="text-center float" href="/">
         <img alt="book_black" class="mb-4" height="44" src="/images/icons/book_black_24dp.svg" width="50">
     </a>
 
@@ -11,13 +12,6 @@
             <button aria-controls="login" aria-selected="true" class="nav-link active" data-bs-target="#login-panel"
                 data-bs-toggle="tab" id="login-tab" role="tab" type="button">
                 Login
-            </button>
-        </li>
-
-        <li class="nav-item" role="presentation">
-            <button aria-controls="signup" aria-selected="false" class="nav-link" data-bs-target="#signup-panel"
-                data-bs-toggle="tab" id="signup-tab" role="tab" type="button">
-                Iscriviti
             </button>
         </li>
     </ul>
@@ -56,4 +50,5 @@
 
 </main>
 
-<%- include('footer'); -%>
+</body>
+</html>

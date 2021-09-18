@@ -1,84 +1,99 @@
 <%- include('authentication-header', {title}); -%>
 
-<main class="form-signin">
+<!-- FIXME: content not centered -->
+    <main class="form-signin">
 
-    <a class="text-center float" href="index.html">
-        <img alt="book_black" class="mb-4" height="44" src="/images/icons/book_black_24dp.svg" width="50">
-    </a>
+        <a class="text-center float" href="/">
+            <img alt="book_black" class="mb-4" height="44" src="/images/icons/book_black_24dp.svg" width="50">
+        </a>
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button aria-controls="login" aria-selected="true" class="nav-link active" data-bs-target="#login-panel"
-                data-bs-toggle="tab" id="login-tab" role="tab" type="button">
-                Login
-            </button>
-        </li>
-
-        <li class="nav-item" role="presentation">
-            <button aria-controls="signup" aria-selected="false" class="nav-link" data-bs-target="#signup-panel"
-                data-bs-toggle="tab" id="signup-tab" role="tab" type="button">
-                Iscriviti
-            </button>
-        </li>
-    </ul>
-
-    <div class="tab-content" id="myContent">
-
-        <!-- SIGNUP TAB -->
-        <div aria-labelledby="signup-tab" class="tab-pane fade active" id="signup-panel" role="tabpanel">
-            <!-- SIGNUP FORM -->
-            <form method="post" id="signup-form">
-                <!-- FName -->
-                <div class="form-floating">
-                    <input class="form-control" id="fname" placeholder="Nome" required type="text">
-                    <label for="fname">Nome</label>
-                    <span class="text-danger small" for="fname"></span>
-                </div>
-
-                <!-- LName -->
-                <div class="form-floating">
-                    <input class="form-control" id="lname" placeholder="Cognome" required type="text">
-                    <label for="lname">Cognome</label>
-                    <span class="text-danger small" for="lname"></span>
-                </div>
-
-                <!-- Email -->
-                <div class="form-floating">
-                    <input class="form-control" id="signup-email" placeholder="email@example.com" required type="email">
-                    <label for="signup-email">Email</label>
-                    <span class="text-danger small" for="email" id="signup-email-validation"></span>
-                </div>
-
-                <!-- Password -->
-                <div class="form-floating">
-                    <input class="form-control" id="signup-password" placeholder="Password" required type="password">
-                    <label for="signup-password">Password</label>
-                    <span class="text-danger small" for="signup-password" id="signup-pwd-validation"></span>
-                </div>
-
-                <!-- Password -->
-                <div class="form-floating">
-                    <input class="form-control" id="confirm-password" placeholder="Conferma password" required
-                        type="password">
-                    <label for="confirm-password">Conferma password</label>
-                    <span class="text-danger small" for="confirm-password" id="confirm-pwd-validation"></span>
-                </div>
-
-                <!-- Address TODO: localizzazione -->
-                <div class="form-floating">
-                    <input class="form-control" id="address" placeholder="Indirizzo" required type="text">
-                    <label for="address">Indirizzo</label>
-                    <span class="text-danger small" for="address"></span>
-                </div>
-
-                <button class="w-100 btn btn-lg btn-outline-light" id="signup-btn" type="submit">Registrati
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button aria-controls="login" aria-selected="true" class="nav-link active" data-bs-target="#signup-panel"
+                    data-bs-toggle="tab" id="login-tab" role="tab" type="button">
+                    Register
                 </button>
-            </form>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myContent">
+
+            <!-- SIGNUP TAB -->
+            <div aria-labelledby="signup-tab" class="tab-pane fade show active" id="signup-panel" role="tabpanel">
+                <!-- SIGNUP FORM -->
+                <form method="post" id="signup-form">
+                    <!-- FName -->
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input class="form-control" id="fname" placeholder="First Name" required type="text">
+                            <label for="fname">First Name</label>
+                        </div>
+                        <span class="text-danger small" id="fname-validation"></span>
+                    </div>
+                    <br />
+
+                    <!-- LName -->
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input class="form-control" id="lname" placeholder="Last Name" required type="text">
+                            <label for="lname">Last Name</label>
+                        </div>
+                        <span class="text-danger small" id="lname-validation"></span>
+                    </div>
+                    <br />
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input class="form-control" id="signup-email" placeholder="email@example.com" required
+                                type="email">
+                            <label for="signup-email">Email</label>
+                        </div>
+                        <span class="text-danger small" id="signup-email-validation"></span>
+                    </div>
+                    <br />
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input class="form-control" id="signup-password" placeholder="Password" required
+                                type="password">
+                            <label for="signup-password">Password</label>
+                        </div>
+                        <span class="text-danger small" id="signup-password-validation"></span>
+                    </div>
+                    <br />
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input class="form-control" id="confirm-password" placeholder="Confirm password" required
+                                type="password">
+                            <label for="confirm-password">Confirm password</label>
+                        </div>
+                        <span class="text-danger small" id="confirm-password-validation"></span>
+                    </div>
+                    <br />
+
+                    <!-- TODO: localizzazione -->
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input class="form-control" id="address" placeholder="Indirizzo" required type="text">
+                            <label for="address">Address</label>
+                        </div>
+                        <span class="text-danger small" id="address-validation"></span>
+                    </div>
+                    <br />
+
+                    <button class="w-100 btn btn-lg btn-outline-light" id="signup-btn" type="submit">Submit
+                    </button>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <p class="mt-5 mb-3 text-muted">&copy ELibrary - 2021</p>
+        <p class="mt-5 mb-3 text-muted">&copy ELibrary - 2021</p>
 
-</main>
+    </main>
 
-<%- include('footer'); -%>
+</body>
+</html>
