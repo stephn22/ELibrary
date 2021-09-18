@@ -1,0 +1,59 @@
+<%- include('authentication-header', {"Login"}); -%>
+
+<main class="form-signin">
+
+    <a class="text-center float" href="index.html">
+        <img alt="book_black" class="mb-4" height="44" src="/images/icons/book_black_24dp.svg" width="50">
+    </a>
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button aria-controls="login" aria-selected="true" class="nav-link active" data-bs-target="#login-panel"
+                data-bs-toggle="tab" id="login-tab" role="tab" type="button">
+                Login
+            </button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button aria-controls="signup" aria-selected="false" class="nav-link" data-bs-target="#signup-panel"
+                data-bs-toggle="tab" id="signup-tab" role="tab" type="button">
+                Iscriviti
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myContent">
+
+        <!-- LOGIN TAB -->
+        <div aria-labelledby="login-tab" class="tab-pane fade show active" id="login-panel" role="tabpanel">
+            <!-- LOGIN FORM -->
+            <form action="/sessions" autocomplete method="post">
+                <!-- Email -->
+                <div class="form-floating">
+                    <input class="form-control" id="floatingInputEmail" placeholder="email@example.com" required
+                        type="email">
+                    <label for="floatingInputEmail">Email</label>
+                </div>
+
+                <!-- Password -->
+                <div class="form-floating">
+                    <input class="form-control" id="floatingPassword" placeholder="Password" required type="password">
+                    <label for="floatingPassword">Password</label>
+                </div>
+
+                <!-- Checkbox ricordami -->
+                <div class="form-check checkbox mb-3">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="remember-me" id="remember-me">Ricordami
+                    </label>
+                </div>
+                <button class="w-100 btn btn-lg btn-outline-light" id="login-btn" type="submit">Accedi</button>
+            </form>
+        </div>
+    </div>
+
+    <p class="mt-5 mb-3 text-muted">&copy ELibrary - 2021</p>
+
+</main>
+
+<%- include('footer'); -%>
