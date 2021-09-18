@@ -30,7 +30,7 @@ router.post("/sessions", (req, res, next) => {
     })(req, res, next);
 });
 
-router.delete("/sessions", (req, res, _next) => {
+router.delete("/sessions/current", (req, res, _next) => {
     req.logout();
     res.end();
 });

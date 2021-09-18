@@ -6,8 +6,6 @@ const Type = require('../entities/constants/user-type').default;
 
 const User = require('../entities/user').default;
 
-// TODO: check
-
 /**
  * Add user to database.
  * @param {User} user user to be created into db.

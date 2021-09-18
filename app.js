@@ -2,37 +2,28 @@
 
 /************** IMPORTS *************/
 
+require('dotenv').config();
+
+const createError = require('http-errors');
 const express = require('express');
+const path = require('path');
 const logger = require('morgan');
+const moment = require('moment');
+
+// auth and session
 const passport = require('passport');
 const session = require('express-session');
-const moment = require('moment');
 const LocalStrategy = require('passport-local').Strategy;
-const path = require('path');
 const userDao = require('./models/user-dao.js');
-const createError = require('http-errors');
-
-require('dotenv').config();
 
 // routes
 const indexRouter = require('./routes/index.js');
 const sessionsRouter = require('./routes/sessions.js');
+const loginRouter = require('./routes/login.js');
 
-
-/************** INIT *************/
+/************** SETUP *************/
 
 const app = express();
-const port = 3000;
-
-/************** MIDDLEWARE *************/
-
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-// TODO: cookieParser
-
-app.use(express.static(path.join(__dirname, "public")));
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -45,6 +36,16 @@ app.use((_req, _res, next) => {
     app.locals.active = '';
     next();
 });
+
+/************** MIDDLEWARE *************/
+
+app.use(logger("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// TODO: cookieParser
+
+app.use(express.static(path.join(__dirname, "public")));
 
 // authentication
 
@@ -62,8 +63,6 @@ passport.use(new LocalStrategy(
         });
     }
 ));
-
-
 
 // user object <-> session
 passport.serializeUser(function (user, done) {
@@ -100,10 +99,13 @@ const isLoggedIn = (req, res, next) => {
 
 /************** ROUTES *************/
 
+app.use('/', sessionsRouter);
 app.use('/', indexRouter);
-app.use("/", sessionsRouter);
+app.use('/', loginRouter);
 
-app.use("/", (_req, _res, next) => {
+// app.use('/', isLoggedIn, another routher);
+
+app.use('/', (_req, _res, next) => {
     next(createError(404));
 });
 
@@ -117,9 +119,9 @@ app.use((err, req, res, next) => {
     res.render("error");
 });
 
-/************** STARTUP *************/
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-});
+// const port = 3000;
+// app.listen(port, () => {
+//     console.log(`Server listening on port ${port}`);
+// });
 
 module.exports = app;
