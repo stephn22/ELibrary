@@ -19,7 +19,7 @@ const userDao = require('./models/user-dao.js');
 // routes
 const indexRouter = require('./routes/index.js');
 const sessionsRouter = require('./routes/sessions.js');
-const loginRouter = require('./routes/login.js');
+const regiserRouter = require('./routes/register.js');
 
 /************** SETUP *************/
 
@@ -101,7 +101,7 @@ const isLoggedIn = (req, res, next) => {
 
 app.use('/', sessionsRouter);
 app.use('/', indexRouter);
-app.use('/', loginRouter);
+app.use('/register', regiserRouter);
 
 // app.use('/', isLoggedIn, another routher);
 

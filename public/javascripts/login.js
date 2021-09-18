@@ -17,7 +17,7 @@ const confirmPwdValidation = document.getElementById("confirm-pwd-validation");
 const remember = document.getElementById("remember-me");
 
 // Signup
-signupBtn.addEventListener("submit", () => {
+signupBtn.addEventListener("click", () => {
 
     const valid = true;
 
@@ -43,8 +43,10 @@ signupBtn.addEventListener("submit", () => {
 
     if (valid) {
         // TODO: send signup request to server
+        console.log("Signup request sent to server.");
     } else {
         // TODO: show error message
+        console.log("Signup request failed.");
     }
 
 });

@@ -1,6 +1,6 @@
 "use strict"
 
-const source = './elibrary.sqlite'
+const source = './elibrary.db'
 
 const sqlite = require('sqlite3')
 
