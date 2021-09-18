@@ -25,7 +25,7 @@
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
 
     <title>
-        <%= title ? `ELibrary | ${title}` : 'ELibrary'%>
+        <%= title ? `ELibrary | ${title}` : 'ELibrary' %>
     </title>
 </head>
 
@@ -66,16 +66,12 @@
                             <input aria-label="Ricerca" class="form-control form-control-dark" id="search"
                                 placeholder="Ricerca" type="search">
                         </form>
+                        <div class="text-end">
+                            <a class="btn btn-outline-light me2" href="/login" id="login-btn" type="button">Login</a>
 
-
-                            <div class="text-end">
-                                <a class="btn btn-outline-light me2" href="/login" id="login-btn"
-                                    type="button">Login</a>
-
-                                <a class="btn btn-outline-light me2" href="/login" id="signup-btn"
-                                    type="button">Iscriviti</a>
-                            </div>          
-                    </div>
+                            <a class="btn btn-outline-light me2" href="/login" id="signup-btn"
+                                type="button">Iscriviti</a>
+                        </div>
 
                 </a>
             </div>
