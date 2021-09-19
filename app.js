@@ -70,7 +70,7 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-    userDao.getUserById(id).then(({ user }) => {
+    userDao.findUserById(id).then(({ user }) => {
         done(null, user);
     });
 });

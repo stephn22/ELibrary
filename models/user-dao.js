@@ -84,7 +84,7 @@ function deleteUser(id) {
  * @param {number} id id of user.
  * @returns {Promise.<User>} user
  */
-function getUserById(id) {
+function findUserById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM users WHERE id = ?";
 
@@ -115,7 +115,7 @@ function getUserById(id) {
  * @param {string} email email of user.
  * @returns {Promise.<User>} user
  */
-function getUserByEmail(email) {
+function findUserByEmail(email) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM users WHERE email = ?";
 
@@ -146,7 +146,7 @@ function getUserByEmail(email) {
  * @param {string} password password of user.
  * @returns {Promise.<User>} user.
  */
-function getUserByEmailAndPassword(email, password) {
+function findUserByEmailAndPassword(email, password) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM users WHERE email = ?";
 
@@ -167,4 +167,4 @@ function getUserByEmailAndPassword(email, password) {
     });
 };
 
-module.exports = { addUser, updateUser, deleteUser, getUserById, getUserByEmail, getUserByEmailAndPassword };
+module.exports = { addUser, updateUser, deleteUser, findUserById, findUserByEmail, findUserByEmailAndPassword };

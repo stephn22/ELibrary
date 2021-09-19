@@ -17,7 +17,7 @@ router.post("/", [
     check("lname").isLength({ min: 1, max: 50 }).exists().withMessage("Please enter a valid last name"),
     check("signup-email").isEmail().exists()
         .custom(async (email) => { // check if email is unique
-            const user = await userDao.getUserByEmail(email);
+            const user = await userDao.findUserByEmail(email);
 
             if (user) {
                 return Promise.reject("Email is already registered");

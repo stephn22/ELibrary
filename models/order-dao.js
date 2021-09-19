@@ -82,7 +82,7 @@ function deleteOrder(id) {
  * @param {number} id id of order.
  * @returns {Promise.<number>} order.
  */
-function getOrderById(id) {
+function findOrderById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM orders WHERE id = ?";
 
@@ -111,7 +111,7 @@ function getOrderById(id) {
  * Returns all orders in database as array.
  * @returns {Promise.<Order[]>} array of orders.
  */
-function getAllOrders() {
+function findAllOrders() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM orders";
 
@@ -140,4 +140,4 @@ function getAllOrders() {
     });
 }
 
-module.exports = { addOrder, updateOrder, deleteOrder, getOrderById, getAllOrders };
+module.exports = { addOrder, updateOrder, deleteOrder, findOrderById, findAllOrders };

@@ -79,7 +79,7 @@ function deleteReview(id) {
  * @param {number} id id of the review to find
  * @returns {Promise.<Review>} review.
  */
-function getReviewById(id) {
+function findReviewById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM reviews WHERE id = ?";
 
@@ -108,7 +108,7 @@ function getReviewById(id) {
  * @param {number} customer_id id of customer that made the review
  * @returns {Promise.<Review>} review.
  */
-function getReviewByCustomerId(customer_id) {
+function findReviewByCustomerId(customer_id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM reviews WHERE customer_id = ?";
 
@@ -136,7 +136,7 @@ function getReviewByCustomerId(customer_id) {
  * Returns all reviews in database as array.
  * @returns {Promise.<Review[]>} array of reviews.
  */
-function getAllReviews() {
+function findAllReviews() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM reviews";
 
@@ -164,4 +164,4 @@ function getAllReviews() {
     });
 }
 
-module.exports = { addReview, updateReview, deleteReview, getReviewById, getReviewByCustomerId, getAllReviews };
+module.exports = { addReview, updateReview, deleteReview, findReviewById, findReviewByCustomerId, findAllReviews };

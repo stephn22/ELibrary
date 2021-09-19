@@ -83,7 +83,7 @@ function deleteBook(id) {
  * @param {number} id id of book.
  * @returns {Promise.<Book>} book.
  */
-function getBookById(id) {
+function findBookById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM books WHERE id = ?";
 
@@ -114,7 +114,7 @@ function getBookById(id) {
  * Return all books in database as array.
  * @returns {Promise.<Book[]>} array of books.
  */
-function getAllBooks() {
+function findAllBooks() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM books";
 
@@ -140,4 +140,4 @@ function getAllBooks() {
     });
 }
 
-module.exports = { addBook, updateBook, deleteBook, getBookById, getAllBooks };
+module.exports = { addBook, updateBook, deleteBook, findBookById, findAllBooks };
