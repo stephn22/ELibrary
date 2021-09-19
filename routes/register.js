@@ -3,7 +3,7 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
-const User = require('./entities/user');
+const User = require('../entities/user');
 const userDao = require('../models/user-dao');
 const { urlencoded } = require('body-parser');
 
@@ -20,7 +20,7 @@ router.post("/", [
             const user = await userDao.getUserByEmail(email);
 
             if (user) {
-                throw new Error("Email is already registered");
+                return Promise.reject("Email is already registered");
             }
         }).withMessage("Please enter a valid email address"),
     check("signup-password").matches(/^.*(?=.{8,})(?=.*[\d])(?=.*[\W]).*$/).withMessage("Password must be at least 8 characters long and contain at least one number and one non-alphanumeric character"),

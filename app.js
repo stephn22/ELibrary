@@ -6,7 +6,6 @@ require('dotenv').config();
 
 const createError = require('http-errors');
 const express = require('express');
-const validator = require('express-validator');
 const path = require('path');
 const logger = require('morgan');
 const moment = require('moment');
@@ -44,7 +43,6 @@ app.use((_req, _res, next) => {
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(validator());
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, "public")));
