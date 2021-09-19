@@ -53,6 +53,18 @@ h2 {
     align-content: center;
 }
 
+.btn-dark:hover {
+    color: black;
+}
+
+.btn-outline-dark {
+    color: white;
+}
+
+.btn-outline-dark:hover {
+    color: black;
+}
+
 .carousel {
     margin-bottom: 4rem;
 }
