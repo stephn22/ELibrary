@@ -1,6 +1,5 @@
 <%- include('authentication-header', {title: "Login"}); -%>
 
-<!-- FIXME: content not centered -->
 <main class="form-signin">
 
     <form method="POST" action="/sessions" autocomplete>
@@ -11,7 +10,7 @@
 
             <div class="form-group">
                 <div class="form-floating">
-                    <input type="email" class="form-control" id="login-email" placeholder="name@example.com">
+                    <input type="email" class="form-control" id="login-email" placeholder="name@example.com" required>
                     <label for="login-email">Email</label>
                 </div>
                 <span class="text-danger" id="login-email-validation"></span>
@@ -19,7 +18,7 @@
 
             <div class="form-group">
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="login-password" placeholder="Password">
+                    <input type="password" class="form-control" id="login-password" placeholder="Password" required>
                     <label for="login-password">Password</label>
                 </div>
                 <span class="text-danger" id="login-password-validation"></span>
@@ -30,8 +29,8 @@
                   <input type="checkbox" id="login-remember-me" value="remember-me"> Remember me
                 </label>
               </div>
-
-            <button class="w-100 btn btn-lg btn-dark" id="signup-btn" type="submit">Login</button>
+              
+            <button class="w-100 btn btn-lg btn-secondary" id="signup-btn" type="submit">Login</button>
     
     </form>
 

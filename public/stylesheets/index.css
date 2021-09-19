@@ -39,30 +39,9 @@ h2 {
 }
 
 .btn {
-    background-color: #212529;
-    border-color: white;
     align-content: center;
     align-self: center;
     align-items: center;
-}
-
-
-.btn:hover {
-    background-color: white;
-    border-color: black;
-    align-content: center;
-}
-
-.btn-dark:hover {
-    color: black;
-}
-
-.btn-outline-dark {
-    color: white;
-}
-
-.btn-outline-dark:hover {
-    color: black;
 }
 
 .carousel {

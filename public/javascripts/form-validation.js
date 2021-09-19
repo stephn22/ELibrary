@@ -10,6 +10,20 @@ const signupPanel = document.getElementById("signup-panel");
 const loginBtn = document.getElementById("login-btn");
 const signupBtn = document.getElementById("signup-btn");
 
+// modal
+const addressInputMsg = "Click the button below to insert your location";
+const addressBtn = document.getElementById("address-search");
+const addressInput = document.getElementById("address-input");
+const modalText = document.getElementById("modal-text");
+const saveModalBtn = document.getElementById("address-save-btn");
+const closeModalBtn = document.getElementById("close-modal-btn");
+const closeModal = document.getElementById("close-modal");
+
+const fname = document.getElementById("fname");
+const fnameValidation = document.getElementById("fname-validation");
+const lname = document.getElementById("lname");
+const lnameValidation = document.getElementById("lname-validation");
+
 const signupEmail = document.getElementById("signup-email");
 const signupEmailValidation = document.getElementById("signup-email-validation");
 
@@ -22,77 +36,96 @@ const remember = document.getElementById("remember-me");
 
 // signup page
 if (signupEmail !== null && signupPwd !== null && confirmPwd !== null) {
-    // Check email as input change
+
+    // Check first name as input changes
+    fname.addEventListener("input", () => {
+        if (!validatePersonName(fname.value)) {
+            fnameValidation.innerHTML = "Please enter a valid first name";
+            disableBtn(signupBtn);
+        } else {
+            clearValidationMsg(fnameValidation);
+            enableBtn(signupBtn);
+        }
+    });
+
+    // Check last name as input changes
+    lname.addEventListener("input", () => {
+        if (!validatePersonName(lname.value)) {
+            lnameValidation.innerHTML = "Please enter a valid last name";
+            disableBtn(signupBtn);
+        } else {
+            clearValidationMsg(lnameValidation);
+            enableBtn(signupBtn);
+        }
+    });
+
+    // Check email as input changes
     signupEmail.addEventListener("input", () => {
         if (!validateEmail(signupEmail.value)) {
             signupEmailValidation.innerHTML = "This is an invalid email address";
-            signupBtn.disabled = true;
+            disableBtn(signupBtn);
+
         } else {
             clearValidationMsg(signupEmailValidation);
-            signupBtn.disabled = false;
+            enableBtn(signupBtn);
         }
     });
 
-    // Check confirm pwd as input change
+    // Check password as input changes
+    signupPwd.addEventListener("input", () => {
+        if (!validatePassword(signupPwd.value)) {
+            signupPwdValidation.innerHTML = "Password must be at least 8 characters long, must contain at least one digit and one special character";
+            disableBtn(signupBtn);
+        } else {
+            clearValidationMsg(signupPwdValidation);
+            enableBtn(signupBtn);
+        }
+    });
+
+    // Check confirm pwd as input changes
     confirmPwd.addEventListener("input", () => {
         if (!validatePasswordAndConfirm(signupPwd.value, confirmPwd.value)) {
             confirmPwdValidation.innerHTML = "Password and confirm password must be the same.";
-            signupBtn.disabled = true;
+            disableBtn(signupBtn);
+
         } else {
             clearValidationMsg(confirmPwdValidation);
-            signupBtn.disabled = false;
+            enableBtn(signupBtn);
         }
     });
 
-
-    // Signup
-    signupBtn.addEventListener("click", (e) => {
-
-        const valid = true;
-
-        // Update panels
-        openPanel(signupPanel, loginPanel);
-
-        // Validate signup form
-        if (!validateEmail(signupEmail.value)) {
-            signupEmailValidation.value = "Invalid email.";
-            valid = false;
+    // on click of address button
+    addressBtn.addEventListener("click", () => {
+        if (navigator.geolocation) {
+            // get the user's current position (lng, lat)
+            navigator.geolocation.getCurrentPosition(reverseGeocode, geolocationError);
         }
+    });
 
-        if (!validatePassword(signupPwd.value)) {
-            signupPwdValidation.value = "Password must be at least 8 characters long, must contain at least one digit and at least one special character.";
-            valid = false;
-        }
+    // on click of close modal button
+    closeModalBtn.addEventListener("click", () => {
+        // reset input value
+        addressInput.value = addressInputMsg;
+    });
 
-        if (!validatePasswordAndConfirm(signupPwd.value, confirmPwd.value)) {
-            signupPwdValidation.value = "Password and confirm password must be the same.";
-            confirmPwdValidation.value = "Password and confirm password must be the same.";
-            valid = false;
-        }
-
-        if (valid) {
-            // TODO: send signup request to server
-            console.log("Signup request sent to server.");
-        } else {
-            // TODO: show error message
-            console.log("Signup request failed.");
-        }
-
+    // on click of close modal icon (button)
+    closeModal.addEventListener("click", () => {
+        // reset input value
+        addressInput.value = addressInputMsg;
     });
 }
 
-
 /**
- * Make the first parameter active and the second inactive.
- * @param {HTMLElement} panelToActive panel to be active
- * @param {HTMLElement} panelToInactive panel to be inactive
+ * Validates a person name
+ * @param {string} text the text to be checked
+ * @constraint name must not contain numbers
+ * @constraint name must not contain special characters
+ * @constraint name must be at least 1 character long
+ * @constraint name must not be longer than 50 characters
+ * @returns true if text is a valid person name, false otherwise
  */
-function openPanel(panelToActive, panelToInactive) {
-    panelToActive.classList.remove("inactive");
-    panelToActive.classList.add("active");
-
-    panelToInactive.classList.remove("active");
-    panelToInactive.classList.add("inactive");
+function validatePersonName(text) {
+    return /^[a-zA-Z ]{1,50}$/.test(text);
 }
 
 /**
@@ -134,4 +167,78 @@ function validatePasswordAndConfirm(password, confirmPwd) {
  */
 function clearValidationMsg(validationElement) {
     validationElement.innerHTML = "";
+}
+
+/**
+ * Enables a button
+ * @param {HTMLElement} btn button to be enabled
+ */
+function enableBtn(btn) {
+    btn.removeAttribute("disabled");
+}
+
+/**
+ * Disables a button
+ * @param {HTMLElement} btn button to be disabled
+ */
+function disableBtn(btn) {
+    btn.setAttribute("disabled", "true");
+}
+
+/**
+ * Get the address position of user by reverse geocoding request (lng, lat) to MapBox
+ * @link https://docs.mapbox.com/api/search/geocoding/
+ * @param {GeolocationPosition} position position of the user
+ */
+async function reverseGeocode(position) {
+    const mapboxAccessToken = "pk.eyJ1Ijoic3RlY3JvdHRpMSIsImEiOiJja3Bna2kzbHYyaThoMm9ueHl1dzlnaTc1In0.EpALSOaDOmuM8XGS_IQzvA";
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${position.coords.longitude},${position.coords.latitude}.json?access_token=${mapboxAccessToken}`;
+
+    await updateAddressModal(url);
+}
+
+/**
+ * Show errors of geolocation
+ * @param {GeolocationPositionError} error geolocation error object
+ */
+function geolocationError(error) {
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            window.alert("User denied the request for Geolocation.");
+            break;
+
+        case error.POSITION_UNAVAILABLE:
+            window.alert("Location information is unavailable.");
+            break;
+
+        case error.TIMEOUT:
+            window.alert("The request to get user location timed out.");
+            break;
+
+        case error.UNKNOWN_ERROR:
+            window.alert("An unknown error occurred.");
+            break;
+    }
+}
+
+/**
+ * Make a http request to the given url and then update the address modal with the result
+ * @param {string} url url to make request
+ */
+async function updateAddressModal(url) {
+    await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json; charset=UTF-8"
+        },
+    }).then(response => {
+        return response.json();
+    }).then(data => {
+        // update address modal and the address input field
+        modalText.innerHTML = data.features[0].place_name;
+        addressInput.value = data.features[0].place_name;
+
+    }).catch(error => {
+        console.log(error);
+    });
 }
