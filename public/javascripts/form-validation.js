@@ -1,55 +1,86 @@
 "use strict";
 
+/**
+ * Validation methods for register view and login view
+ */
+
 const loginPanel = document.getElementById("login-panel");
 const signupPanel = document.getElementById("signup-panel");
 
 const loginBtn = document.getElementById("login-btn");
 const signupBtn = document.getElementById("signup-btn");
 
-const signupEemail = document.getElementById("signup-email");
+const signupEmail = document.getElementById("signup-email");
 const signupEmailValidation = document.getElementById("signup-email-validation");
 
 const signupPwd = document.getElementById("signup-password");
-const signupPwdValidation = document.getElementById("signup-pwd-validation");
+const signupPwdValidation = document.getElementById("signup-password-validation");
 const confirmPwd = document.getElementById("confirm-password");
-const confirmPwdValidation = document.getElementById("confirm-pwd-validation");
+const confirmPwdValidation = document.getElementById("confirm-password-validation");
 
 const remember = document.getElementById("remember-me");
 
-// Signup
-signupBtn.addEventListener("click", () => {
+// signup page
+if (signupEmail !== null && signupPwd !== null && confirmPwd !== null) {
+    // Check email as input change
+    signupEmail.addEventListener("input", () => {
+        if (!validateEmail(signupEmail.value)) {
+            signupEmailValidation.innerHTML = "This is an invalid email address";
+            signupBtn.disabled = true;
+        } else {
+            clearValidationMsg(signupEmailValidation);
+            signupBtn.disabled = false;
+        }
+    });
 
-    const valid = true;
+    // Check confirm pwd as input change
+    confirmPwd.addEventListener("input", () => {
+        if (!validatePasswordAndConfirm(signupPwd.value, confirmPwd.value)) {
+            confirmPwdValidation.innerHTML = "Password and confirm password must be the same.";
+            signupBtn.disabled = true;
+        } else {
+            clearValidationMsg(confirmPwdValidation);
+            signupBtn.disabled = false;
+        }
+    });
 
-    // Update panels
-    openPanel(signupPanel, loginPanel);
 
-    // Validate signup form
-    if (!validateEmail(signupEemail.value)) {
-        signupEmailValidation.value = "Invalid email.";
-        valid = false;
-    }
+    // Signup
+    signupBtn.addEventListener("click", (e) => {
 
-    if (!validatePassword(signupPwd.value)) {
-        signupPwdValidation.value = "Password must be at least 8 characters long, must contain at least one digit and at least one special character.";
-        valid = false;
-    }
+        const valid = true;
 
-    if (!validatePasswordAndConfirm(signupPwd.value, confirmPwd.value)) {
-        signupPwdValidation.value = "Password and confirm password must be the same.";
-        confirmPwdValidation.value = "Password and confirm password must be the same.";
-        valid = false;
-    }
+        // Update panels
+        openPanel(signupPanel, loginPanel);
 
-    if (valid) {
-        // TODO: send signup request to server
-        console.log("Signup request sent to server.");
-    } else {
-        // TODO: show error message
-        console.log("Signup request failed.");
-    }
+        // Validate signup form
+        if (!validateEmail(signupEmail.value)) {
+            signupEmailValidation.value = "Invalid email.";
+            valid = false;
+        }
 
-});
+        if (!validatePassword(signupPwd.value)) {
+            signupPwdValidation.value = "Password must be at least 8 characters long, must contain at least one digit and at least one special character.";
+            valid = false;
+        }
+
+        if (!validatePasswordAndConfirm(signupPwd.value, confirmPwd.value)) {
+            signupPwdValidation.value = "Password and confirm password must be the same.";
+            confirmPwdValidation.value = "Password and confirm password must be the same.";
+            valid = false;
+        }
+
+        if (valid) {
+            // TODO: send signup request to server
+            console.log("Signup request sent to server.");
+        } else {
+            // TODO: show error message
+            console.log("Signup request failed.");
+        }
+
+    });
+}
+
 
 /**
  * Make the first parameter active and the second inactive.
@@ -59,7 +90,7 @@ signupBtn.addEventListener("click", () => {
 function openPanel(panelToActive, panelToInactive) {
     panelToActive.classList.remove("inactive");
     panelToActive.classList.add("active");
-    
+
     panelToInactive.classList.remove("active");
     panelToInactive.classList.add("inactive");
 }
@@ -95,4 +126,12 @@ function validatePassword(password) {
  */
 function validatePasswordAndConfirm(password, confirmPwd) {
     return password === confirmPwd;
+}
+
+/**
+ * Clear validation message of the given HTML element
+ * @param {HTMLElement} validationElement HTML element to clear validation message
+ */
+function clearValidationMsg(validationElement) {
+    validationElement.innerHTML = "";
 }

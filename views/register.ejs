@@ -1,99 +1,68 @@
 <%- include('authentication-header', {title}); -%>
 
-<!-- FIXME: content not centered -->
     <main class="form-signin">
 
-        <a class="text-center float" href="/">
-            <img alt="book_black" class="mb-4" height="44" src="/images/icons/book_black_24dp.svg" width="50">
-        </a>
+        <form method="POST">
+            <img class="mb-4" src="/images/icons/book_black_48d.svg" alt="book_black">
 
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button aria-controls="login" aria-selected="true" class="nav-link active" data-bs-target="#signup-panel"
-                    data-bs-toggle="tab" id="login-tab" role="tab" type="button">
-                    Register
-                </button>
-            </li>
-        </ul>
+            <h1 class="h3 mb-3 fw-normal">Register</h1>
 
-        <div class="tab-content" id="myContent">
-
-            <!-- SIGNUP TAB -->
-            <div aria-labelledby="signup-tab" class="tab-pane fade show active" id="signup-panel" role="tabpanel">
-                <!-- SIGNUP FORM -->
-                <form method="post" id="signup-form">
-                    <!-- FName -->
-                    <div class="form-group">
-                        <div class="form-floating">
-                            <input class="form-control" id="fname" placeholder="First Name" required type="text">
-                            <label for="fname">First Name</label>
-                        </div>
-                        <span class="text-danger small" id="fname-validation"></span>
-                    </div>
-                    <br />
-
-                    <!-- LName -->
-                    <div class="form-group">
-                        <div class="form-floating">
-                            <input class="form-control" id="lname" placeholder="Last Name" required type="text">
-                            <label for="lname">Last Name</label>
-                        </div>
-                        <span class="text-danger small" id="lname-validation"></span>
-                    </div>
-                    <br />
-
-                    <!-- Email -->
-                    <div class="form-group">
-                        <div class="form-floating">
-                            <input class="form-control" id="signup-email" placeholder="email@example.com" required
-                                type="email">
-                            <label for="signup-email">Email</label>
-                        </div>
-                        <span class="text-danger small" id="signup-email-validation"></span>
-                    </div>
-                    <br />
-
-                    <!-- Password -->
-                    <div class="form-group">
-                        <div class="form-floating">
-                            <input class="form-control" id="signup-password" placeholder="Password" required
-                                type="password">
-                            <label for="signup-password">Password</label>
-                        </div>
-                        <span class="text-danger small" id="signup-password-validation"></span>
-                    </div>
-                    <br />
-
-                    <!-- Password -->
-                    <div class="form-group">
-                        <div class="form-floating">
-                            <input class="form-control" id="confirm-password" placeholder="Confirm password" required
-                                type="password">
-                            <label for="confirm-password">Confirm password</label>
-                        </div>
-                        <span class="text-danger small" id="confirm-password-validation"></span>
-                    </div>
-                    <br />
-
-                    <!-- TODO: localizzazione -->
-                    <div class="form-group">
-                        <div class="form-floating">
-                            <input class="form-control" id="address" placeholder="Indirizzo" required type="text">
-                            <label for="address">Address</label>
-                        </div>
-                        <span class="text-danger small" id="address-validation"></span>
-                    </div>
-                    <br />
-
-                    <button class="w-100 btn btn-lg btn-outline-light" id="signup-btn" type="submit">Submit
-                    </button>
-                </form>
+            <div class="form-group">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="fname" placeholder="First Name">
+                    <label for="fname">First Name</label>
+                </div>
+                <span class="text-danger" id="fname-validation"></span>
             </div>
-        </div>
 
-        <p class="mt-5 mb-3 text-muted">&copy ELibrary - 2021</p>
+            <div class="form-group">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="lname" placeholder="Last Name">
+                    <label for="lname">Last Name</label>
+                </div>
+                <span class="text-danger" id="lname-validation"></span>
+            </div>
 
+            <div class="form-group">
+                <div class="form-floating">
+                    <input type="email" class="form-control" id="signup-email" placeholder="name@example.com">
+                    <label for="signup-email">Email</label>
+                </div>
+                <span class="text-danger" id="signup-email-validation"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="signup-password" placeholder="Password">
+                    <label for="signup-password">Password</label>
+                </div>
+                <span class="text-danger" id="signup-password-validation"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="confirm-password" placeholder="Confirm Password">
+                    <label for="confirm-password">Confirm Password</label>
+                </div>
+                <span class="text-danger" id="confirm-password-validation"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="form-floating">
+                    <!-- TODO: input group with button -->
+                    <input type="text" class="form-control" id="address"
+                        placeholder="Street, Number, City, Postal Code...">
+                    <label for="address">Address</label>
+                </div>
+                <span class="text-danger" id="address-validation"></span>
+            </div>
+
+
+            <button class="w-100 btn btn-lg btn-dark" id="signup-btn" type="submit">Submit</button>
+            <p class="mt-5 mb-3 text-muted">&copy ELibrary - 2021</p>
+        </form>
     </main>
 
-</body>
-</html>
+    </body>
+
+    </html>

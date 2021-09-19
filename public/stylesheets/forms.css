@@ -34,6 +34,10 @@ label {
     outline-color: rgb(100, 100, 100);
 }
 
+.form-group {
+    margin-bottom: 1rem;
+}
+
 .btn {
     background-color: #212529;
     border-color: rgb(100, 100, 100);
@@ -43,6 +47,7 @@ label {
 }
 
 .btn:hover {
+    color: black;
     background-color: white;
     border-color: black;
     align-content: center;
