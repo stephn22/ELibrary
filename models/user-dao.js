@@ -1,17 +1,17 @@
 "use strict";
 
-const db = require('../db').default;
+const db = require('../db');
 const crypt = require('bcrypt');
-const Type = require('../entities/constants/user-type').default;
+const Type = require('../entities/constants/user-type');
 
-const User = require('../entities/user').default;
+const User = require('../entities/user');
 
 /**
  * Add user to database.
  * @param {User} user user to be created into db.
  * @returns {Promise.<number>} id of user created.
  */
-exports.addUser = function(user) {
+function addUser(user) {
     return new Promise((resolve, reject) => {
         const query = "INSERT INTO users (fname, lname, email, password, address, type) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -31,14 +31,14 @@ exports.addUser = function(user) {
                 }
             });
     });
-}
+};
 
 /**
  * Update an existing user.
  * @param {User} user user to be updated.
  * @returns {Promise.<number>} id of updated user.
  */
-exports.updateUser = function(user) {
+function updateUser(user) {
     return new Promise((resolve, reject) => {
         const query = "UPDATE users SET fname = ?, lname = ?, email = ?, password = ?, address = ?, type = ? WHERE id = ?";
         user.password = hashSync(user.password, 10);
@@ -58,14 +58,14 @@ exports.updateUser = function(user) {
                 }
             });
     });
-}
+};
 
 /**
  * Delete user (by id).
  * @param {number} id id of user to be deleted.
  * @returns {Promise.<number>} id of customer deleted.
  */
-exports.deleteUser = function(id) {
+function deleteUser(id) {
     return new Promise((resolve, reject) => {
         const query = "DELETE FROM users WHERE id = ?";
 
@@ -77,14 +77,14 @@ exports.deleteUser = function(id) {
             }
         });
     });
-}
+};
 
 /**
  * Find user by id.
  * @param {number} id id of user.
- * @returns {Promise.<number>} user
+ * @returns {Promise.<User>} user
  */
-exports.getUserById = function(id) {
+function getUserById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM users WHERE id = ?";
 
@@ -96,19 +96,49 @@ exports.getUserById = function(id) {
             } else {
                 // no need to add password to user object
                 const user = new User(
-                    row.id, 
-                    row.fname, 
-                    row.lname, 
-                    row.email, 
-                    undefined, 
-                    row.address, 
+                    row.id,
+                    row.fname,
+                    row.lname,
+                    row.email,
+                    undefined,
+                    row.address,
                     row.type);
 
                 resolve(user);
             }
         });
     });
-}
+};
+
+/**
+ * Get user by email.
+ * @param {string} email email of user.
+ * @returns {Promise.<User>} user
+ */
+function getUserByEmail(email) {
+    return new Promise((resolve, reject) => {
+        const query = "SELECT * FROM users WHERE email = ?";
+
+        get(query, [email], (err, row) => {
+            if (err) {
+                reject(err);
+            } else if (row === undefined) {
+                resolve({ error: "User not found" });
+            } else {
+                const user = new User(
+                    row.id,
+                    row.fname,
+                    row.lname,
+                    row.email,
+                    undefined,
+                    row.address,
+                    row.type);
+
+                resolve(user);
+            }
+        });
+    });
+};
 
 /**
  * Get user by email and password.
@@ -116,7 +146,7 @@ exports.getUserById = function(id) {
  * @param {string} password password of user.
  * @returns {Promise.<User>} user.
  */
-exports.getUserByEmailAndPassword = function(email, password) {
+function getUserByEmailAndPassword(email, password) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM users WHERE email = ?";
 
@@ -135,4 +165,6 @@ exports.getUserByEmailAndPassword = function(email, password) {
             }
         });
     });
-}
+};
+
+module.exports = { addUser, updateUser, deleteUser, getUserById, getUserByEmail, getUserByEmailAndPassword };

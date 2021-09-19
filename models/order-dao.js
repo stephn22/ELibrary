@@ -1,6 +1,6 @@
 "use strict";
 
-const db = require('../db.js').default;
+const db = require('../db.js');
 
 const Order = require('../entities/order');
 
@@ -11,7 +11,7 @@ const Order = require('../entities/order');
  * @param {Order} order order to be inserted into database.
  * @returns {Promise.<Order>} id of order that was inserted.
  */
-exports.addOrder = function(order) {
+function addOrder(order) {
     return new Promise((resolve, reject) => {
         const query = "INSERT INTO orders (customer_id, date, book, price, address, status) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -36,7 +36,7 @@ exports.addOrder = function(order) {
  * @param {Order} order order to be updated in database.
  * @returns {Promise.<number>} id of updated order.
  */
-exports.updateOrder = function(order) {
+function updateOrder(order) {
     return new Promise((resolve, reject) => {
         const query = "UPDATE orders SET customer_id = ?, date = ?, book = ?, price = ?, address = ?, status = ? WHERE id = ?";
 
@@ -63,7 +63,7 @@ exports.updateOrder = function(order) {
  * @param {number} id id of order to be deleted.
  * @returns {Promise.<number>} id of deleted order.
  */
-exports.deleteOrder = function(id) {
+function deleteOrder(id) {
     return new Promise((resolve, reject) => {
         const query = "DELETE FROM orders WHERE id = ?";
 
@@ -82,7 +82,7 @@ exports.deleteOrder = function(id) {
  * @param {number} id id of order.
  * @returns {Promise.<number>} order.
  */
-exports.getOrderById = function(id) {
+function getOrderById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM orders WHERE id = ?";
 
@@ -111,7 +111,7 @@ exports.getOrderById = function(id) {
  * Returns all orders in database as array.
  * @returns {Promise.<Order[]>} array of orders.
  */
-exports.getAllOrders = function() {
+function getAllOrders() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM orders";
 
@@ -139,3 +139,5 @@ exports.getAllOrders = function() {
         });
     });
 }
+
+module.exports = { addOrder, updateOrder, deleteOrder, getOrderById, getAllOrders };

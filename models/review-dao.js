@@ -1,6 +1,6 @@
 "use strict";
 
-const db = require('../db.js').default;
+const db = require('../db.js');
 
 const Review = require('../entities/review');
 
@@ -9,7 +9,7 @@ const Review = require('../entities/review');
  * @param {Review} review review to be inserted
  * @returns {Promise.<number>} id of the inserted review
  */
-exports.addReview = function(review) {
+function addReview(review) {
     return new Promise((resolve, reject) => {
         const query = "INSERT INTO reviews (customer_id, date, book_id, text, rating) VALUES (?, ?, ?, ?, ?)";
 
@@ -34,7 +34,7 @@ exports.addReview = function(review) {
  * @param {Review} review review to update
  * @returns {Promise.<number>} id of the updated review
  */
-exports.updateReview = function(review) {
+function updateReview(review) {
     return new Promise((resolve, reject) => {
         const query = "UPDATE reviews SET customer_id = ?, date = ?, book_id = ?, text = ?, rating = ? WHERE id = ?";
 
@@ -60,7 +60,7 @@ exports.updateReview = function(review) {
  * @param {number} id id of the review to delete
  * @returns {Promise.<number>} id of the deleted review
  */
-exports.deleteReview = function(id) {
+function deleteReview(id) {
     return new Promise((resolve, reject) => {
         const query = "DELETE FROM reviews WHERE id = ?";
 
@@ -79,7 +79,7 @@ exports.deleteReview = function(id) {
  * @param {number} id id of the review to find
  * @returns {Promise.<Review>} review.
  */
-exports.getReviewById = function(id) {
+function getReviewById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM reviews WHERE id = ?";
 
@@ -108,7 +108,7 @@ exports.getReviewById = function(id) {
  * @param {number} customer_id id of customer that made the review
  * @returns {Promise.<Review>} review.
  */
-exports.getReviewByCustomerId = function(customer_id) {
+function getReviewByCustomerId(customer_id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM reviews WHERE customer_id = ?";
 
@@ -136,7 +136,7 @@ exports.getReviewByCustomerId = function(customer_id) {
  * Returns all reviews in database as array.
  * @returns {Promise.<Review[]>} array of reviews.
  */
-exports.getAllReviews = function() {
+function getAllReviews() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM reviews";
 
@@ -163,3 +163,5 @@ exports.getAllReviews = function() {
         });
     });
 }
+
+module.exports = { addReview, updateReview, deleteReview, getReviewById, getReviewByCustomerId, getAllReviews };
