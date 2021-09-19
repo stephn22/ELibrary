@@ -6,6 +6,7 @@ require('dotenv').config();
 
 const createError = require('http-errors');
 const express = require('express');
+const validator = require('express-validator');
 const path = require('path');
 const logger = require('morgan');
 const moment = require('moment');
@@ -15,6 +16,7 @@ const passport = require('passport');
 const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
 const userDao = require('./models/user-dao.js');
+const cookieParser = require('cookie-parser');
 
 // routes
 const indexRouter = require('./routes/index.js');
@@ -42,8 +44,8 @@ app.use((_req, _res, next) => {
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-// TODO: cookieParser
+app.use(validator());
+app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, "public")));
 

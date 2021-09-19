@@ -1,11 +1,6 @@
 "use strict";
 
-/**
- * Validation methods for register view and login view
- */
-
-const loginPanel = document.getElementById("login-panel");
-const signupPanel = document.getElementById("signup-panel");
+/************************** CONSTANTS *****************************/
 
 const loginBtn = document.getElementById("login-btn");
 const signupBtn = document.getElementById("signup-btn");
@@ -33,6 +28,8 @@ const confirmPwd = document.getElementById("confirm-password");
 const confirmPwdValidation = document.getElementById("confirm-password-validation");
 
 const remember = document.getElementById("remember-me");
+
+/************************** EVENT LISTENERS *****************************/
 
 // signup page
 if (signupEmail !== null && signupPwd !== null && confirmPwd !== null) {
@@ -97,8 +94,10 @@ if (signupEmail !== null && signupPwd !== null && confirmPwd !== null) {
     // on click of address button
     addressBtn.addEventListener("click", () => {
         if (navigator.geolocation) {
-            // get the user's current position (lng, lat)
-            navigator.geolocation.getCurrentPosition(reverseGeocode, geolocationError);
+            const reverseGeocode =
+
+                // get the user's current position (lng, lat)
+                navigator.geolocation.getCurrentPosition(reverseGeocode, geolocationError);
         }
     });
 
@@ -113,7 +112,15 @@ if (signupEmail !== null && signupPwd !== null && confirmPwd !== null) {
         // reset input value
         addressInput.value = addressInputMsg;
     });
+
+    signupBtn.addEventListener("click", () => {
+        confirmPwd.value = "";
+
+        // password is not hashed in client side, just in database
+    });
 }
+
+/************************** VALIDATION METHODS *****************************/
 
 /**
  * Validates a person name
@@ -184,6 +191,8 @@ function enableBtn(btn) {
 function disableBtn(btn) {
     btn.setAttribute("disabled", "true");
 }
+
+/************************** GEOLOCATION METHODS *****************************/
 
 /**
  * Get the address position of user by reverse geocoding request (lng, lat) to MapBox
