@@ -8,7 +8,7 @@ const colors = require('colors');
  * @param {string} msg message to log
  */
 function logDebug(msg) {
-    console.log(`[${now().bgWhite}] DEBUG: ${msg}`.gray);
+    console.log(`[${now().black.bgWhite}] DEBUG: ${msg}`.gray);
 }
 
 /**
@@ -16,7 +16,7 @@ function logDebug(msg) {
  * @param {string} msg message to log
  */
 function logInfo(msg) {
-    console.log(`[${now().bgWhite}] INFO: ${msg}`.white);
+    console.log(`[${now().black.bgWhite}] INFO: ${msg}`.white);
 }
 
 /**
@@ -24,7 +24,7 @@ function logInfo(msg) {
  * @param {string} msg message to log
  */
 function logWarn(msg) {
-    console.log(`[${now().bgYellow}] WARN: ${msg}`.yellow);
+    console.log(`[${now().white.bgYellow}] WARN: ${msg}`.yellow);
 }
 
 /**
@@ -32,7 +32,7 @@ function logWarn(msg) {
  * @param {string} msg message to log
  */
 function logError(msg) {
-    console.log(`[${now().bgRed}] ERROR: ${msg}`.red);
+    console.log(`[${now().white.bgRed}] ERROR: ${msg}`.red);
 }
 
 module.exports = { logDebug, logInfo, logWarn, logError };

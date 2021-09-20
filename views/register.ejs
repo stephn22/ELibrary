@@ -7,17 +7,25 @@
 
             <h1 class="h3 mb-3 fw-normal">Register</h1>
 
-            <% if(message.length> 0) { %>
-                <div class="alert alert-danger" role="alert">
-                    <% message.forEach(o=> { %>
-                        <% if (o.msg.startsWith("P")) {%>
-                            <p>
-                                <%= o.msg %>
-                            </p>
-                            <% }%>
-                                <% }); %>
+            <% if (message.length> 0) { %>
+                <div class="alert alert-primary" role="alert">
+                    <p>
+                        <%= message %>
+                    </p>
                 </div>
-                <% } %>
+            <% } %>
+
+            <% if (errors.length > 0) { %>
+                <div class="alert alert-danger" role="alert">
+                    <% if (Array.isArray(errors)) { %>
+                        <% errors.forEach((error) => { %>
+                            <p> <%= error.msg %> </p>
+                        <% }); %>
+                    <% } else { %>
+                        <p> <%= errors %> </p>
+                    <% } %>
+                </div>    
+            <% } %>   
 
                     <div class="form-group">
                         <div class="form-floating">

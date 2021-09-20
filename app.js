@@ -34,6 +34,7 @@ app.use((_req, _res, next) => {
     app.locals.moment = moment;
     app.locals.title = '';
     app.locals.message = '';
+    app.locals.errors = [];
     app.locals.active = '';
     next();
 });
@@ -49,19 +50,21 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // authentication
 
-passport.use(new LocalStrategy(
-    function (email, password, done) {
-        userDao.getUserByEmailAndPassword(email, password).then(({ user, check }) => {
-            if (!user) {
-                return done(null, false, { message: "Invalid username." });
-            }
-            if (!check) {
-                return done(null, false, { message: "Invalid password." });
-            }
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
+}, (username, password, done) => {
+    userDao.findUserByEmailAndPassword(username, password).then(({ user, check }) => {
+        if (!user) {
+            return done(null, false, { message: "Invalid username." });
+        }
+        if (!check) {
+            return done(null, false, { message: "Invalid password." });
+        }
 
-            return done(null, user);
-        });
-    }
+        return done(null, user);
+    });
+}
 ));
 
 // user object <-> session
@@ -70,7 +73,7 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-    userDao.findUserById(id).then(({ user }) => {
+    userDao.findUserById(id).then(user => {
         done(null, user);
     });
 });

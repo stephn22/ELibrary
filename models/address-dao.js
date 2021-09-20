@@ -13,7 +13,7 @@ function addAddress(address) {
     return new Promise((resolve, reject) => {
         const query = "INSERT INTO addresses (customer_id, placename) VALUES (?, ?)";
 
-        db.run(query, [address.customerId, address.placename], (err) => {
+        db.run(query, [address.customer_id, address.placename], (err) => {
             if (err) {
                 reject(err);
             } else {

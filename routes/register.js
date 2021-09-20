@@ -9,7 +9,6 @@ const userDao = require('../models/user-dao');
 const addressDao = require('../models/address-dao');
 const { urlencoded } = require('body-parser'); // TODO:
 const logger = require('../util/logger');
-const { log } = require('debug/src/browser');
 
 router.get("/", (_req, res, _next) => {
     res.render("register", { title: "Register" });
@@ -19,7 +18,15 @@ router.get("/", (_req, res, _next) => {
 router.post("/", [
     body("fname").trim().matches(/^[a-zA-Z ]{1,50}$/).escape().withMessage("Please enter a valid first name"),
     body("lname").trim().matches(/^[a-zA-Z ]{1,50}$/).escape().withMessage("Please enter a valid last name"),
-    body("email").trim().isEmail().escape().withMessage("Please enter a valid email address"),
+    body("email").trim().isEmail().withMessage("Please enter a valid email").escape()
+    .custom(async email => {
+        const user = await userDao.findUserByEmail(email);
+
+        if (!user.hasOwnProperty("error")) { // if findUserByEmail finds a user and not the error "user not found";
+            logger.logDebug(`User already exists with email ${email}`);
+            throw new Error("Email is already registered");
+        }
+    }),
     body("password").matches(/^.*(?=.{8,})(?=.*[\d])(?=.*[\W]).*$/).escape().withMessage("Password must be at least 8 characters long and contain at least one number and one non-alphanumeric character"),
     // TODO: confirm password?
     body("address").trim().isLength(0, 50).escape().withMessage("Please enter a valid address"),
@@ -35,6 +42,8 @@ router.post("/", [
             req.body.password,
             undefined
         );
+
+        // FIXME: address undefined
 
         // add the new user to the database
         const userId = await userDao.addUser(user);
@@ -58,11 +67,9 @@ router.post("/", [
             logger.logInfo(`Updated user with id: ${userId}`);
         }
 
-        res.render("login");
+        res.render("login", { title: "Login", message: "Successfully registered" });
     } else {
-        logger.logError(errors);
-
-        res.render("register", { title: "Register", message: errors.array() });
+        res.render("register", { title: "Register", errors: errors.array() });
     }
 });
 
