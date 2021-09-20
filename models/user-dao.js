@@ -9,25 +9,25 @@ const User = require('../entities/user');
 /**
  * Add user to database.
  * @param {User} user user to be created into db.
- * @returns {Promise.<number>} id of user created.
+ * @returns {Promise.<number>} id of user inserted.
  */
 function addUser(user) {
     return new Promise((resolve, reject) => {
-        const query = "INSERT INTO users (fname, lname, email, password, address, type) VALUES (?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO users (fname, lname, email, password, address_id, type) VALUES (?, ?, ?, ?, ?, ?)";
 
-        user.password = hashSync(user.password, 10);
+        user.password = crypt.hashSync(user.password, 10);
 
         db.run(query, [
-            user.fname,
-            user.lname,
+            user.firstname,
+            user.lastname,
             user.email,
             user.password,
-            user.address,
+            user.address_id,
             Type.CUSTOMER], (err) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(user.id);
+                    resolve(this.lastID);
                 }
             });
     });
@@ -40,15 +40,15 @@ function addUser(user) {
  */
 function updateUser(user) {
     return new Promise((resolve, reject) => {
-        const query = "UPDATE users SET fname = ?, lname = ?, email = ?, password = ?, address = ?, type = ? WHERE id = ?";
-        user.password = hashSync(user.password, 10);
+        const query = "UPDATE users SET fname = ?, lname = ?, email = ?, password = ?, address_id = ?, type = ? WHERE id = ?";
+        user.password = crypt.hashSync(user.password, 10);
 
-        run(query, [
-            user.fname,
-            user.lname,
+        db.run(query, [
+            user.firstname,
+            user.lastname,
             user.email,
             user.password,
-            user.address,
+            user.address_id,
             user.type,
             user.id], (err) => {
                 if (err) {
@@ -69,7 +69,7 @@ function deleteUser(id) {
     return new Promise((resolve, reject) => {
         const query = "DELETE FROM users WHERE id = ?";
 
-        run(query, [id], (err) => {
+        db.run(query, [id], (err) => {
             if (err) {
                 reject(err);
             } else {
@@ -88,7 +88,7 @@ function findUserById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM users WHERE id = ?";
 
-        get(query, [id], (err, row) => {
+        db.get(query, [id], (err, row) => {
             if (err) {
                 reject(err);
             } else if (row === undefined) {
@@ -101,7 +101,7 @@ function findUserById(id) {
                     row.lname,
                     row.email,
                     undefined,
-                    row.address,
+                    row.address_id,
                     row.type);
 
                 resolve(user);
@@ -119,7 +119,7 @@ function findUserByEmail(email) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM users WHERE email = ?";
 
-        get(query, [email], (err, row) => {
+        db.get(query, [email], (err, row) => {
             if (err) {
                 reject(err);
             } else if (row === undefined) {
@@ -131,7 +131,7 @@ function findUserByEmail(email) {
                     row.lname,
                     row.email,
                     undefined,
-                    row.address,
+                    row.address_id,
                     row.type);
 
                 resolve(user);
@@ -150,16 +150,16 @@ function findUserByEmailAndPassword(email, password) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM users WHERE email = ?";
 
-        get(query, [email], (err, row) => {
+        db.get(query, [email], (err, row) => {
             if (err) {
                 reject(err);
             } else if (row === undefined) {
                 resolve({ error: "User not found" });
             } else {
                 // no need to add password to user object
-                const user = new User(row.id, row.fname, row.lname, row.email, undefined, row.address, row.type);
+                const user = new User(row.id, row.fname, row.lname, row.email, undefined, row.address_id, row.type);
 
-                const check = compareSync(password, row.password);
+                const check = crypt.compareSync(password, row.password);
 
                 resolve({ user, check });
             }

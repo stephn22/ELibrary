@@ -25,7 +25,7 @@ function addBook(book) {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(book.id);
+                    resolve(this.lastID);
                 }
             });
     });

@@ -23,7 +23,7 @@ function addReview(review) {
             if (err) {
                 reject(err);
             } else {
-                resolve(review.id);
+                resolve(this.lastID);
             }
         });
     });

@@ -1,89 +1,111 @@
 <%- include('authentication-header', {title}); -%>
-<!-- FIXME: scroll -->
+    <!-- FIXME: scroll -->
     <main class="form-signin">
 
-        <form method="POST" action="/register">
+        <form method="POST">
             <img class="mb-4" src="/images/icons/book_black_48d.svg" alt="book_black">
 
             <h1 class="h3 mb-3 fw-normal">Register</h1>
 
-            <div class="form-group">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="fname" placeholder="First Name" required>
-                    <label for="fname">First Name</label>
+            <% if(message.length> 0) { %>
+                <div class="alert alert-danger" role="alert">
+                    <% message.forEach(o=> { %>
+                        <% if (o.msg.startsWith("P")) {%>
+                            <p>
+                                <%= o.msg %>
+                            </p>
+                            <% }%>
+                                <% }); %>
                 </div>
-                <span class="text-danger" id="fname-validation"></span>
-            </div>
+                <% } %>
 
-            <div class="form-group">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="lname" placeholder="Last Name" required>
-                    <label for="lname">Last Name</label>
-                </div>
-                <span class="text-danger" id="lname-validation"></span>
-            </div>
-
-            <div class="form-group">
-                <div class="form-floating">
-                    <input type="email" class="form-control" id="signup-email" placeholder="name@example.com" required>
-                    <label for="signup-email">Email</label>
-                </div>
-                <span class="text-danger" id="signup-email-validation"></span>
-            </div>
-
-            <div class="form-group">
-                <div class="form-floating">
-                    <input type="password" class="form-control" id="signup-password" placeholder="Password" required>
-                    <label for="signup-password">Password</label>
-                </div>
-                <span class="text-danger" id="signup-password-validation"></span>
-            </div>
-
-            <div class="form-group">
-                <div class="form-floating">
-                    <input type="password" class="form-control" id="confirm-password" placeholder="Confirm Password"
-                        required>
-                    <label for="confirm-password">Confirm Password</label>
-                </div>
-                <span class="text-danger" id="confirm-password-validation"></span>
-            </div>
-
-            <div class="form-floating">
-                <input type="text" class="form-control" id="address-input" value="Click the button below to insert your location" placeholder="Street, Number, City, Postal Code..." disabled>
-                <label for="address-input">Address</label>
-                <span class="input-group-append">
-            </div>
-            <br />
-            <button class="btn btn-outline-dark" type="button" id="address-search" data-bs-toggle="modal" data-bs-target="#address-modal">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt"
-                    viewBox="0 0 16 16">
-                    <path
-                        d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z" />
-                    <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                </svg>
-            </button>
-
-            <div class="modal fade" aria-labelledby="address-modal-label" aria-hidden="true" id="address-modal">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="address-modal-label">Address</h5>
-                            <button type="button" id="close-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" name="fname" id="fname" placeholder="First Name"
+                                required>
+                            <label for="fname">First Name</label>
                         </div>
-                        <div class="modal-body">
-                            <p id="modal-text"></p>
-                            <small class="small text-muted">You can change it later in your profile</small>
+                        <span class="text-danger" id="fname-validation"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" name="lname" id="lname" placeholder="Last Name"
+                                required>
+                            <label for="lname">Last Name</label>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close-modal-btn">Close</button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="address-save-btn">Save</button>
+                        <span class="text-danger" id="lname-validation"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input type="email" class="form-control" name="email" id="signup-email"
+                                placeholder="name@example.com" required>
+                            <label for="signup-email">Email</label>
+                        </div>
+                        <span class="text-danger" id="signup-email-validation"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input type="password" class="form-control" name="password" id="signup-password"
+                                placeholder="Password" required>
+                            <label for="signup-password">Password</label>
+                        </div>
+                        <span class="text-danger" id="signup-password-validation"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input type="password" class="form-control" name="confirm-password" id="confirm-password"
+                                placeholder="Confirm Password" required>
+                            <label for="confirm-password">Confirm Password</label>
+                        </div>
+                        <span class="text-danger" id="confirm-password-validation"></span>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="address-input" name="address"
+                            value="Click the button below to insert your location"
+                            placeholder="Street, Number, City, Postal Code..." disabled>
+                        <label for="address-input">Address</label>
+                        <span class="input-group-append">
+                    </div>
+                    <br />
+                    <button class="btn btn-outline-dark" type="button" id="address-search" data-bs-toggle="modal"
+                        data-bs-target="#address-modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-geo-alt" viewBox="0 0 16 16">
+                            <path
+                                d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z" />
+                            <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                        </svg>
+                    </button>
+
+                    <div class="modal fade" aria-labelledby="address-modal-label" aria-hidden="true" id="address-modal">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="address-modal-label">Address</h5>
+                                    <button type="button" id="close-modal" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                </div>
+                                <div class="modal-body">
+                                    <p id="modal-text"></p>
+                                    <small class="small text-muted">You can change it later in your profile</small>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                        id="close-modal-btn">Close</button>
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                        id="address-save-btn">Save</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <button class="w-100 btn btn-lg btn-secondary" id="signup-btn" type="submit">Submit</button>
-            <p class="mt-5 mb-3 text-muted">&copy ELibrary - 2021</p>
+                    <button class="w-100 btn btn-lg btn-secondary" id="signup-btn" type="submit">Submit</button>
+                    <p class="mt-5 mb-3 text-muted">&copy ELibrary - 2021</p>
         </form>
     </main>
 

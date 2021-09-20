@@ -1,11 +1,13 @@
 "use strict";
 
 const express = require('express');
-const { check, validationResult } = require('express-validator');
+const { body, validationResult } = require('express-validator');
 const router = express.Router();
 const User = require('../entities/user');
+const Address = require('../entities/address');
 const userDao = require('../models/user-dao');
-const { urlencoded } = require('body-parser');
+const addressDao = require('../models/address-dao');
+const { urlencoded } = require('body-parser'); // TODO:
 
 router.get("/", (_req, res, _next) => {
     res.render("register", { title: "Register" });
@@ -13,19 +15,13 @@ router.get("/", (_req, res, _next) => {
 
 // server side validation
 router.post("/", [
-    check("fname").isLength({ min: 1, max: 50 }).exists().withMessage("Please enter a valid first name"),
-    check("lname").isLength({ min: 1, max: 50 }).exists().withMessage("Please enter a valid last name"),
-    check("signup-email").isEmail().exists()
-        .custom(async (email) => { // check if email is unique
-            const user = await userDao.findUserByEmail(email);
-
-            if (user) {
-                return Promise.reject("Email is already registered");
-            }
-        }).withMessage("Please enter a valid email address"),
-    check("signup-password").matches(/^.*(?=.{8,})(?=.*[\d])(?=.*[\W]).*$/).withMessage("Password must be at least 8 characters long and contain at least one number and one non-alphanumeric character"),
-    check("address-input").isLength({ min: 0, max: 50 })
-], (req, res) => {
+    body("fname").trim().matches(/^[a-zA-Z ]{1,50}$/).escape().withMessage("Please enter a valid first name"),
+    body("lname").trim().matches(/^[a-zA-Z ]{1,50}$/).escape().withMessage("Please enter a valid last name"),
+    body("email").trim().isEmail().escape().withMessage("Please enter a valid email address"),
+    body("password").matches(/^.*(?=.{8,})(?=.*[\d])(?=.*[\W]).*$/).escape().withMessage("Password must be at least 8 characters long and contain at least one number and one non-alphanumeric character"),
+    // TODO: confirm password?
+    body("address").trim().isLength(0, 50).escape().withMessage("Please enter a valid address"),
+], async (req, res) => {
     const errors = validationResult(req);
 
     if (errors.isEmpty()) {
@@ -33,15 +29,36 @@ router.post("/", [
             undefined,
             req.body.fname,
             req.body.lname,
-            req.body["signup-email"],
-            req.body["signup-password"],
-            req.body["address-input"]
+            req.body.email,
+            req.body.password,
+            undefined
         );
 
-        userDao.addUser(user);
+        // add the new user to the database
+        const userId = await userDao.addUser(user);
+
+        // TODO: logger
+
+        // if address was submitted, add it to the database
+        if (req.body.address != undefined) {
+            const address = new Address(
+                undefined,
+                userId,
+                req.body.address
+            );
+
+            const addressId = await addressDao.addAddress(address);
+            
+            // and associate it with the user
+            user.address_id = addressId;
+
+            await userDao.updateUser(user);
+        }
+
         res.render("login");
     } else {
-        // TODO: show errors
+        console.log(errors);
+        res.render("register", { title: "Register", message: errors.array() });
     }
 });
 

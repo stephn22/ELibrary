@@ -4,28 +4,28 @@ const db = require('../db.js');
 
 const Order = require('../entities/order');
 
-// TODO: customer can order more than one book?
+// TODO: customer can order more than one book_id?
 
 /**
  * Inserts a new order into the database.
  * @param {Order} order order to be inserted into database.
- * @returns {Promise.<Order>} id of order that was inserted.
+ * @returns {Promise.<number>} id of order that was inserted.
  */
 function addOrder(order) {
     return new Promise((resolve, reject) => {
-        const query = "INSERT INTO orders (customer_id, date, book, price, address, status) VALUES (?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO orders (customer_id, date, book_id, price, address_id, status) VALUES (?, ?, ?, ?, ?, ?)";
 
         db.run(query, [
             order.customer_id,
             order.date,
-            order.book,
+            order.book_id,
             order.price,
-            order.address,
+            order.address_id,
             order.status], (err, result) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(order.id);
+                    resolve(this.lastID);
                 }
             });
     });
@@ -38,12 +38,12 @@ function addOrder(order) {
  */
 function updateOrder(order) {
     return new Promise((resolve, reject) => {
-        const query = "UPDATE orders SET customer_id = ?, date = ?, book = ?, price = ?, address = ?, status = ? WHERE id = ?";
+        const query = "UPDATE orders SET customer_id = ?, date = ?, book_id = ?, price = ?, address_id = ?, status = ? WHERE id = ?";
 
         db.run(query, [
             order.customer_id,
             order.date,
-            order.book,
+            order.book_id,
             order.price,
             order.address_id,
             order.status,
@@ -96,7 +96,7 @@ function findOrderById(id) {
                     row.id, 
                     row.customer_id, 
                     row.date, 
-                    row.book, 
+                    row.book_id, 
                     row.price, 
                     row.address_id, 
                     row.status);
@@ -126,7 +126,7 @@ function findAllOrders() {
                         row.id, 
                         row.customer_id, 
                         row.date, 
-                        row.book, 
+                        row.book_id, 
                         row.price, 
                         row.address_id, 
                         row.status);

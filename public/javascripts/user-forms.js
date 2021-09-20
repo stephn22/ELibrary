@@ -94,8 +94,6 @@ if (signupEmail !== null && signupPwd !== null && confirmPwd !== null) {
     // on click of address button
     addressBtn.addEventListener("click", () => {
         if (navigator.geolocation) {
-            const reverseGeocode =
-
                 // get the user's current position (lng, lat)
                 navigator.geolocation.getCurrentPosition(reverseGeocode, geolocationError);
         }
@@ -111,12 +109,6 @@ if (signupEmail !== null && signupPwd !== null && confirmPwd !== null) {
     closeModal.addEventListener("click", () => {
         // reset input value
         addressInput.value = addressInputMsg;
-    });
-
-    signupBtn.addEventListener("click", () => {
-        confirmPwd.value = "";
-
-        // password is not hashed in client side, just in database
     });
 }
 
