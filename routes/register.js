@@ -8,6 +8,8 @@ const Address = require('../entities/address');
 const userDao = require('../models/user-dao');
 const addressDao = require('../models/address-dao');
 const { urlencoded } = require('body-parser'); // TODO:
+const logger = require('../util/logger');
+const { log } = require('debug/src/browser');
 
 router.get("/", (_req, res, _next) => {
     res.render("register", { title: "Register" });
@@ -36,8 +38,7 @@ router.post("/", [
 
         // add the new user to the database
         const userId = await userDao.addUser(user);
-
-        // TODO: logger
+        logger.logInfo(`New user created with id: ${userId}`);
 
         // if address was submitted, add it to the database
         if (req.body.address != undefined) {
@@ -48,16 +49,19 @@ router.post("/", [
             );
 
             const addressId = await addressDao.addAddress(address);
+            logger.logInfo(`New address created with id: ${addressId}`);
             
             // and associate it with the user
             user.address_id = addressId;
 
             await userDao.updateUser(user);
+            logger.logInfo(`Updated user with id: ${userId}`);
         }
 
         res.render("login");
     } else {
-        console.log(errors);
+        logger.logError(errors);
+
         res.render("register", { title: "Register", message: errors.array() });
     }
 });
