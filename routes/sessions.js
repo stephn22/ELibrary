@@ -27,7 +27,7 @@ router.post("/sessions", (req, res, next) => {
                 logger.logError(err);
                 return next(err);
             }
-            res.render("/", { user: user });
+            res.render("index", { user: user });
 
             logger.logInfo("User logged in successfully");
             // TODO: log user in user types etc
