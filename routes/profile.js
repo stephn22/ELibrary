@@ -3,8 +3,9 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res, _next) => {
-    res.render('index', { user: req.user });
+
+router.get("/", (req, res, next) => {
+    res.render("profile", { user: req.user });
 });
 
 module.exports = router;

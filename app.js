@@ -21,6 +21,7 @@ const cookieParser = require('cookie-parser');
 const indexRouter = require('./routes/index.js');
 const sessionsRouter = require('./routes/sessions.js');
 const regiserRouter = require('./routes/register.js');
+const profileRouter = require('./routes/profile.js');
 
 /************** SETUP *************/
 
@@ -105,6 +106,7 @@ const isLoggedIn = (req, res, next) => {
 app.use('/', sessionsRouter);
 app.use('/', indexRouter);
 app.use('/register', regiserRouter);
+app.use('/profile', isLoggedIn, profileRouter);
 
 // app.use('/', isLoggedIn, another routher);
 

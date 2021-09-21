@@ -110,6 +110,10 @@ if (signupEmail !== null && signupPwd !== null && confirmPwd !== null) {
         // reset input value
         addressInput.value = addressInputMsg;
     });
+
+    signupBtn.addEventListener("click", () => {
+        console.log(addressInput.value);
+    });
 }
 
 /************************** VALIDATION METHODS *****************************/
