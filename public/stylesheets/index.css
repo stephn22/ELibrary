@@ -55,6 +55,8 @@ h2 {
 
 .carousel-item {
     height: 32rem;
+    background: rgba(65, 117, 133, 0.22);
+    border-radius: 25px;
 }
 
 .carousel-item > img {
@@ -161,6 +163,12 @@ h2 {
 
 #footer-text {
     font-family: 'Roboto Light', sans-serif;
+}
+
+#row-featurette-books {
+    background: rgba(65, 117, 133, 0.22);
+    border-radius: 25px;
+    padding: 1rem;
 }
 
 #search {
