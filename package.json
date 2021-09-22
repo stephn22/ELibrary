@@ -4,7 +4,7 @@
   "description": "Web Project",
   "main": "node ./bin/www",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./bin/www"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,6 @@
     "nodemon": "^2.0.12",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^4.2.0"
   }
 }
