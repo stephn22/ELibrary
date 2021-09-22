@@ -67,6 +67,8 @@ h2 {
     height: 32rem;
 }
 
+/* TODO: arrow icons */
+
 .form-control-dark {
     color: #fff;
     background-color: var(--bs-dark);
@@ -104,6 +106,12 @@ h2 {
 
 .social-link {
     text-decoration: none;
+}
+
+.background-effect {
+    background: rgba(65, 117, 133, 0.22);
+    border-radius: 25px;
+    padding: 1rem;
 }
 
 .featurette-divider {
@@ -163,12 +171,6 @@ h2 {
 
 #footer-text {
     font-family: 'Roboto Light', sans-serif;
-}
-
-#row-featurette-books {
-    background: rgba(65, 117, 133, 0.22);
-    border-radius: 25px;
-    padding: 1rem;
 }
 
 #search {

@@ -2,30 +2,28 @@
     <!-- FIXME: scroll -->
     <main class="form-signin">
 
+        <% if (message.length> 0) { %>
+            <div class="alert alert-primary" role="alert">
+                <p>
+                    <%= message %>
+                </p>
+            </div>
+        <% } %>
+
+        <% if (errors.length > 0) { %>
+            <div class="alert alert-danger" role="alert">
+                <% if (Array.isArray(errors)) { %>
+                    <% errors.forEach((error) => { %>
+                        <p> <%= error.msg %> </p>
+                    <% }); %>
+                <% } else { %>
+                    <p> <%= errors %> </p>
+                <% } %>
+            </div>    
+        <% } %>   
+
         <form method="POST">
-            <img class="mb-4" src="/images/icons/book_black_48d.svg" alt="book_black">
-
             <h1 class="h3 mb-3 fw-normal">Register</h1>
-
-            <% if (message.length> 0) { %>
-                <div class="alert alert-primary" role="alert">
-                    <p>
-                        <%= message %>
-                    </p>
-                </div>
-            <% } %>
-
-            <% if (errors.length > 0) { %>
-                <div class="alert alert-danger" role="alert">
-                    <% if (Array.isArray(errors)) { %>
-                        <% errors.forEach((error) => { %>
-                            <p> <%= error.msg %> </p>
-                        <% }); %>
-                    <% } else { %>
-                        <p> <%= errors %> </p>
-                    <% } %>
-                </div>    
-            <% } %>   
 
                     <div class="form-group">
                         <div class="form-floating">
