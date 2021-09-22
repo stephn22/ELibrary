@@ -96,6 +96,10 @@ body {
     user-select: none;
   }
 
+  .nav-link {
+    text-decoration: none;
+  }
+
   @media (min-width: 768px) {
     .bd-placeholder-img-lg {
       font-size: 3.5rem;
