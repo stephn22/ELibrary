@@ -67,7 +67,18 @@ h2 {
     height: 32rem;
 }
 
-/* TODO: arrow icons */
+.carousel-text {
+    transition: 0.3s;
+}
+
+.carousel-text:hover {
+    color: black;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(100%);
+}
 
 .form-control-dark {
     color: #fff;
