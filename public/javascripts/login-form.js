@@ -14,7 +14,7 @@ const remember = document.getElementById("remember-me");
 
 /************************** EVENT LISTENERS *****************************/
 
-const valid = true;
+let valid = true;
 
 // check email as input changes
 loginEmail.addEventListener("input", () => {

@@ -28,7 +28,7 @@ const confirmPwdValidation = document.getElementById("confirm-password-validatio
 
 /************************** EVENT LISTENERS *****************************/
 
-const valid = true;
+let valid = true;
 
 // Check first name as input changes
 fname.addEventListener("input", () => {
