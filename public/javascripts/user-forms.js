@@ -37,7 +37,7 @@ if (signupEmail !== null && signupPwd !== null && confirmPwd !== null) {
     // Check first name as input changes
     fname.addEventListener("input", () => {
         if (!validatePersonName(fname.value)) {
-            fnameValidation.innerHTML = "Please enter a valid first name";
+            setValidationMessage(fnameValidation, "Please enter a valid first name");
             disableBtn(signupBtn);
         } else {
             clearValidationMsg(fnameValidation);
@@ -48,7 +48,7 @@ if (signupEmail !== null && signupPwd !== null && confirmPwd !== null) {
     // Check last name as input changes
     lname.addEventListener("input", () => {
         if (!validatePersonName(lname.value)) {
-            lnameValidation.innerHTML = "Please enter a valid last name";
+            setValidationMessage(lnameValidation, "Please enter a valid last name");
             disableBtn(signupBtn);
         } else {
             clearValidationMsg(lnameValidation);
@@ -59,7 +59,7 @@ if (signupEmail !== null && signupPwd !== null && confirmPwd !== null) {
     // Check email as input changes
     signupEmail.addEventListener("input", () => {
         if (!validateEmail(signupEmail.value)) {
-            signupEmailValidation.innerHTML = "This is an invalid email address";
+            setValidationMessage(signupEmailValidation, "Please enter a valid email address");
             disableBtn(signupBtn);
 
         } else {
@@ -71,7 +71,7 @@ if (signupEmail !== null && signupPwd !== null && confirmPwd !== null) {
     // Check password as input changes
     signupPwd.addEventListener("input", () => {
         if (!validatePassword(signupPwd.value)) {
-            signupPwdValidation.innerHTML = "Password must be at least 8 characters long, must contain at least one digit and one special character";
+            setValidationMessage(signupPwdValidation, "Password must be at least 8 characters long, must contain at least one digit and one special character");
             disableBtn(signupBtn);
         } else {
             clearValidationMsg(signupPwdValidation);
@@ -82,7 +82,7 @@ if (signupEmail !== null && signupPwd !== null && confirmPwd !== null) {
     // Check confirm pwd as input changes
     confirmPwd.addEventListener("input", () => {
         if (!validatePasswordAndConfirm(signupPwd.value, confirmPwd.value)) {
-            confirmPwdValidation.innerHTML = "Password and confirm password must be the same.";
+            setValidationMessage(confirmPwdValidation, "Password and confirm password must be the same.");
             disableBtn(signupBtn);
 
         } else {
@@ -162,6 +162,15 @@ function validatePassword(password) {
  */
 function validatePasswordAndConfirm(password, confirmPwd) {
     return password === confirmPwd;
+}
+
+/**
+ * Sets the validation message for the given element
+ * @param {HTMLElement} element 
+ * @param {string} message 
+ */
+function setValidationMessage(element, message) {
+    element.innerHTML = message;
 }
 
 /**

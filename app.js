@@ -33,9 +33,9 @@ app.set("view engine", "ejs");
 // default variables for views
 app.use((_req, _res, next) => {
     app.locals.moment = moment;
-    app.locals.title = '';
-    app.locals.message = '';
-    app.locals.errors = [];
+    app.locals.title = ''; // title of page
+    app.locals.message = ''; // info message
+    app.locals.errors = []; // error messages
     app.locals.active = '';
     next();
 });

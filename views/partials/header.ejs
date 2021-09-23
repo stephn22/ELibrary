@@ -17,7 +17,13 @@
     <link href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap" rel="stylesheet">
 
-    <link href="/stylesheets/index.css" rel="stylesheet">
+    <!-- custom styles -->
+
+    <% if (typeof styles !== "undefined") { %>
+        <% styles.forEach((style) => { %>
+            <link href="<%= style %>" rel="stylesheet" type="text/css">
+        <% }); %>
+    <% } %>
 
     <link rel="icon" href="/images/icons/favicon.svg">
 
