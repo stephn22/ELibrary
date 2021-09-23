@@ -1,5 +1,5 @@
-<%- include('authentication-header', {title}); -%>
-    <!-- FIXME: scroll -->
+<%- include('partials/header', {title}); -%>
+
     <main class="form-signin">
 
         <% if (message.length> 0) { %>
@@ -114,4 +114,4 @@
         </form>
     </main>
 
-    <%- include('footer-alt'); -%>
+<%- include('partials/footer-alt'); -%>

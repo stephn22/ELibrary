@@ -2,7 +2,6 @@
 
 /************************** CONSTANTS *****************************/
 
-const loginBtn = document.getElementById("login-btn");
 const signupBtn = document.getElementById("signup-btn");
 
 // modal
@@ -27,94 +26,103 @@ const signupPwdValidation = document.getElementById("signup-password-validation"
 const confirmPwd = document.getElementById("confirm-password");
 const confirmPwdValidation = document.getElementById("confirm-password-validation");
 
-const remember = document.getElementById("remember-me");
-
 /************************** EVENT LISTENERS *****************************/
 
-// signup page
-if (signupEmail !== null && signupPwd !== null && confirmPwd !== null) {
+const valid = true;
 
-    // Check first name as input changes
-    fname.addEventListener("input", () => {
-        if (!validatePersonName(fname.value)) {
-            setValidationMessage(fnameValidation, "Please enter a valid first name");
-            disableBtn(signupBtn);
-        } else {
-            clearValidationMsg(fnameValidation);
-            enableBtn(signupBtn);
-        }
-    });
+// Check first name as input changes
+fname.addEventListener("input", () => {
+    if (!validatePersonName(fname.value)) {
+        setValidationMessage(fnameValidation, "Please enter a valid first name");
+        disableBtn(signupBtn);
+        valid = false;
+    } else {
+        clearValidationMsg(fnameValidation);
+        enableBtn(signupBtn);
+        valid = true;
+    }
+});
 
-    // Check last name as input changes
-    lname.addEventListener("input", () => {
-        if (!validatePersonName(lname.value)) {
-            setValidationMessage(lnameValidation, "Please enter a valid last name");
-            disableBtn(signupBtn);
-        } else {
-            clearValidationMsg(lnameValidation);
-            enableBtn(signupBtn);
-        }
-    });
+// Check last name as input changes
+lname.addEventListener("input", () => {
+    if (!validatePersonName(lname.value)) {
+        setValidationMessage(lnameValidation, "Please enter a valid last name");
+        disableBtn(signupBtn);
+        valid = false;
+    } else {
+        clearValidationMsg(lnameValidation);
+        enableBtn(signupBtn);
+        valid = true;
+    }
+});
 
-    // Check email as input changes
-    signupEmail.addEventListener("input", () => {
-        if (!validateEmail(signupEmail.value)) {
-            setValidationMessage(signupEmailValidation, "Please enter a valid email address");
-            disableBtn(signupBtn);
+// Check email as input changes
+signupEmail.addEventListener("input", () => {
+    if (!validateEmail(signupEmail.value)) {
+        setValidationMessage(signupEmailValidation, "Please enter a valid email address");
+        disableBtn(signupBtn);
+        valid = false;
 
-        } else {
-            clearValidationMsg(signupEmailValidation);
-            enableBtn(signupBtn);
-        }
-    });
+    } else {
+        clearValidationMsg(signupEmailValidation);
+        enableBtn(signupBtn);
+        valid = true;
+    }
+});
 
-    // Check password as input changes
-    signupPwd.addEventListener("input", () => {
-        if (!validatePassword(signupPwd.value)) {
-            setValidationMessage(signupPwdValidation, "Password must be at least 8 characters long, must contain at least one digit and one special character");
-            disableBtn(signupBtn);
-        } else {
-            clearValidationMsg(signupPwdValidation);
-            enableBtn(signupBtn);
-        }
-    });
+// Check password as input changes
+signupPwd.addEventListener("input", () => {
+    if (!validatePassword(signupPwd.value)) {
+        setValidationMessage(signupPwdValidation, "Password must be at least 8 characters long, must contain at least one digit and one special character");
+        disableBtn(signupBtn);
+        valid = false;
+    } else {
+        clearValidationMsg(signupPwdValidation);
+        enableBtn(signupBtn);
+        valid = true;
+    }
+});
 
-    // Check confirm pwd as input changes
-    confirmPwd.addEventListener("input", () => {
-        if (!validatePasswordAndConfirm(signupPwd.value, confirmPwd.value)) {
-            setValidationMessage(confirmPwdValidation, "Password and confirm password must be the same.");
-            disableBtn(signupBtn);
+// Check confirm pwd as input changes
+confirmPwd.addEventListener("input", () => {
+    if (!validatePasswordAndConfirm(signupPwd.value, confirmPwd.value)) {
+        setValidationMessage(confirmPwdValidation, "Password and confirm password must be the same.");
+        disableBtn(signupBtn);
+        valid = false;
 
-        } else {
-            clearValidationMsg(confirmPwdValidation);
-            enableBtn(signupBtn);
-        }
-    });
+    } else {
+        clearValidationMsg(confirmPwdValidation);
+        enableBtn(signupBtn);
+        valid = true;
+    }
+});
 
-    // on click of address button
-    addressBtn.addEventListener("click", () => {
-        if (navigator.geolocation) {
-                // get the user's current position (lng, lat)
-                navigator.geolocation.getCurrentPosition(reverseGeocode, geolocationError);
-        }
-    });
+// on click of address button
+addressBtn.addEventListener("click", () => {
+    if (navigator.geolocation) {
+        // get the user's current position (lng, lat)
+        navigator.geolocation.getCurrentPosition(reverseGeocode, geolocationError);
+    }
+});
 
-    // on click of close modal button
-    closeModalBtn.addEventListener("click", () => {
-        // reset input value
-        addressInput.value = addressInputMsg;
-    });
+// on click of close modal button
+closeModalBtn.addEventListener("click", () => {
+    // reset input value
+    addressInput.value = addressInputMsg;
+});
 
-    // on click of close modal icon (button)
-    closeModal.addEventListener("click", () => {
-        // reset input value
-        addressInput.value = addressInputMsg;
-    });
+// on click of close modal icon (button)
+closeModal.addEventListener("click", () => {
+    // reset input value
+    addressInput.value = addressInputMsg;
+});
 
-    signupBtn.addEventListener("click", () => {
-        console.log(addressInput.value);
-    });
-}
+signupBtn.addEventListener("submit", (e) => {
+    if (!valid) {
+        e.preventDefault();
+    }
+});
+
 
 /************************** VALIDATION METHODS *****************************/
 

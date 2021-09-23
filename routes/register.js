@@ -11,7 +11,9 @@ const { urlencoded } = require('body-parser'); // TODO:
 const logger = require('../util/logger');
 
 router.get("/", (_req, res, _next) => {
-    res.render("register", { title: "Register" });
+    res.render("register", { title: "Register", styles: [
+        'stylesheets/forms.css'
+    ], scripts: ['javascripts/register-form.js'] });
 });
 
 // server side validation
@@ -67,9 +69,13 @@ router.post("/", [
             logger.logInfo(`Updated user with id: ${userId}`);
         }
 
-        res.render("login", { title: "Login", message: "Successfully registered" });
+        res.render("login", { title: "Login", message: "Successfully registered", styles: [
+            'stylesheets/forms.css'
+        ], scripts: ['javascripts/login-form.js'] });
     } else {
-        res.render("register", { title: "Register", errors: errors.array() });
+        res.render("register", { title: "Register", errors: errors.array(), styles: [
+            'stylesheets/forms.css'
+        ], scripts: ['javascripts/register-form.js'] });
     }
 });
 

@@ -34,6 +34,12 @@
 
     <script defer src="/javascripts/logout.js" type="text/javascript"></script>    
 
+    <% if (typeof scripts !== "undefined") { %>
+        <% scripts.forEach((script) => { %>
+            <script defer src="<%= script %>" type="text/javascript"></script>
+        <% }); %>
+    <% } %>
+
     <title>
         <%= title ? `ELibrary - ${title}` : 'ELibrary' %>
     </title>
