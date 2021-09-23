@@ -19,11 +19,11 @@ function addReview(review) {
             review.book_id,
             review.text,
             review.rating
-        ], (err) => {
+        ], (err, result) => {
             if (err) {
                 reject(err);
             } else {
-                resolve(this.lastID);
+                resolve(result.lastID);
             }
         });
     });

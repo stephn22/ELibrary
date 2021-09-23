@@ -21,11 +21,11 @@ function addBook(book) {
             book.datePub, 
             book.description, 
             book.imgUrl, 
-            book.price], (err) => {
+            book.price], (err, result) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(this.lastID);
+                    resolve(result.lastID);
                 }
             });
     });

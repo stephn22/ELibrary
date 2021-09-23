@@ -25,7 +25,7 @@ function addOrder(order) {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(this.lastID);
+                    resolve(result.lastID);
                 }
             });
     });

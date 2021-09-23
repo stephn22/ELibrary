@@ -23,11 +23,11 @@ function addUser(user) {
             user.email,
             user.password,
             user.address_id,
-            Type.CUSTOMER], (err) => {
+            Type.CUSTOMER], (err, result) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(this.lastID);
+                    resolve(result.lastID);
                 }
             });
     });
