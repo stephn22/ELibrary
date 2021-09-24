@@ -2,6 +2,9 @@
 
 const db = require('../db.js');
 
+const userDao = require('../models/user-dao');
+const addressDao = require('../models/address-dao');
+
 const Order = require('../entities/order');
 
 // TODO: customer can order more than one book_id?
@@ -25,7 +28,7 @@ function addOrder(order) {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(this.lastID);
+                    resolve(this.lastID); // FIXME: this.lastID is undefined
                 }
             });
     });
@@ -101,6 +104,13 @@ function findOrderById(id) {
                     row.address_id, 
                     row.status);
 
+                // fill properties with relative objects
+                const user = await userDao.findUserById(row.customer_id);
+                const address = await addressDao.findAddressById(row.address_id);
+
+                order.customer = user;
+                order.address = address;
+
                 resolve(order);
             }
         });
@@ -130,6 +140,13 @@ function findAllOrders() {
                         row.price, 
                         row.address_id, 
                         row.status);
+
+                    // fill properties with relative objects
+                    let user = await userDao.findUserById(row.customer_id);
+                    let address = await addressDao.findAddressById(row.address_id);
+
+                    order.customer = user;
+                    order.address = address;
 
                     orders.push(order);
                 });

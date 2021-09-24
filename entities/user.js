@@ -23,6 +23,7 @@ class User extends baseEntity {
         this.email = email;
         this.password = password;
         this.address_id = address_id;
+        this.address = undefined;
         this.type = type;
     }
 }

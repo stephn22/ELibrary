@@ -7,7 +7,6 @@ const baseEntity = require('./baseEntity');
 class Address extends baseEntity {
 
     /**
-     * 
      * @param {number} id if of the address
      * @param {number} customer_id id of the customer
      * @param {string} placename information about the address (street, city, state, zipcode, etc.)
@@ -15,6 +14,7 @@ class Address extends baseEntity {
     constructor (id, customer_id, placename) {
         super(id);
         this.customer_id = customer_id;
+        this.customer = undefined;
         this.placename = placename;
     }
 }

@@ -2,6 +2,8 @@
 
 const db = require('../db');
 
+const userDao = require('../models/user-dao');
+
 const Address = require('../entities/address');
 
 /**
@@ -17,7 +19,7 @@ function addAddress(address) {
             if (err) {
                 reject(err);
             } else {
-                resolve(this.lastID);
+                resolve(this.lastID); // FIXME: this.lastID is undefined
             }
         });
     });
@@ -76,8 +78,20 @@ function findAddressById(id) {
         db.get(query, id, (err, row) => {
             if (err) {
                 reject(err);
+            } else if (row === undefined) {
+                reject({ error: "Address not found" });
             } else {
-                resolve(row);
+                const address = new Address(
+                    row.id,
+                    row.customer_id,
+                    row.placename);
+
+                const user = await userDao.findUserById(row.customer_id);
+
+                // fill the customer property of address
+                address.customer = user;
+
+                resolve(address);
             }
         });
     });
@@ -95,8 +109,20 @@ function findAddressByCustomerId(customer_id) {
         db.get(query, customer_id, (err, row) => {
             if (err) {
                 reject(err);
+            } else if (row === undefined) {
+                reject({ error: "Address not found" });
             } else {
-                resolve(row);
+                const address = new Address(
+                    row.id,
+                    row.customer_id,
+                    row.placename);
+
+                const user = userDao.findUserById(row.customer_id);
+
+                // fill the customer property of address
+                address.customer = user;
+
+                resolve(address);
             }
         });
     });

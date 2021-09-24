@@ -19,10 +19,13 @@ class Order extends baseEntity {
     constructor (id, customer_id, date, book_id, price, address_id, status) {
         super(id);
         this.customer_id = customer_id;
+        this.customer = undefined;
         this.date = date;
         this.book_id = book_id;
+        this.book = undefined;
         this.price = price;
         this.address_id = address_id;
+        this.address = undefined;
         this.status = status;
     }
 }

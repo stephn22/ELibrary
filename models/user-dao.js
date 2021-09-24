@@ -28,7 +28,7 @@ function addUser(user) {
                     reject(err);
                 } else {
                     console.log(JSON.stringify(this));
-                    resolve(this.lastID);
+                    resolve(this.lastID); // FIXME: this.lastID is undefined
                 }
             });
     });

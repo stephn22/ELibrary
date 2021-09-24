@@ -23,7 +23,7 @@ function addReview(review) {
             if (err) {
                 reject(err);
             } else {
-                resolve(this.lastID);
+                resolve(this.lastID); // FIXME: this.lastID is undefined
             }
         });
     });

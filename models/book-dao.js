@@ -11,21 +11,25 @@ const Book = require('../entities/book');
  */
 function addBook(book) {
     return new Promise((resolve, reject) => {
-        const query = "INSERT INTO books (title, author_id, isbn, publisher, datePub, description, imgUrl, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO books (title, author_id, isbn, type, stock, language, pages, publisher, datePub, description, imgUrl, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         db.run(query, [
-            book.title, 
-            book.author_id, 
-            book.isbn, 
-            book.publisher, 
-            book.datePub, 
-            book.description, 
-            book.imgUrl, 
+            book.title,
+            book.author_id,
+            book.isbn,
+            book.type,
+            book.stock,
+            book.language,
+            book.pages,
+            book.publisher,
+            book.datePub,
+            book.description,
+            book.imgUrl,
             book.price], (err) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(this.lastID);
+                    resolve(this.lastID); // FIXME: this.lastID is undefined
                 }
             });
     });
@@ -38,12 +42,16 @@ function addBook(book) {
  */
 function updateBook(book) {
     return new Promise((resolve, reject) => {
-        const query = "UPDATE books SET title = ?, author = ?, isbn = ?, publisher = ?, datePub = ?, description = ?, imgUrl = ?, price = ? WHERE id = ?";
+        const query = "UPDATE books SET title = ?, author = ?, isbn = ?, type = ?, stock = ?, language = ?, pages = ?, publisher = ?, datePub = ?, description = ?, imgUrl = ?, price = ? WHERE id = ?";
 
         db.run(query, [
             book.title,
             book.author,
             book.isbn,
+            book.type,
+            book.stock,
+            book.language,
+            book.pages,
             book.publisher,
             book.datePub,
             book.description,
@@ -94,15 +102,22 @@ function findBookById(id) {
                 resolve({ error: "No such book" });
             } else {
                 const book = new Book(
-                    row.id, 
-                    row.title, 
-                    row.author_id, 
-                    row.isbn, 
-                    row.publisher, 
-                    row.datePub, 
-                    row.description, 
-                    row.imgUrl, 
+                    row.id,
+                    row.title,
+                    row.author_id,
+                    row.isbn,
+                    row.type,
+                    row.stock,
+                    row.language,
+                    row.pages,
+                    row.publisher,
+                    row.datePub,
+                    row.description,
+                    row.imgUrl,
                     row.price);
+
+                // fill properties
+                // TODO: fill author
 
                 resolve(book);
             }
@@ -129,6 +144,10 @@ function findAllBooks() {
                 row.title,
                 row.author_id,
                 row.isbn,
+                row.type,
+                row.stock,
+                row.language,
+                row.pages,
                 row.publisher,
                 row.datePub,
                 row.description,

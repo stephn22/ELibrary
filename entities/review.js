@@ -18,8 +18,10 @@ class Review extends baseEntity {
     constructor (id, customer_id, date, book_id, text, rating) {
         super(id);
         this.customer_id = customer_id;
+        this.customer = undefined;
         this.date = date;
         this.book_id = book_id;
+        this.book = undefined;
         this.text = text;
         this.rating = rating;
     }
