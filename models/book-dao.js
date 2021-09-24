@@ -136,25 +136,26 @@ function findAllBooks() {
         db.all(query, (err, rows) => {
             if (err) {
                 reject(err);
-                return;
+            } else if (rows.length === 0) {
+                resolve({ error: "No books found" });
+            } else {
+                const books = rows.map(row => (new Book(
+                    row.id,
+                    row.title,
+                    row.author_id,
+                    row.isbn,
+                    row.type,
+                    row.stock,
+                    row.language,
+                    row.pages,
+                    row.publisher,
+                    row.datePub,
+                    row.description,
+                    row.imgUrl,
+                    row.price)));
+
+                resolve(books);
             }
-
-            const books = rows.map(row => (new Book(
-                row.id,
-                row.title,
-                row.author_id,
-                row.isbn,
-                row.type,
-                row.stock,
-                row.language,
-                row.pages,
-                row.publisher,
-                row.datePub,
-                row.description,
-                row.imgUrl,
-                row.price)));
-
-            resolve(books);
         });
     });
 }

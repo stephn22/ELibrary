@@ -30,7 +30,7 @@ router.post("/", [
         }
     }),
     body("password").matches(/^.*(?=.{8,})(?=.*[\d])(?=.*[\W]).*$/).escape().withMessage("Password must be at least 8 characters long and contain at least one number and one non-alphanumeric character"),
-    // TODO: confirm password?
+    body("confirm-password").escape().equals(body("password")).withMessage("Passwords do not match"),
     body("address").trim().isLength(0, 50).escape().withMessage("Please enter a valid address"),
 ], async (req, res) => {
     const errors = validationResult(req);
@@ -44,8 +44,6 @@ router.post("/", [
             req.body.password,
             undefined
         );
-
-        // FIXME: address undefined
 
         // add the new user to the database
         let userId = await userDao.addUser(user);

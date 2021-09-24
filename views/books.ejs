@@ -1,60 +1,138 @@
 <%- include('partials/header', { title: "Books" , active: "books" }); %>
 
     <main>
+
+        <% if (message.length > 0) { %>
+            <div class="alert alert-primary" role="alert">
+                <p>
+                    <%= message %>
+                </p>
+            </div>
+        <% } %>
+
+        <% if (errors.length > 0) { %>
+            <div class="alert alert-danger" role="alert">
+                <% if (Array.isArray(errors)) { %>
+                    <% errors.forEach((error) => { %>
+                        <p> <%= error.msg %> </p>
+                    <% }); %>
+                <% } else { %>
+                    <p> <%= errors %> </p>
+                <% } %>
+            </div>    
+        <% } %>
+
         <h1>Books catalog</h1>
-
-
 
         <div class="container">
 
             <hr class="divider">
 
+            <% if (typeof user !== "undefined") { %>
+                <% if (user.type === "admin") { %>
+                    <button class="btn btn-primary" id="add-book" type="button" data-bs-toggle="modal" data-bs-target="add-book-modal">Add</button>
+                    <!-- Modal -->
+
+                    <div class="modal fade show" id="add-book-modal" aria-labelledby="add-book-modal-title" aria-modal="true" role="dialog">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="add-book-modal-title">Add book</h5>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <!-- Form -->
+
+                                <form method="POST" action="/books">
+                                    <div class="modal-body">
+                                        <div lass="form-group">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="title" name="title" placeholder="Book Title">
+                                                <label for="title">Title</label>
+                                            </div>
+                                            <span class="text-danger" id="title-validation"></span>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">
+                                            Add
+                                        </button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                <% } %>
+            <% } %>    
+
             <!-- TODO: book image for each one -->
 
             <div class="row">
-                <div class="card text-center">
 
+                <% if (typeof books !== "undefined") { %>
 
-                    <div class="card-img-top">
-                        <img src="/images/icons/book_black_48d.svg" width=100 height=100>
-                    </div>
+                    <% if (books.length > 0) { %>
 
-                    <div class="card-body">
-                        <h5 class="card-title">Book name</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Book type</h6>
-                        <p class="card-text">
+                        <% books.forEach((book) => { %>
+                            <div class="card">
+    
+                                <div class="card-img-top">
+                                    <!-- TODO: book image -->
+                                </div>
+            
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= book.title %></h5>
+                                    <h6 class="card-subtitle mb-2 text-muted"><%= book.type %></h6>
+                                    <p class="card-text"><%= book.description %></p>
+                                    <p class="card-text text-muted">Type: <%= book.type %></p>
+                                    <% if (book.type !== "ebook") { %> 
+                                        <p class="card-text text-muted">In stock: <%= book.stock %></p>
+                                    <% } %>
+                                    <p class="card-text">Price: <%= book.price %></p>
+                                    <p class="card-text text-muted">Language: <%= book.language %></p>
+                                    <p class="card-text text-muted">Publisher: <%= book.publisher %></p>
+                                    <p class="card-text text-muted">Author: <%= book.author %></p>
+                                    <p class="card-text text-muted">ISBN: <%= book.isbn %></p>
+                                    <p class="card-text text-muted">Pages: <%= book.pages %></p>
+                                    <p class="card-text text-muted">Date published: <%= book.datePub %></p>
+            
+                                    <button class="btn btn-outline-dark" type="button" data-bs-toggle="modal" title="Add to cart"
+                                        data-bs-target="#addToCartModal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                            class="bi bi-cart-plus" viewBox="0 0 16 16">
+                                            <path
+                                                d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z" />
+                                            <path
+                                                d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                                        </svg>
+                                    </button>
+            
+                                    <button class="btn btn-outline-dark" type="button" title="Add to favourites">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                            class="bi bi-bookmark-star" viewBox="0 0 16 16">
+                                            <path
+                                                d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z" />
+                                            <path
+                                                d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        <% }); %>
 
-                            Some description about the book.
+                    <% } else { %>
+                        <div class="alert alert-info" role="alert">
+                            There are no books at the moment.
+                        </div>
+                    <% } %>
+                    
+                <% } %>
 
-
-                            Quantity: 2
-
-                        </p>
-
-                        <button class="btn btn-outline-dark" type="button" data-bs-toggle="modal" title="Add to cart"
-                            data-bs-target="#addToCartModal">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-cart-plus" viewBox="0 0 16 16">
-                                <path
-                                    d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z" />
-                                <path
-                                    d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                            </svg>
-                        </button>
-
-                        <button class="btn btn-outline-dark" type="button" title="Add to favourites">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-bookmark-star" viewBox="0 0 16 16">
-                                <path
-                                    d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z" />
-                                <path
-                                    d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
     </main>
 
-    <%- include('partials/footer'); -%>
+<%- include('partials/footer'); -%>

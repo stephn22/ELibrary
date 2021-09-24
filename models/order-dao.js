@@ -89,19 +89,19 @@ function findOrderById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM orders WHERE id = ?";
 
-        db.get(query, [id], (err, row) => {
+        db.get(query, [id], async (err, row) => {
             if (err) {
                 reject(err);
             } else if (row === undefined) {
                 resolve({ error: "Order not found" });
             } else {
                 const order = new Order(
-                    row.id, 
-                    row.customer_id, 
-                    row.date, 
-                    row.book_id, 
-                    row.price, 
-                    row.address_id, 
+                    row.id,
+                    row.customer_id,
+                    row.date,
+                    row.book_id,
+                    row.price,
+                    row.address_id,
                     row.status);
 
                 // fill properties with relative objects
@@ -125,20 +125,23 @@ function findAllOrders() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM orders";
 
-        db.all(query, (err, rows) => {
+        db.all(query, async (err, rows) => {
             if (err) {
                 reject(err);
-            } else {
+            } else if (rows.length === 0) {
+                resolve({ error: "No orders found" });
+            }
+            else {
                 const orders = [];
 
                 rows.forEach((row) => {
                     const order = new Order(
-                        row.id, 
-                        row.customer_id, 
-                        row.date, 
-                        row.book_id, 
-                        row.price, 
-                        row.address_id, 
+                        row.id,
+                        row.customer_id,
+                        row.date,
+                        row.book_id,
+                        row.price,
+                        row.address_id,
                         row.status);
 
                     // fill properties with relative objects

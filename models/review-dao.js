@@ -2,6 +2,9 @@
 
 const db = require('../db.js');
 
+const userDao = require('../models/user-dao');
+const bookDao = require('../models/book-dao');
+
 const Review = require('../entities/review');
 
 /**
@@ -83,7 +86,7 @@ function findReviewById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM reviews WHERE id = ?";
 
-        db.get(query, [id], (err, row) => {
+        db.get(query, [id], async (err, row) => {
             if (err) {
                 reject(err);
             } else if (row === undefined) {
@@ -96,6 +99,13 @@ function findReviewById(id) {
                     row.book_id,
                     row.text,
                     row.rating);
+
+                const user = await userDao.findUserById(row.customer_id);
+                const book = await bookDao.findBookById(row.book_id);
+
+                // fill properties of review
+                review.customer = user;
+                review.book = book;
 
                 resolve(review);
             }
@@ -126,6 +136,13 @@ function findReviewByCustomerId(customer_id) {
                     row.text,
                     row.rating);
 
+                const user = await userDao.findUserById(row.customer_id);
+                const book = await bookDao.findBookById(row.book_id);
+
+                // fill properties of review
+                review.customer = user;
+                review.book = book;
+
                 resolve(review);
             }
         });
@@ -154,6 +171,13 @@ function findAllReviews() {
                         row.book_id,
                         row.text,
                         row.rating);
+
+                    let user = await userDao.findUserById(row.customer_id);
+                    let book = await bookDao.findBookById(row.book_id);
+
+                    // fill properties of review
+                    review.customer = user;
+                    review.book = book;
 
                     reviews.push(review);
                 });

@@ -75,7 +75,7 @@ function findAddressById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM addresses WHERE id = ?";
 
-        db.get(query, id, (err, row) => {
+        db.get(query, id, async (err, row) => {
             if (err) {
                 reject(err);
             } else if (row === undefined) {
@@ -106,7 +106,7 @@ function findAddressByCustomerId(customer_id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM addresses WHERE customer_id = ?";
 
-        db.get(query, customer_id, (err, row) => {
+        db.get(query, customer_id, async (err, row) => {
             if (err) {
                 reject(err);
             } else if (row === undefined) {
@@ -117,7 +117,7 @@ function findAddressByCustomerId(customer_id) {
                     row.customer_id,
                     row.placename);
 
-                const user = userDao.findUserById(row.customer_id);
+                const user = await userDao.findUserById(row.customer_id);
 
                 // fill the customer property of address
                 address.customer = user;
