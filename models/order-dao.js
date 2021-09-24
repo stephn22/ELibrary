@@ -21,11 +21,11 @@ function addOrder(order) {
             order.book_id,
             order.price,
             order.address_id,
-            order.status], (err, result) => {
+            order.status], (err) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(result.lastID);
+                    resolve(this.lastID);
                 }
             });
     });
