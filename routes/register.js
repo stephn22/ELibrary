@@ -48,7 +48,7 @@ router.post("/", [
         // FIXME: address undefined
 
         // add the new user to the database
-        const userId = await userDao.addUser(user);
+        let userId = await userDao.addUser(user);
         logger.logInfo(`New user created with id: ${userId}`);
 
         // if address was submitted, add it to the database
@@ -65,7 +65,7 @@ router.post("/", [
             // and associate it with the user
             user.address_id = addressId;
 
-            await userDao.updateUser(user);
+            userId = await userDao.updateUser(user);
             logger.logInfo(`Updated user with id: ${userId}`);
         }
 

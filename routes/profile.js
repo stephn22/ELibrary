@@ -15,7 +15,7 @@ router.get("/", (req, res, _next) => {
     });
 });
 
-router.post("/profile/update-email", [
+router.post("/update-email", [
     body('new-email').trim().isEmail().withMessage("Please enter a valid email").escape()
 ], async (req, res, _next) => {
     const errors = validationResult(req);

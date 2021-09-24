@@ -1,0 +1,62 @@
+body {
+    padding-top: 3.5rem;
+    padding-bottom: 3rem;
+    color: #5a5a5a;
+    -ms-overflow-style: none;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+h1 {
+    color: #5a5a5a;
+    font-family: 'Roboto Light', sans-serif;
+    margin: 2rem;
+}
+
+body {
+    padding-top: 3.5rem;
+    padding-bottom: 3rem;
+    color: #5a5a5a;
+    -ms-overflow-style: none;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+.card {
+    background: rgba(65, 117, 133, 0.22);
+    border-radius: 15px;
+    width: 18rem;
+    margin: 1rem;
+}
+
+.container {
+    margin-right: .75rem;
+    margin-left: .75rem;
+}
+
+.divider {
+    margin: 5rem 0;
+}
+
+.social {
+    width: 25px;
+    height: 25px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.social-link {
+    text-decoration: none;
+}
+
+#footer-text {
+    font-family: 'Roboto Light', sans-serif;
+}

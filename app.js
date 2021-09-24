@@ -22,6 +22,7 @@ const indexRouter = require('./routes/index.js');
 const sessionsRouter = require('./routes/sessions.js');
 const regiserRouter = require('./routes/register.js');
 const profileRouter = require('./routes/profile.js');
+const booksRouter = require('./routes/books.js');
 
 /************** SETUP *************/
 
@@ -107,6 +108,7 @@ app.use('/', sessionsRouter);
 app.use('/', indexRouter);
 app.use('/register', regiserRouter);
 app.use('/profile', isLoggedIn, profileRouter);
+app.use('/books', booksRouter);
 
 // app.use('/', isLoggedIn, another routher);
 
