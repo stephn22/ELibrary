@@ -42,7 +42,7 @@ loginPassword.addEventListener("input", () => {
     }
 });
 
-loginBtn.addEventListener("submit", (e) => {
+loginBtn.addEventListener("click", (e) => {
     if (!valid) {
         e.preventDefault();
     }

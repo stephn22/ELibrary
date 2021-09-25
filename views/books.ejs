@@ -1,138 +1,280 @@
 <%- include('partials/header', { title: "Books" , active: "books" }); %>
 
-    <main>
-
-        <% if (message.length > 0) { %>
-            <div class="alert alert-primary" role="alert">
-                <p>
-                    <%= message %>
-                </p>
-            </div>
+<main>
+    
+    <% if (message.length> 0) { %>
+        <div class="alert alert-primary" role="alert">
+            <p>
+                <%= message %>
+            </p>
+        </div>
         <% } %>
-
-        <% if (errors.length > 0) { %>
+        
+        <% if (errors.length> 0) { %>
             <div class="alert alert-danger" role="alert">
                 <% if (Array.isArray(errors)) { %>
-                    <% errors.forEach((error) => { %>
-                        <p> <%= error.msg %> </p>
-                    <% }); %>
-                <% } else { %>
-                    <p> <%= errors %> </p>
-                <% } %>
-            </div>    
-        <% } %>
-
-        <h1>Books catalog</h1>
-
-        <div class="container">
-
-            <hr class="divider">
-
-            <% if (typeof user !== "undefined") { %>
-                <% if (user.type === "admin") { %>
-                    <button class="btn btn-primary" id="add-book" type="button" data-bs-toggle="modal" data-bs-target="add-book-modal">Add</button>
-                    <!-- Modal -->
-
-                    <div class="modal fade show" id="add-book-modal" aria-labelledby="add-book-modal-title" aria-modal="true" role="dialog">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="add-book-modal-title">Add book</h5>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-
-                                <!-- Form -->
-
-                                <form method="POST" action="/books">
-                                    <div class="modal-body">
-                                        <div lass="form-group">
-                                            <div class="form-floating">
-                                                <input type="text" class="form-control" id="title" name="title" placeholder="Book Title">
-                                                <label for="title">Title</label>
+                    <% errors.forEach((error)=> { %>
+                        <p>
+                            <%= error.msg %>
+                        </p>
+                        <% }); %>
+                        <% } else { %>
+                            <p>
+                                <%= errors %>
+                            </p>
+                            <% } %>
+                        </div>
+                        <% } %>
+                        
+                        <h1>Books catalog</h1>
+                        
+                        <div class="container">
+                            
+                            <hr class="divider">
+                            
+                            <% if (typeof user !=="undefined" ) { %>
+                                <% if (user.type==="admin" ) { %>
+                                    <button class="btn btn-primary" id="add-book" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#add-book-modal">Add</button>
+                                    <!-- Modal -->
+                                    
+                                    <div class="modal fade show" id="add-book-modal"
+                                    aria-labelledby="add-book-modal-title" aria-modal="true" role="dialog">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="add-book-modal-title">Add a new book</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                             </div>
-                                            <span class="text-danger" id="title-validation"></span>
+                                            
+                                            <!-- Form -->
+                                            
+                                            <form method="POST" action="/books">
+                                                <div class="modal-body">
+
+                                                    <!-- TODO: image input -->
+                                                    
+                                                    <div class="form-group">
+                                                        <div class="form-floating">
+                                                            <input type="text" class="form-control" id="title"
+                                                            name="title" placeholder="Book Title" required>
+                                                            <label for="title">Title</label>
+                                                        </div>
+                                                        <span class="text-danger" id="title-validation"></span>
+                                                    </div>
+
+                                                    <br />
+
+                                                    <div class="form-group">
+                                                        <div class="form-floating">
+                                                            <input type="text" class="form-control" id="author"
+                                                            name="author" placeholder="Book Author" required>
+                                                            <label for="author">Author</label>
+                                                        </div>
+                                                        <span class="text-danger" id="author-validation"></span>
+                                                    </div>
+
+                                                    <br />
+
+                                                    <div class="form-group">
+                                                        <div class="form-floating">
+                                                            <input type="text" class="form-control" id="isbn"
+                                                            name="isbn" placeholder="Book ISBN" required>
+                                                            <label for="isbn">ISBN</label>
+                                                        </div>
+                                                        <span class="text-danger" id="isbn-validation"></span>
+                                                    </div>
+
+                                                    <br />
+
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="paper"
+                                                        id="paper">
+                                                        <label class="form-check-label" for="paper">
+                                                            Paper
+                                                        </label>
+                                                    </div>
+                                                
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="ebook"
+                                                        id="ebook" checked>
+                                                        <label class="form-check-label" for="ebook">
+                                                            EBook
+                                                        </label>
+                                                    </div>
+
+                                                    <br />
+
+                                                    <div class="form-group">
+                                                        <label for="stock-range" class="form-label" id="stock-range-label">In stock: 1</label>
+                                                        <input type="range" name="stock" class="form-range" min="1" max="300" step="1" value="1" id="stock-range" required>
+                                                    </div>
+
+                                                    <br />
+                                                    
+                                                    <%- include('partials/languages') -%>
+
+                                                    <br/>
+                                                    
+                                                    <div class="form-group">
+                                                        <div class="form-floating">
+                                                            <input type="text" class="form-control" id="publisher"
+                                                            name="publisher" placeholder="Book Publisher" required>
+                                                            <label for="publisher">Publisher</label>
+                                                        </div>
+                                                        <span class="text-danger" id="publisher-validation"></span>
+                                                    </div>
+
+                                                    <br/>
+
+                                                    <div class="form-group">
+                                                        <label for="pages-range" class="form-label" id="pages-range-label">Pages: 1</label>
+                                                        <input type="range" name="pages" class="form-range" min="1" max="10000" step="1" value="1" id="pages-range" required>
+                                                    </div>
+
+                                                    <br />
+
+                                                    <div class="form-group">
+                                                        <div class="form-floating">
+                                                            <input type="date" class="form-control" id="date-published"
+                                                            name="date-published" placeholder="Date Published" required>
+                                                            <label for="date-published">Date Published</label>
+                                                        </div>
+                                                        <span class="text-danger" id="date-published-validation"></span>
+                                                    </div>
+
+                                                    <br />
+
+                                                    <div class="form-group">
+                                                        <label for="description" class="form-label" id="description-label">Book Description</label>
+                                                        <textarea class="form-control" name="description" id="description" rows="3" maxlength="250" required></textarea>
+                                                        <span class="text-danger" id="description-validation"></span>
+                                                    </div>
+
+                                                    <br />
+
+                                                    <div class="form-group">
+                                                        <div class="form-floating">
+                                                            <input type="number" class="form-control" id="price"
+                                                            name="price" placeholder="Book Price" required>
+                                                            <label for="price">Price</label>
+                                                        </div>
+                                                        <span class="text-danger" id="price-validation"></span>
+                                                    </div>
+                                                    
+                                                    
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary" id="save">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+                                                            <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+                                                          </svg>
+                                                        Save
+                                                    </button>
+                                                </div>
+                                            </form>
+                                            
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">
-                                            Add
-                                        </button>
-                                    </div>
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-
-                <% } %>
-            <% } %>    
-
-            <!-- TODO: book image for each one -->
-
-            <div class="row">
-
-                <% if (typeof books !== "undefined") { %>
-
-                    <% if (books.length > 0) { %>
-
-                        <% books.forEach((book) => { %>
-                            <div class="card">
-    
-                                <div class="card-img-top">
-                                    <!-- TODO: book image -->
                                 </div>
-            
-                                <div class="card-body">
-                                    <h5 class="card-title"><%= book.title %></h5>
-                                    <h6 class="card-subtitle mb-2 text-muted"><%= book.type %></h6>
-                                    <p class="card-text"><%= book.description %></p>
-                                    <p class="card-text text-muted">Type: <%= book.type %></p>
-                                    <% if (book.type !== "ebook") { %> 
-                                        <p class="card-text text-muted">In stock: <%= book.stock %></p>
-                                    <% } %>
-                                    <p class="card-text">Price: <%= book.price %></p>
-                                    <p class="card-text text-muted">Language: <%= book.language %></p>
-                                    <p class="card-text text-muted">Publisher: <%= book.publisher %></p>
-                                    <p class="card-text text-muted">Author: <%= book.author %></p>
-                                    <p class="card-text text-muted">ISBN: <%= book.isbn %></p>
-                                    <p class="card-text text-muted">Pages: <%= book.pages %></p>
-                                    <p class="card-text text-muted">Date published: <%= book.datePub %></p>
-            
-                                    <button class="btn btn-outline-dark" type="button" data-bs-toggle="modal" title="Add to cart"
-                                        data-bs-target="#addToCartModal">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                            class="bi bi-cart-plus" viewBox="0 0 16 16">
-                                            <path
-                                                d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z" />
-                                            <path
-                                                d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                                        </svg>
-                                    </button>
-            
-                                    <button class="btn btn-outline-dark" type="button" title="Add to favourites">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                            class="bi bi-bookmark-star" viewBox="0 0 16 16">
-                                            <path
-                                                d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z" />
-                                            <path
-                                                d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
-                                        </svg>
+                                
+                                <% } %>
+                                <% } %>
+                                
+                                <div class="row">
+                                    
+                                    <% if (typeof books !=="undefined" ) { %>
+                                        
+                                        <% if (books.length> 0) { %>
+                                            
+                                            <% books.forEach((book)=> { %>
+                                                <div class="card">
+                                                    
+                                                    <div class="card-img-top">
+                                                        <!-- TODO: book image -->
+                                                    </div>
+                                                    
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">
+                                                            <%= book.title %>
+                                                        </h5>
+                                                        <h6 class="card-subtitle mb-2 text-muted">
+                                                            <%= book.type %>
+                                                        </h6>
+                                                        <p class="card-text">
+                                                            <%= book.description %>
+                                                        </p>
+                                                        <p class="card-text text-muted">Type: <%= book.type
+                                                            %>
+                                                        </p>
+                                                        <% if (book.type !=="ebook" ) { %>
+                                                            <p class="card-text text-muted">In stock: <%=
+                                                                book.stock %>
+                                                            </p>
+                                                            <% } %>
+                                                            <p class="card-text">Price: <%= book.price
+                                                                %>
+                                                            </p>
+                                                            <p class="card-text text-muted">Language:
+                                                                <%= book.language %>
+                                                            </p>
+                                                            <p class="card-text text-muted">Publisher:
+                                                                <%= book.publisher %>
+                                                            </p>
+                                                            <p class="card-text text-muted">Author: <%=
+                                                                book.author %>
+                                                            </p>
+                                                            <p class="card-text text-muted">ISBN: <%=
+                                                                book.isbn %>
+                                                            </p>
+                                                            <p class="card-text text-muted">Pages: <%=
+                                                                book.pages %>
+                                                            </p>
+                                                            <p class="card-text text-muted">Date
+                                                                published: <%= book.datePub %>
+                                                            </p>
+                                                            
+                                                            <button class="btn btn-outline-dark"
+                                                            type="button" data-bs-toggle="modal"
+                                                            title="Add to cart"
+                                                            data-bs-target="#addToCartModal">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                            width="16" height="16"
+                                                            fill="currentColor"
+                                                            class="bi bi-cart-plus"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                            d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z" />
+                                                            <path
+                                                            d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                                                        </svg>
+                                                    </button>
+                                                    
+                                                    <button class="btn btn-outline-dark"
+                                                    type="button" title="Add to favourites">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                    width="16" height="16"
+                                                    fill="currentColor"
+                                                    class="bi bi-bookmark-star"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                    d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z" />
+                                                    <path
+                                                    d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
+                                                </svg>
                                     </button>
                                 </div>
                             </div>
                         <% }); %>
-
-                    <% } else { %>
-                        <div class="alert alert-info" role="alert">
-                            There are no books at the moment.
-                        </div>
+                                    
                     <% } %>
-                    
                 <% } %>
-
+                                    
             </div>
         </div>
     </main>
-
+                        
 <%- include('partials/footer'); -%>

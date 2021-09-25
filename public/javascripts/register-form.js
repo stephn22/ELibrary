@@ -117,7 +117,7 @@ closeModal.addEventListener("click", () => {
     addressInput.value = addressInputMsg;
 });
 
-signupBtn.addEventListener("submit", (e) => {
+signupBtn.addEventListener("click", (e) => {
     if (!valid) {
         e.preventDefault();
     }

@@ -47,7 +47,7 @@ router.post("/", [
 
         // add the new user to the database
         let userId = await userDao.addUser(user);
-        logger.logInfo(`New user created with id: ${userId}`);
+        logger.logInfo(`New user added with id: ${userId}`);
 
         // if address was submitted, add it to the database
         if (req.body.address != undefined) {
@@ -58,7 +58,7 @@ router.post("/", [
             );
 
             const addressId = await addressDao.addAddress(address);
-            logger.logInfo(`New address created with id: ${addressId}`);
+            logger.logInfo(`New address added with id: ${addressId}`);
             
             // and associate it with the user
             user.address_id = addressId;
