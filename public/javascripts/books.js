@@ -39,7 +39,8 @@ const saveBtn = document.getElementById('save');
 
 /************************** EVENT LISTENERS *****************************/
 
-let valid = true;
+if (title && author && isbn && paper && ebook && publisher && stockRange && pagesRange && datePublished && description && price && saveBtn) {
+    let valid = true;
 
 title.addEventListener('input', () => {
     if (!validateTitle(title.value)) {
@@ -67,7 +68,7 @@ author.addEventListener('input', () => {
 
 isbn.addEventListener('input', () => {
     if (!validateISBN(isbn.value)) {
-        setValidationMessage(isbnValidation, "Please enter a valid ISBN, must be between 1 and 100 characters");
+        setValidationMessage(isbnValidation, "Please enter a valid ISBN");
         disableBtn(saveBtn);
         valid = false;
     } else {
@@ -148,6 +149,7 @@ saveBtn.addEventListener('click', (e) => {
         e.preventDefault();
     }
 });
+}
 
 /************************** VALIDATION METHODS *****************************/
 

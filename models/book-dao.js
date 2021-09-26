@@ -11,7 +11,7 @@ const Book = require('../entities/book');
  */
 function addBook(book) {
     return new Promise((resolve, reject) => {
-        const query = "INSERT INTO books (title, author_id, isbn, type, stock, language, pages, publisher, datePub, description, imgUrl, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO books (title, author_id, isbn, type, stock, language, pages, publisher, datePub, description, imgUrl, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         db.run(query, [
             book.title,

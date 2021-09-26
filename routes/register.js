@@ -11,9 +11,11 @@ const { urlencoded } = require('body-parser'); // TODO:
 const logger = require('../util/logger');
 
 router.get("/", (_req, res, _next) => {
-    res.render("register", { title: "Register", styles: [
-        'stylesheets/forms.css'
-    ], scripts: ['javascripts/register-form.js'] });
+    res.render("register", {
+        title: "Register", styles: [
+            'stylesheets/forms.css'
+        ], scripts: ['javascripts/register-form.js']
+    });
 });
 
 // server side validation
@@ -21,14 +23,14 @@ router.post("/", [
     body("fname").trim().matches(/^[a-zA-Z ]{1,50}$/).escape().withMessage("Please enter a valid first name"),
     body("lname").trim().matches(/^[a-zA-Z ]{1,50}$/).escape().withMessage("Please enter a valid last name"),
     body("email").trim().isEmail().withMessage("Please enter a valid email").escape()
-    .custom(async email => {
-        const user = await userDao.findUserByEmail(email);
+        .custom(async email => {
+            const user = await userDao.findUserByEmail(email);
 
-        if (!user.hasOwnProperty("error")) { // if findUserByEmail finds a user and not the error "user not found";
-            logger.logDebug(`User already exists with email ${email}`);
-            throw new Error("Email is already registered");
-        }
-    }),
+            if (!user.hasOwnProperty("error")) { // if findUserByEmail finds a user and not the error "user not found";
+                logger.logDebug(`User already exists with email ${email}`);
+                throw new Error("Email is already registered");
+            }
+        }),
     body("password").matches(/^.*(?=.{8,})(?=.*[\d])(?=.*[\W]).*$/).escape().withMessage("Password must be at least 8 characters long and contain at least one number and one non-alphanumeric character"),
     body("confirm-password").escape().equals(body("password")).withMessage("Passwords do not match"),
     body("address").trim().isLength(0, 50).escape().withMessage("Please enter a valid address"),
@@ -59,7 +61,7 @@ router.post("/", [
 
             const addressId = await addressDao.addAddress(address);
             logger.logInfo(`New address added with id: ${addressId}`);
-            
+
             // and associate it with the user
             user.address_id = addressId;
 
@@ -67,13 +69,17 @@ router.post("/", [
             logger.logInfo(`Updated user with id: ${userId}`);
         }
 
-        res.render("login", { title: "Login", message: "Successfully registered", styles: [
-            'stylesheets/forms.css'
-        ], scripts: ['javascripts/login-form.js'] });
+        res.render("login", {
+            title: "Login", message: "Successfully registered", styles: [
+                'stylesheets/forms.css'
+            ], scripts: ['javascripts/login-form.js']
+        });
     } else {
-        res.render("register", { title: "Register", errors: errors.array(), styles: [
-            'stylesheets/forms.css'
-        ], scripts: ['javascripts/register-form.js'] });
+        res.render("register", {
+            title: "Register", errors: errors.array(), styles: [
+                'stylesheets/forms.css'
+            ], scripts: ['javascripts/register-form.js']
+        });
     }
 });
 
