@@ -16,7 +16,7 @@ const logger = require('../util/logger');
  */
 function addOrder(order) {
     return new Promise((resolve, reject) => {
-        const query = "INSERT INTO orders (customer_id, date, book_id, price, address_id, status) VALUES (?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO orders (customer_id, date, book_id, price, address_id, status, type) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         db.run(query, [
             order.customer_id,
@@ -24,7 +24,8 @@ function addOrder(order) {
             order.book_id,
             order.price,
             order.address_id,
-            order.status], (err) => {
+            order.status,
+            order.type], (err) => {
                 if (err) {
                     logger.logError(err);
                     reject(err);
@@ -42,7 +43,7 @@ function addOrder(order) {
  */
 function updateOrder(order) {
     return new Promise((resolve, reject) => {
-        const query = "UPDATE orders SET customer_id = ?, date = ?, book_id = ?, price = ?, address_id = ?, status = ? WHERE id = ?";
+        const query = "UPDATE orders SET customer_id = ?, date = ?, book_id = ?, price = ?, address_id = ?, status = ?, type = ?, WHERE id = ?";
 
         db.run(query, [
             order.customer_id,
@@ -51,6 +52,7 @@ function updateOrder(order) {
             order.price,
             order.address_id,
             order.status,
+            order.type,
             order.id
         ], (err) => {
             if (err) {
@@ -107,7 +109,8 @@ function findOrderById(id) {
                     row.book_id,
                     row.price,
                     row.address_id,
-                    row.status);
+                    row.status,
+                    row.type);
 
                 // fill properties with relative objects
                 const user = await userDao.findUserById(row.customer_id);
@@ -214,4 +217,4 @@ function findAllOrders() {
     });
 }
 
-module.exports = { addOrder, updateOrder, deleteOrder, findOrderById, findAllOrders };
+module.exports = { addOrder, updateOrder, deleteOrder, findOrderById, findOrdersByCustomerId, findAllOrders };
