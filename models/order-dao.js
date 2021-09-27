@@ -134,17 +134,17 @@ function findOrdersByCustomerId(customerId) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM orders WHERE customer_id = ?";
 
-        db.run(query, [customerId], async (err, rows) => {
+        db.run(query, [customerId], (err, rows) => {
             if (err) {
                 logger.logError(err);
                 reject(err);
-            } else if (rows.length === 0) {
+            } else if (rows === undefined) {
                 logger.logWarn(`No orders for customer with id: ${customerId}`);
                 resolve({ error: "No orders found" });
             } else {
                 const orders = [];
 
-                rows.forEach((row) => {
+                rows.forEach(async (row) => {
                     const order = new Order(
                         row.id,
                         row.customer_id,
@@ -180,18 +180,18 @@ function findAllOrders() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM orders";
 
-        db.all(query, async (err, rows) => {
+        db.all(query, (err, rows) => {
             if (err) {
                 logger.logError(err);
                 reject(err);
-            } else if (rows.length === 0) {
+            } else if (rows === undefined) {
                 logger.logWarn("No orders found");
                 resolve({ error: "No orders found" });
             }
             else {
                 const orders = [];
 
-                rows.forEach((row) => {
+                rows.forEach(async (row) => {
                     const order = new Order(
                         row.id,
                         row.customer_id,

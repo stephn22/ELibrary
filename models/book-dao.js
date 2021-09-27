@@ -145,11 +145,11 @@ function findAllBooks() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM books";
 
-        db.all(query, async (err, rows) => {
+        db.all(query, (err, rows) => {
             if (err) {
                 logger.logError(err);
                 reject(err);
-            } else if (rows.length === 0) {
+            } else if (rows === undefined) {
                 logger.logWarn("No books found");
                 resolve({ error: "No books found" });
             } else {

@@ -101,7 +101,7 @@ function findAuthorsByName(name) {
             if (err) {
                 logger.logError(err);
                 reject(err);
-            } else if (rows.length === 0) {
+            } else if (rows === undefined) {
                 logger.logWarn(`No authors found with name ${name}`);
                 resolve({ error: "No authors found" });
             } else {
@@ -124,7 +124,7 @@ function findAllAuthors() {
             if (err) {
                 logger.logError(err);
                 reject(err);
-            } else if (rows.length === 0) {
+            } else if (rows === undefined) {
                 logger.logWarn("No authors found");
                 resolve({ error: "No authors found" });
             } else {

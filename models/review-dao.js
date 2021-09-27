@@ -118,38 +118,43 @@ function findReviewById(id) {
 }
 
 /**
- * Find review by customer id.
- * @param {number} customer_id id of customer that made the review
- * @returns {Promise<Review>} review.
+ * Find all reviews of a customer.
+ * @param {number} customer_id id of customer that made the review/s
+ * @returns {Promise<Review[]>} reviews of the customer.
  */
-function findReviewByCustomerId(customer_id) {
+function findReviewsByCustomerId(customer_id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM reviews WHERE customer_id = ?";
 
-        db.get(query, [customer_id], (err, row) => {
+        db.all(query, [customer_id], (err, rows) => {
             if (err) {
                 logger.logError(err);
                 reject(err);
-            } else if (row === undefined) {
-                logger.logWarn(`No such review with customer id: ${customer_id}`);
-                resolve({ error: "Review not found" });
+            } else if (rows === undefined) {
+                logger.logWarn(`No such reviews with customer id: ${customer_id}`);
+                resolve({ error: "No such reviews with that customer id" });
             } else {
-                const review = new Review(
-                    row.id,
-                    row.customer_id,
-                    new Date(row.date).toDateString(),
-                    row.book_id,
-                    row.text,
-                    row.rating);
+                const reviews = [];
 
-                const user = await userDao.findUserById(row.customer_id);
-                const book = await bookDao.findBookById(row.book_id);
+                rows.forEach(async (row) => {
+                    const review = new Review(
+                        row.id,
+                        row.customer_id,
+                        new Date(row.date).toDateString(),
+                        row.book_id,
+                        row.text,
+                        row.rating);
 
-                // fill properties of review
-                review.customer = user;
-                review.book = book;
+                    let user = await userDao.findUserById(row.customer_id);
+                    let book = await bookDao.findBookById(row.book_id);
 
-                resolve(review);
+                    review.customer = user;
+                    review.book = book;
+
+                    reviews.push(review);
+                });
+
+                resolve(reviews);
             }
         });
     });
@@ -167,13 +172,13 @@ function findAllReviews() {
             if (err) {
                 logger.logError(err);
                 reject(err);
-            } else if (rows.length === 0) {
+            } else if (rows === undefined) {
                 logger.logWarn("No reviews found");
                 resolve({ error: "No reviews found" });
             } else {
                 const reviews = [];
 
-                rows.forEach((row) => {
+                rows.forEach(async (row) => {
                     const review = new Review(
                         row.id,
                         row.customer_id,
@@ -198,4 +203,4 @@ function findAllReviews() {
     });
 }
 
-module.exports = { addReview, updateReview, deleteReview, findReviewById, findReviewByCustomerId, findAllReviews };
+module.exports = { addReview, updateReview, deleteReview, findReviewById, findReviewsByCustomerId, findAllReviews };

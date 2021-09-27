@@ -32,12 +32,16 @@ router.post("/", [
             }
         }),
     body("password").matches(/^.*(?=.{8,})(?=.*[\d])(?=.*[\W]).*$/).escape().withMessage("Password must be at least 8 characters long and contain at least one number and one non-alphanumeric character"),
-    body("confirm-password").escape().equals(body("password")).withMessage("Passwords do not match"),
     body("address").trim().isLength(0, 50).escape().withMessage("Please enter a valid address"),
 ], async (req, res) => {
     const errors = validationResult(req);
 
     if (errors.isEmpty()) {
+
+        if (req.body['confirm-password'] !== req.body.password) {
+            throw new Error("Passwords do not match");
+        }
+
         const user = new User(
             undefined,
             req.body.fname,
@@ -75,6 +79,8 @@ router.post("/", [
             ], scripts: ['javascripts/login-form.js']
         });
     } else {
+        logger.logError(JSON.stringify(errors));
+
         res.render("register", {
             title: "Register", errors: errors.array(), styles: [
                 'stylesheets/forms.css'

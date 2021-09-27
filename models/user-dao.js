@@ -12,10 +12,10 @@ const logger = require('../util/logger');
  * @returns {Promise<number>} id of user inserted.
  */
 function addUser(user) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         const query = "INSERT INTO users (fname, lname, email, password, address_id, type) VALUES (?, ?, ?, ?, ?, ?)";
 
-        user.password = crypt.hashSync(user.password, 10);
+        user.password = await crypt.hash(user.password, 10);
 
         db.run(query, [
             user.firstname,
@@ -41,9 +41,9 @@ function addUser(user) {
  * @returns {Promise<number>} id of updated user.
  */
 function updateUser(user) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         const query = "UPDATE users SET fname = ?, lname = ?, email = ?, password = ?, address_id = ?, type = ? WHERE id = ?";
-        user.password = crypt.hashSync(user.password, 10);
+        user.password = await crypt.hash(user.password, 10);
 
         db.run(query, [
             user.firstname,
@@ -158,7 +158,7 @@ function findUserByEmailAndPassword(email, password) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM users WHERE email = ?";
 
-        db.get(query, [email], (err, row) => {
+        db.get(query, [email], async (err, row) => {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -169,7 +169,7 @@ function findUserByEmailAndPassword(email, password) {
                 // no need to add password to user object
                 const user = new User(row.id, row.fname, row.lname, row.email, undefined, row.address_id, row.type);
 
-                const check = crypt.compareSync(password, row.password);
+                const check = await crypt.compare(password, row.password);
 
                 resolve({ user, check });
             }
