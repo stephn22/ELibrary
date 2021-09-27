@@ -1,4 +1,6 @@
+const Author = require('./author');
 const baseEntity = require('./baseEntity');
+const Publisher = require('./publisher');
 
 /**
  * @class Book represents a book entity.
@@ -11,18 +13,20 @@ class Book extends baseEntity {
      * @param {number} id id of the book
      * @param {string} title title of the book
      * @param {number} author_id id of the author that wrote the book
+     * @param {Author} author entity of the author that wrote the book
      * @param {string} isbn isbn of the book
      * @param {string} type type of the book (paper, ebook)
      * @param {number} stock stock of the book
      * @param {string} language language of the book
      * @param {number} pages pages of the book
-     * @param {string} publisher entity that published the book
+     * @param {number} publisher_id id of the publisher of the book
+     * @param {Publisher} publisher entity of the publisher of the book
      * @param {Date} datePub publication date of the book
      * @param {string} description brief description of the book
      * @param {Blob} imgUrl represent image of the book
      * @param {number} price price of the book
      */
-    constructor (id, title, author_id, isbn, type, stock, language, pages, publisher, datePub, description, imgUrl, price) {
+    constructor (id, title, author_id, isbn, type, stock, language, pages, publisher_id, datePub, description, imgUrl, price) {
         super(id);
         this.title = title;
         this.author_id = author_id;
@@ -32,7 +36,8 @@ class Book extends baseEntity {
         this.stock = stock;
         this.language = language;
         this.pages = pages;
-        this.publisher = publisher;
+        this.publisher_id = publisher_id;
+        this.publisher = undefined;
         this.datePub = datePub;
         this.description = description;
         this.imgUrl = imgUrl;

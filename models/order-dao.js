@@ -1,18 +1,17 @@
 "use strict";
 
 const db = require('../db.js');
-
 const userDao = require('../models/user-dao');
 const addressDao = require('../models/address-dao');
-
 const Order = require('../entities/order');
+const logger = require('../util/logger');
 
-// TODO: customer can order more than one book_id?
+// TODO: customer can order more than one book?
 
 /**
  * Inserts a new order into the database.
  * @param {Order} order order to be inserted into database.
- * @returns {Promise.<number>} id of order that was inserted.
+ * @returns {Promise<number>} id of order that was inserted.
  */
 function addOrder(order) {
     return new Promise((resolve, reject) => {
@@ -20,12 +19,13 @@ function addOrder(order) {
 
         db.run(query, [
             order.customer_id,
-            order.date,
+            new Date(order.date).getTime(),
             order.book_id,
             order.price,
             order.address_id,
             order.status], (err) => {
                 if (err) {
+                    logger.logError(err);
                     reject(err);
                 } else {
                     resolve(this.lastID); // FIXME: this.lastID is undefined
@@ -37,7 +37,7 @@ function addOrder(order) {
 /**
  * Update an existing order in the database.
  * @param {Order} order order to be updated in database.
- * @returns {Promise.<number>} id of updated order.
+ * @returns {Promise<number>} id of updated order.
  */
 function updateOrder(order) {
     return new Promise((resolve, reject) => {
@@ -45,7 +45,7 @@ function updateOrder(order) {
 
         db.run(query, [
             order.customer_id,
-            order.date,
+            new Date(order.date).getTime(),
             order.book_id,
             order.price,
             order.address_id,
@@ -53,6 +53,7 @@ function updateOrder(order) {
             order.id
         ], (err) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else {
                 resolve(order.id);
@@ -64,7 +65,7 @@ function updateOrder(order) {
 /**
  * Delete an existing order from the database.
  * @param {number} id id of order to be deleted.
- * @returns {Promise.<number>} id of deleted order.
+ * @returns {Promise<number>} id of deleted order.
  */
 function deleteOrder(id) {
     return new Promise((resolve, reject) => {
@@ -72,6 +73,7 @@ function deleteOrder(id) {
 
         db.run(query, [id], (err) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else {
                 resolve(id);
@@ -83,7 +85,7 @@ function deleteOrder(id) {
 /**
  * Find an order by id.
  * @param {number} id id of order.
- * @returns {Promise.<number>} order.
+ * @returns {Promise<number>} order.
  */
 function findOrderById(id) {
     return new Promise((resolve, reject) => {
@@ -91,14 +93,16 @@ function findOrderById(id) {
 
         db.get(query, [id], async (err, row) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else if (row === undefined) {
+                logger.logWarn(`No such order with id: ${id}`);
                 resolve({ error: "Order not found" });
             } else {
                 const order = new Order(
                     row.id,
                     row.customer_id,
-                    row.date,
+                    new Date(row.date).toDateString(),
                     row.book_id,
                     row.price,
                     row.address_id,
@@ -119,7 +123,7 @@ function findOrderById(id) {
 
 /**
  * Returns all orders in database as array.
- * @returns {Promise.<Order[]>} array of orders.
+ * @returns {Promise<Order[]>} array of orders.
  */
 function findAllOrders() {
     return new Promise((resolve, reject) => {
@@ -127,8 +131,10 @@ function findAllOrders() {
 
         db.all(query, async (err, rows) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else if (rows.length === 0) {
+                logger.logWarn("No orders found");
                 resolve({ error: "No orders found" });
             }
             else {
@@ -138,7 +144,7 @@ function findAllOrders() {
                     const order = new Order(
                         row.id,
                         row.customer_id,
-                        row.date,
+                        new Date(row.date).toDateString(),
                         row.book_id,
                         row.price,
                         row.address_id,

@@ -1,10 +1,9 @@
 "use strict";
 
 const db = require('../db');
-
 const userDao = require('../models/user-dao');
-
 const Address = require('../entities/address');
+const logger = require('../util/logger');
 
 /**
  * Add address to the database.
@@ -17,6 +16,7 @@ function addAddress(address) {
 
         db.run(query, [address.customer_id, address.placename], (err) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else {
                 resolve(this.lastID); // FIXME: this.lastID is undefined
@@ -39,6 +39,7 @@ function updateAddress(address) {
             address.placename,
             address.id], (err) => {
                 if (err) {
+                    logger.logError(err);
                     reject(err);
                 } else {
                     resolve(address.id);
@@ -77,8 +78,10 @@ function findAddressById(id) {
 
         db.get(query, id, async (err, row) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else if (row === undefined) {
+                logger.logWarn(`No such address with id: ${id}`);
                 reject({ error: "Address not found" });
             } else {
                 const address = new Address(
@@ -86,9 +89,8 @@ function findAddressById(id) {
                     row.customer_id,
                     row.placename);
 
-                const user = await userDao.findUserById(row.customer_id);
-
                 // fill the customer property of address
+                const user = await userDao.findUserById(row.customer_id);
                 address.customer = user;
 
                 resolve(address);
@@ -108,8 +110,10 @@ function findAddressByCustomerId(customer_id) {
 
         db.get(query, customer_id, async (err, row) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else if (row === undefined) {
+                logger.logWarn(`No such address with customer_id: ${customer_id}`);
                 reject({ error: "Address not found" });
             } else {
                 const address = new Address(
@@ -117,9 +121,8 @@ function findAddressByCustomerId(customer_id) {
                     row.customer_id,
                     row.placename);
 
-                const user = await userDao.findUserById(row.customer_id);
-
                 // fill the customer property of address
+                const user = await userDao.findUserById(row.customer_id);
                 address.customer = user;
 
                 resolve(address);

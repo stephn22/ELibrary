@@ -1,16 +1,15 @@
 "use strict";
 
 const db = require('../db.js');
-
 const userDao = require('../models/user-dao');
 const bookDao = require('../models/book-dao');
-
 const Review = require('../entities/review');
+const logger = require('../util/logger');
 
 /**
  * Inserts a new review into the database.
  * @param {Review} review review to be inserted
- * @returns {Promise.<number>} id of the inserted review
+ * @returns {Promise<number>} id of the inserted review
  */
 function addReview(review) {
     return new Promise((resolve, reject) => {
@@ -18,12 +17,13 @@ function addReview(review) {
 
         db.run(query, [
             review.customer_id,
-            review.date,
+            new Date(review.date).getTime(),
             review.book_id,
             review.text,
             review.rating
         ], (err) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else {
                 resolve(this.lastID); // FIXME: this.lastID is undefined
@@ -35,7 +35,7 @@ function addReview(review) {
 /**
  * Updates a review in the database.
  * @param {Review} review review to update
- * @returns {Promise.<number>} id of the updated review
+ * @returns {Promise<number>} id of the updated review
  */
 function updateReview(review) {
     return new Promise((resolve, reject) => {
@@ -43,13 +43,14 @@ function updateReview(review) {
 
         db.run(query, [
             review.customer_id,
-            review.date,
+            new Date(review.date).getTime(),
             review.book_id,
             review.text,
             review.rating,
             review.id
         ], (err) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else {
                 resolve(review.id);
@@ -61,7 +62,7 @@ function updateReview(review) {
 /**
  * Delete a review from the database.
  * @param {number} id id of the review to delete
- * @returns {Promise.<number>} id of the deleted review
+ * @returns {Promise<number>} id of the deleted review
  */
 function deleteReview(id) {
     return new Promise((resolve, reject) => {
@@ -69,6 +70,7 @@ function deleteReview(id) {
 
         db.run(query, [id], (err) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else {
                 resolve(id);
@@ -80,7 +82,7 @@ function deleteReview(id) {
 /**
  * Finds a review by its id.
  * @param {number} id id of the review to find
- * @returns {Promise.<Review>} review.
+ * @returns {Promise<Review>} review.
  */
 function findReviewById(id) {
     return new Promise((resolve, reject) => {
@@ -88,22 +90,24 @@ function findReviewById(id) {
 
         db.get(query, [id], async (err, row) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else if (row === undefined) {
+                logger.logWarn(`No such review with id: ${id}`);
                 resolve({ error: "Review not found" });
             } else {
                 const review = new Review(
                     row.id,
                     row.customer_id,
-                    row.date,
+                    new Date(row.date).toDateString(),
                     row.book_id,
                     row.text,
                     row.rating);
 
+                // fill properties of review
                 const user = await userDao.findUserById(row.customer_id);
                 const book = await bookDao.findBookById(row.book_id);
 
-                // fill properties of review
                 review.customer = user;
                 review.book = book;
 
@@ -116,7 +120,7 @@ function findReviewById(id) {
 /**
  * Find review by customer id.
  * @param {number} customer_id id of customer that made the review
- * @returns {Promise.<Review>} review.
+ * @returns {Promise<Review>} review.
  */
 function findReviewByCustomerId(customer_id) {
     return new Promise((resolve, reject) => {
@@ -124,14 +128,16 @@ function findReviewByCustomerId(customer_id) {
 
         db.get(query, [customer_id], (err, row) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else if (row === undefined) {
+                logger.logWarn(`No such review with customer id: ${customer_id}`);
                 resolve({ error: "Review not found" });
             } else {
                 const review = new Review(
                     row.id,
                     row.customer_id,
-                    row.date,
+                    new Date(row.date).toDateString(),
                     row.book_id,
                     row.text,
                     row.rating);
@@ -151,7 +157,7 @@ function findReviewByCustomerId(customer_id) {
 
 /**
  * Returns all reviews in database as array.
- * @returns {Promise.<Review[]>} array of reviews.
+ * @returns {Promise<Review[]>} array of reviews.
  */
 function findAllReviews() {
     return new Promise((resolve, reject) => {
@@ -159,7 +165,11 @@ function findAllReviews() {
 
         db.all(query, (err, rows) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
+            } else if (rows.length === 0) {
+                logger.logWarn("No reviews found");
+                resolve({ error: "No reviews found" });
             } else {
                 const reviews = [];
 
@@ -167,15 +177,15 @@ function findAllReviews() {
                     const review = new Review(
                         row.id,
                         row.customer_id,
-                        row.date,
+                        new Date(row.date).toDateString(),
                         row.book_id,
                         row.text,
                         row.rating);
 
+                    // fill properties of review
                     let user = await userDao.findUserById(row.customer_id);
                     let book = await bookDao.findBookById(row.book_id);
 
-                    // fill properties of review
                     review.customer = user;
                     review.book = book;
 

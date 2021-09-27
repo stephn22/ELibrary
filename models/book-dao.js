@@ -1,17 +1,19 @@
 "use strict";
 
-const db = require('../db.js');
-
+const db = require('../db');
 const Book = require('../entities/book');
+const authorDao = require('../models/author-dao');
+const publisherDao = require('../models/publisher-dao');
+const logger = require('../util/logger');
 
 /**
  * Add book to database.
  * @param {Book} book book to add to database
- * @returns {Promise.<number>} id of book.
+ * @returns {Promise<number>} id of book.
  */
 function addBook(book) {
     return new Promise((resolve, reject) => {
-        const query = "INSERT INTO books (title, author_id, isbn, type, stock, language, pages, publisher, datePub, description, imgUrl, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO books (title, author_id, isbn, type, stock, language, pages, publisher_id, datePub, description, imgUrl, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         db.run(query, [
             book.title,
@@ -21,14 +23,16 @@ function addBook(book) {
             book.stock,
             book.language,
             book.pages,
-            book.publisher,
-            book.datePub,
+            book.publisher_id,
+            new Date(book.datePub).getTime(),
             book.description,
             book.imgUrl,
             book.price], (err) => {
                 if (err) {
+                    logger.logError(err);
                     reject(err);
                 } else {
+                    logger.logDebug(`ID of book: ${JSON.stringify(this.lastID)}`)
                     resolve(this.lastID); // FIXME: this.lastID is undefined
                 }
             });
@@ -38,39 +42,40 @@ function addBook(book) {
 /**
  * Update a book in database.
  * @param {Book} book book to be updated
- * @returns {Promise.<number>} id of updated book.
+ * @returns {Promise<number>} id of updated book.
  */
 function updateBook(book) {
     return new Promise((resolve, reject) => {
-        const query = "UPDATE books SET title = ?, author = ?, isbn = ?, type = ?, stock = ?, language = ?, pages = ?, publisher = ?, datePub = ?, description = ?, imgUrl = ?, price = ? WHERE id = ?";
+        const query = "UPDATE books SET title = ?, author_id = ?, isbn = ?, type = ?, stock = ?, language = ?, pages = ?, publisher_id = ?, datePub = ?, description = ?, imgUrl = ?, price = ? WHERE id = ?";
 
         db.run(query, [
             book.title,
-            book.author,
+            book.author_id,
             book.isbn,
             book.type,
             book.stock,
             book.language,
             book.pages,
-            book.publisher,
-            book.datePub,
+            book.publisher_id,
+            new Date(book.datePub).getTime(),
             book.description,
             book.imgUrl,
             book.price,
-        ], (err) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(book.id);
-            }
-        });
+            book.id], (err) => {
+                if (err) {
+                    logger.logError(err);
+                    reject(err);
+                } else {
+                    resolve(book.id);
+                }
+            });
     });
 }
 
 /**
  * Delete a book from database.
  * @param {number} id id of book.
- * @returns {Promise.<number>} id of deleted book.
+ * @returns {Promise<number>} id of deleted book.
  */
 function deleteBook(id) {
     return new Promise((resolve, reject) => {
@@ -78,6 +83,7 @@ function deleteBook(id) {
 
         db.run(query, [id], (err) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else {
                 resolve(id);
@@ -89,16 +95,18 @@ function deleteBook(id) {
 /**
  * Find book by id.
  * @param {number} id id of book.
- * @returns {Promise.<Book>} book.
+ * @returns {Promise<Book>} book.
  */
 function findBookById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM books WHERE id = ?";
 
-        db.get(query, [id], (err, row) => {
+        db.get(query, [id], async (err, row) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else if (row === undefined) {
+                logger.logWarn(`Book with id ${id} not found`);
                 resolve({ error: "No such book" });
             } else {
                 const book = new Book(
@@ -111,13 +119,17 @@ function findBookById(id) {
                     row.language,
                     row.pages,
                     row.publisher,
-                    row.datePub,
+                    new Date(row.datePub).toDateString(),
                     row.description,
                     row.imgUrl,
                     row.price);
 
                 // fill properties
-                // TODO: fill author
+                const author = await authorDao.findAuthorById(row.author_id);
+                book.author = author;
+
+                const publisher = await publisherDao.findPublisherById(row.publisher_id);
+                book.publisher = publisher;
 
                 resolve(book);
             }
@@ -127,32 +139,47 @@ function findBookById(id) {
 
 /**
  * Return all books in database as array.
- * @returns {Promise.<Book[]>} array of books.
+ * @returns {Promise<Book[]>} array of books.
  */
 function findAllBooks() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM books";
 
-        db.all(query, (err, rows) => {
+        db.all(query, async (err, rows) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else if (rows.length === 0) {
+                logger.logWarn("No books found");
                 resolve({ error: "No books found" });
             } else {
-                const books = rows.map(row => (new Book(
-                    row.id,
-                    row.title,
-                    row.author_id,
-                    row.isbn,
-                    row.type,
-                    row.stock,
-                    row.language,
-                    row.pages,
-                    row.publisher,
-                    row.datePub,
-                    row.description,
-                    row.imgUrl,
-                    row.price)));
+                const books = [];
+
+                rows.forEach(async (row) => {
+                    const book = new Book(
+                        row.id,
+                        row.title,
+                        row.author_id,
+                        row.isbn,
+                        row.type,
+                        row.stock,
+                        row.language,
+                        row.pages,
+                        row.publisher,
+                        new Date(row.datePub).toDateString(),
+                        row.description,
+                        row.imgUrl,
+                        row.price);
+
+                    // fill properties
+                    let author = await authorDao.findAuthorById(row.author_id);
+                    book.author = author;
+
+                    let publisher = await publisherDao.findPublisherById(row.publisher_id);
+                    book.publisher = publisher;
+
+                    books.push(book);
+                });
 
                 resolve(books);
             }

@@ -10,8 +10,6 @@ const loginEmailValidation = document.getElementById("login-email-validation");
 const loginPassword = document.getElementById("login-password");
 const loginPasswordValidation = document.getElementById("login-password-validation");
 
-const remember = document.getElementById("remember-me");
-
 /************************** EVENT LISTENERS *****************************/
 
 let valid = true;

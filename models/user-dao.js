@@ -3,13 +3,13 @@
 const db = require('../db');
 const crypt = require('bcrypt');
 const Type = require('../entities/constants/user-type');
-
 const User = require('../entities/user');
+const logger = require('../util/logger');
 
 /**
  * Add user to database.
  * @param {User} user user to be created into db.
- * @returns {Promise.<number>} id of user inserted.
+ * @returns {Promise<number>} id of user inserted.
  */
 function addUser(user) {
     return new Promise((resolve, reject) => {
@@ -25,6 +25,7 @@ function addUser(user) {
             user.address_id,
             Type.CUSTOMER], (err) => {
                 if (err) {
+                    logger.logError(err);
                     reject(err);
                 } else {
                     console.log(JSON.stringify(this));
@@ -37,7 +38,7 @@ function addUser(user) {
 /**
  * Update an existing user.
  * @param {User} user user to be updated.
- * @returns {Promise.<number>} id of updated user.
+ * @returns {Promise<number>} id of updated user.
  */
 function updateUser(user) {
     return new Promise((resolve, reject) => {
@@ -53,6 +54,7 @@ function updateUser(user) {
             user.type,
             user.id], (err) => {
                 if (err) {
+                    logger.logError(err);
                     reject(err);
                 } else {
                     resolve(user.id);
@@ -64,7 +66,7 @@ function updateUser(user) {
 /**
  * Delete user (by id).
  * @param {number} id id of user to be deleted.
- * @returns {Promise.<number>} id of customer deleted.
+ * @returns {Promise<number>} id of customer deleted.
  */
 function deleteUser(id) {
     return new Promise((resolve, reject) => {
@@ -72,6 +74,7 @@ function deleteUser(id) {
 
         db.run(query, [id], (err) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else {
                 resolve(id);
@@ -83,7 +86,7 @@ function deleteUser(id) {
 /**
  * Find user by id.
  * @param {number} id id of user.
- * @returns {Promise.<User>} user
+ * @returns {Promise<User>} user
  */
 function findUserById(id) {
     return new Promise((resolve, reject) => {
@@ -91,8 +94,10 @@ function findUserById(id) {
 
         db.get(query, [id], (err, row) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else if (row === undefined) {
+                logger.logWarn(`No such user with id: ${id}`);
                 resolve({ error: "User not found" });
             } else {
                 // no need to add password to user object
@@ -114,7 +119,7 @@ function findUserById(id) {
 /**
  * Get user by email.
  * @param {string} email email of user.
- * @returns {Promise.<User>} user
+ * @returns {Promise<User>} user
  */
 function findUserByEmail(email) {
     return new Promise((resolve, reject) => {
@@ -122,8 +127,10 @@ function findUserByEmail(email) {
 
         db.get(query, [email], (err, row) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else if (row === undefined) {
+                logger.logWarn(`No such user with email: ${email}`);
                 resolve({ error: "User not found" });
             } else {
                 const user = new User(
@@ -145,7 +152,7 @@ function findUserByEmail(email) {
  * Get user by email and password.
  * @param {string} email email of user.
  * @param {string} password password of user.
- * @returns {Promise.<User>} user.
+ * @returns {Promise<User>} user.
  */
 function findUserByEmailAndPassword(email, password) {
     return new Promise((resolve, reject) => {
@@ -153,8 +160,10 @@ function findUserByEmailAndPassword(email, password) {
 
         db.get(query, [email], (err, row) => {
             if (err) {
+                logger.logError(err);
                 reject(err);
             } else if (row === undefined) {
+                logger.logWarn(`No such user with email: ${email}`);
                 resolve({ error: "User not found" });
             } else {
                 // no need to add password to user object
