@@ -33,17 +33,21 @@ function addUser(user) {
                 }
             });
     });
-};
+}
 
 /**
  * Update an existing user.
  * @param {User} user user to be updated.
+ * @param {string} newPassword new password of user.
  * @returns {Promise<number>} id of updated user.
  */
-function updateUser(user) {
+function updateUser(user, newPassword = null) {
     return new Promise(async (resolve, reject) => {
         const query = "UPDATE users SET fname = ?, lname = ?, email = ?, password = ?, address_id = ?, type = ? WHERE id = ?";
-        user.password = await crypt.hash(user.password, 10);
+
+        if (newPassword !== null) {
+            user.password = await crypt.hash(newPassword, 10);
+        }
 
         db.run(query, [
             user.firstname,
@@ -61,7 +65,7 @@ function updateUser(user) {
                 }
             });
     });
-};
+}
 
 /**
  * Delete user (by id).
@@ -81,7 +85,7 @@ function deleteUser(id) {
             }
         });
     });
-};
+}
 
 /**
  * Find user by id.
@@ -100,13 +104,12 @@ function findUserById(id) {
                 logger.logWarn(`No such user with id: ${id}`);
                 resolve({ error: "User not found" });
             } else {
-                // no need to add password to user object
                 const user = new User(
                     row.id,
                     row.fname,
                     row.lname,
                     row.email,
-                    undefined,
+                    row.password,
                     row.address_id,
                     row.type);
 
@@ -114,7 +117,7 @@ function findUserById(id) {
             }
         });
     });
-};
+}
 
 /**
  * Get user by email.
@@ -138,7 +141,7 @@ function findUserByEmail(email) {
                     row.fname,
                     row.lname,
                     row.email,
-                    undefined,
+                    row.password,
                     row.address_id,
                     row.type);
 
@@ -146,7 +149,7 @@ function findUserByEmail(email) {
             }
         });
     });
-};
+}
 
 /**
  * Get user by email and password.
@@ -166,8 +169,14 @@ function findUserByEmailAndPassword(email, password) {
                 logger.logWarn(`No such user with email: ${email}`);
                 resolve({ error: "User not found" });
             } else {
-                // no need to add password to user object
-                const user = new User(row.id, row.fname, row.lname, row.email, undefined, row.address_id, row.type);
+                const user = new User(
+                    row.id,
+                    row.fname,
+                    row.lname,
+                    row.email,
+                    row.password,
+                    row.address_id,
+                    row.type);
 
                 const check = await crypt.compare(password, row.password);
 
@@ -175,6 +184,6 @@ function findUserByEmailAndPassword(email, password) {
             }
         });
     });
-};
+}
 
 module.exports = { addUser, updateUser, deleteUser, findUserById, findUserByEmail, findUserByEmailAndPassword };

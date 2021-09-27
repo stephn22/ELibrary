@@ -13,8 +13,8 @@ const logger = require('../util/logger');
 router.get("/", (_req, res, _next) => {
     res.render("register", {
         title: "Register", styles: [
-            'stylesheets/forms.css'
-        ], scripts: ['javascripts/register-form.js']
+            '/stylesheets/forms.css'
+        ], scripts: ['/javascripts/register-form.js']
     });
 });
 
@@ -75,16 +75,16 @@ router.post("/", [
 
         res.render("login", {
             title: "Login", message: "Successfully registered", styles: [
-                'stylesheets/forms.css'
-            ], scripts: ['javascripts/login-form.js']
+                '/stylesheets/forms.css'
+            ], scripts: ['/javascripts/login-form.js']
         });
     } else {
         logger.logError(JSON.stringify(errors));
 
         res.render("register", {
             title: "Register", errors: errors.array(), styles: [
-                'stylesheets/forms.css'
-            ], scripts: ['javascripts/register-form.js']
+                '/stylesheets/forms.css'
+            ], scripts: ['/javascripts/register-form.js']
         });
     }
 });
