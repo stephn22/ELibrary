@@ -105,7 +105,8 @@ function findAuthorsByName(name) {
                 logger.logWarn(`No authors found with name ${name}`);
                 resolve({ error: "No authors found" });
             } else {
-                resolve(rows.map(row => new Author(row.id, row.name)));
+                const authors = rows.map(row => new Author(row.id, row.name));
+                resolve(authors);
             }
         });
     });
@@ -127,7 +128,9 @@ function findAllAuthors() {
                 logger.logWarn("No authors found");
                 resolve({ error: "No authors found" });
             } else {
-                resolve(rows.map(row => new Author(row.id, row.name)));
+                const authors = rows.map(row => new Author(row.id, row.name));
+
+                resolve(authors);
             }
         });
     });

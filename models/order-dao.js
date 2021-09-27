@@ -3,6 +3,7 @@
 const db = require('../db.js');
 const userDao = require('../models/user-dao');
 const addressDao = require('../models/address-dao');
+const bookDao = require('../models/book-dao');
 const Order = require('../entities/order');
 const logger = require('../util/logger');
 
@@ -116,6 +117,53 @@ function findOrderById(id) {
                 order.address = address;
 
                 resolve(order);
+            }
+        });
+    });
+}
+
+/**
+ * Find all orders for a customer.
+ * @param {number} customerId id of customer.
+ * @returns {Promise<Order[]>} array of orders.
+ */
+function findOrdersByCustomerId(customerId) {
+    return new Promise((resolve, reject) => {
+        const query = "SELECT * FROM orders WHERE customer_id = ?";
+
+        db.run(query, [customerId], async (err, rows) => {
+            if (err) {
+                logger.logError(err);
+                reject(err);
+            } else if (rows.length === 0) {
+                logger.logWarn(`No orders for customer with id: ${customerId}`);
+                resolve({ error: "No orders found" });
+            } else {
+                const orders = [];
+
+                rows.forEach((row) => {
+                    const order = new Order(
+                        row.id,
+                        row.customer_id,
+                        new Date(row.date).toDateString(),
+                        row.book_id,
+                        row.price,
+                        row.address_id,
+                        row.status);
+
+                    // fill properties with relative objects
+                    let user = await userDao.findUserById(row.customer_id);
+                    let address = await addressDao.findAddressById(row.address_id);
+                    let book = await bookDao.findBookById(row.book_id);
+
+                    order.customer = user;
+                    order.address = address;
+                    order.book = book;
+
+                    orders.push(order);
+                });
+
+                resolve(orders);
             }
         });
     });

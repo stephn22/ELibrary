@@ -104,7 +104,8 @@ function findPublishersByName(name) {
                 logger.logWarn(`Publishers with name ${name} not found`);
                 resolve({ error: "No publishers found" });
             } else {
-                resolve(rows.map((row) => new Publisher(row.id, row.name)));
+                const publishers = rows.map((row) => new Publisher(row.id, row.name))
+                resolve(publishers);
             }
         });
     });
@@ -126,7 +127,8 @@ function findAllPublishers() {
                 logger.logWarn("No publishers found");
                 resolve({ error: "No publishers found" });
             } else {
-                resolve(rows.map((row) => new Publisher(row.id, row.name)));
+                const publishers = rows.map((row) => new Publisher(row.id, row.name))
+                resolve(publishers);
             }
         });
     });
