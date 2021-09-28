@@ -2,13 +2,16 @@ body {
     padding-top: 3.5rem;
     padding-bottom: 3rem;
     color: #5a5a5a;
+    /* Microsoft Edge */
     -ms-overflow-style: none;
-    overflow: hidden;
-    overflow-y: scroll;
+    /* Firefox */
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
 }
 
+/* Chrome, Safari, Opera */
 body::-webkit-scrollbar {
-    display: none;
+    width: 0 !important;
 }
 
 main {
