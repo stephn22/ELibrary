@@ -27,13 +27,12 @@ function addBook(book) {
             new Date(book.datePub).getTime(),
             book.description,
             book.imgUrl,
-            book.price], (err) => {
+            book.price], function (err) {
                 if (err) {
                     logger.logError(err);
                     reject(err);
                 } else {
-                    logger.logDebug(`ID of book: ${JSON.stringify(this.lastID)}`)
-                    resolve(this.lastID); // FIXME: this.lastID is undefined
+                    resolve(this.lastID);
                 }
             });
     });

@@ -23,13 +23,12 @@ function addUser(user) {
             user.email,
             user.password,
             user.address_id,
-            Type.CUSTOMER], (err) => {
+            Type.CUSTOMER], function (err) {
                 if (err) {
                     logger.logError(err);
                     reject(err);
                 } else {
-                    console.log(JSON.stringify(this));
-                    resolve(this.lastID); // FIXME: this.lastID is undefined
+                    resolve(this.lastID);
                 }
             });
     });

@@ -21,12 +21,12 @@ function addReview(review) {
             review.book_id,
             review.text,
             review.rating
-        ], (err) => {
+        ], function (err) {
             if (err) {
                 logger.logError(err);
                 reject(err);
             } else {
-                resolve(this.lastID); // FIXME: this.lastID is undefined
+                resolve(this.lastID);
             }
         });
     });

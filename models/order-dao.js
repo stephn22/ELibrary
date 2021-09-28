@@ -25,12 +25,12 @@ function addOrder(order) {
             order.price,
             order.address_id,
             order.status,
-            order.type], (err) => {
+            order.type], function (err) {
                 if (err) {
                     logger.logError(err);
                     reject(err);
                 } else {
-                    resolve(this.lastID); // FIXME: this.lastID is undefined
+                    resolve(this.lastID);
                 }
             });
     });

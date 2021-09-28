@@ -14,14 +14,15 @@ function addAddress(address) {
     return new Promise((resolve, reject) => {
         const query = "INSERT INTO addresses (customer_id, placename) VALUES (?, ?)";
 
-        db.run(query, [address.customer_id, address.placename], (err) => {
-            if (err) {
-                logger.logError(err);
-                reject(err);
-            } else {
-                resolve(this.lastID); // FIXME: this.lastID is undefined
-            }
-        });
+        db.run(query, [address.customer_id, address.placename],
+            function (err) {
+                if (err) {
+                    logger.logError(err);
+                    reject(err);
+                } else {
+                    resolve(this.lastID);
+                }
+            });
     });
 }
 

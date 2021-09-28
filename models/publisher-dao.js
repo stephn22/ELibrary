@@ -13,14 +13,15 @@ function addPublisher(publisher) {
     return new Promise((resolve, reject) => {
         const query = "INSERT INTO publishers (name) VALUES (?)";
 
-        db.run(query, [publisher.name], (err) => {
-            if (err) {
-                logger.logError(err);
-                reject(err);
-            } else {
-                resolve(this.lastID);
-            }
-        });
+        db.run(query, [publisher.name],
+            function (err) {
+                if (err) {
+                    logger.logError(err);
+                    reject(err);
+                } else {
+                    resolve(this.lastID);
+                }
+            });
     });
 }
 

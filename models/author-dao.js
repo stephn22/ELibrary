@@ -13,14 +13,15 @@ function addAuthor(author) {
     return new Promise((resolve, reject) => {
         const query = "INSERT INTO authors (name) VALUES (?)";
 
-        db.run(query, [author.name], (err) => {
-            if (err) {
-                logger.logError(err);
-                reject(err);
-            } else {
-                resolve(this.lastID);
-            }
-        });
+        db.run(query, [author.name],
+            function (err) {
+                if (err) {
+                    logger.logError(err);
+                    reject(err);
+                } else {
+                    resolve(this.lastID);
+                }
+            });
     });
 }
 
