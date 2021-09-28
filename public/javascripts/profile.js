@@ -54,30 +54,6 @@ confirmNewPassword.addEventListener("input", () => {
     }
 });
 
-newEmailConfirmBtn.addEventListener("submit", (e) => {
-    if (!valid) {
-        e.preventDefault();
-    } else {
-        fetch("/profile/update-email", { method: "POST", body: newEmail.value })
-            .then(response => console.log(response.json()))
-            .catch(error => {
-                console.error("Error:", error);
-            });
-    }
-});
-
-newPasswordConfirmBtn.addEventListener("submit", (e) => {
-    if (!valid) {
-        e.preventDefault();
-    } else {
-        fetch("/profile/update-password", { method: "POST", body: newPassword.value })
-            .then(response => console.log(response.json()))
-            .catch(error => {
-                console.error("Error:", error);
-            });
-    }
-});
-
 /************************** VALIDATION METHODS *****************************/
 
 /**
