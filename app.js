@@ -37,7 +37,7 @@ app.use((_req, _res, next) => {
     app.locals.title = ''; // title of page
     app.locals.message = ''; // info message
     app.locals.errors = []; // error messages
-    app.locals.active = '';
+    app.locals.active = ''; // active navbar link
     next();
 });
 

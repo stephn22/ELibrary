@@ -2,7 +2,6 @@
 
 const db = require('../db.js');
 const userDao = require('../models/user-dao');
-const addressDao = require('../models/address-dao');
 const bookDao = require('../models/book-dao');
 const Order = require('../entities/order');
 const logger = require('../util/logger');
@@ -16,14 +15,14 @@ const logger = require('../util/logger');
  */
 function addOrder(order) {
     return new Promise((resolve, reject) => {
-        const query = "INSERT INTO orders (customer_id, date, book_id, price, address_id, status, type) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO orders (customer_id, date, book_id, price, status, type) VALUES (?, ?, ?, ?, ?, ?)";
 
         db.run(query, [
             order.customer_id,
             new Date(order.date).getTime(),
             order.book_id,
             order.price,
-            order.address_id,
+            order.address,
             order.status,
             order.type], function (err) {
                 if (err) {
@@ -43,14 +42,14 @@ function addOrder(order) {
  */
 function updateOrder(order) {
     return new Promise((resolve, reject) => {
-        const query = "UPDATE orders SET customer_id = ?, date = ?, book_id = ?, price = ?, address_id = ?, status = ?, type = ?, WHERE id = ?";
+        const query = "UPDATE orders SET customer_id = ?, date = ?, book_id = ?, price = ?, address = ?, status = ?, type = ?, WHERE id = ?";
 
         db.run(query, [
             order.customer_id,
             new Date(order.date).getTime(),
             order.book_id,
             order.price,
-            order.address_id,
+            order.address,
             order.status,
             order.type,
             order.id
@@ -108,16 +107,14 @@ function findOrderById(id) {
                     new Date(row.date).toDateString(),
                     row.book_id,
                     row.price,
-                    row.address_id,
+                    row.address,
                     row.status,
                     row.type);
 
                 // fill properties with relative objects
                 const user = await userDao.findUserById(row.customer_id);
-                const address = await addressDao.findAddressById(row.address_id);
 
                 order.customer = user;
-                order.address = address;
 
                 resolve(order);
             }
@@ -151,16 +148,14 @@ function findOrdersByCustomerId(customerId) {
                         new Date(row.date).toDateString(),
                         row.book_id,
                         row.price,
-                        row.address_id,
+                        row.address,
                         row.status);
 
                     // fill properties with relative objects
                     let user = await userDao.findUserById(row.customer_id);
-                    let address = await addressDao.findAddressById(row.address_id);
                     let book = await bookDao.findBookById(row.book_id);
 
                     order.customer = user;
-                    order.address = address;
                     order.book = book;
 
                     orders.push(order);
@@ -198,15 +193,13 @@ function findAllOrders() {
                         new Date(row.date).toDateString(),
                         row.book_id,
                         row.price,
-                        row.address_id,
+                        row.address,
                         row.status);
 
                     // fill properties with relative objects
                     let user = await userDao.findUserById(row.customer_id);
-                    let address = await addressDao.findAddressById(row.address_id);
 
                     order.customer = user;
-                    order.address = address;
 
                     orders.push(order);
                 });

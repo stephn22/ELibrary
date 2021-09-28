@@ -11,9 +11,6 @@ const authorValidation = document.getElementById('author-validation');
 const isbn = document.getElementById('isbn');
 const isbnValidation = document.getElementById('isbn-validation');
 
-const paper = document.getElementById('paper');
-const paperValidation = document.getElementById('paper-validation');
-
 const ebook = document.getElementById('ebook');
 const ebookValidation = document.getElementById('ebook-validation');
 
@@ -128,14 +125,6 @@ price.addEventListener('input', () => {
     }
 });
 
-paper.addEventListener('click', () => {
-    updateRadios(paper, ebook);
-});
-
-ebook.addEventListener('click', () => {
-    updateRadios(ebook, paper);
-});
-
 stockRange.addEventListener('input', () => {
     stockRangeLabel.innerHTML = `In stock: ${stockRange.value}`;
 });
@@ -163,12 +152,12 @@ function validateTitle(title) {
 }
 
 /**
- * Checks if book author is valid
- * @param {string} author author of the book
- * @returns true if author is valid, false otherwise
+ * Checks name of author or publisher is valid
+ * @param {string} name name to be validated
+ * @returns true if name is valid, false otherwise
  */
-function validateName(author) {
-    return /^[a-zA-Z ]{1,100}$/.test(author);
+function validateName(name) {
+    return /^[a-zA-Z ]{1,100}$/.test(name);
 }
 
 /**

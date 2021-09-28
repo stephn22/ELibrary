@@ -4,10 +4,9 @@ const express = require('express');
 const { body, validationResult } = require('express-validator');
 const router = express.Router();
 const User = require('../entities/user');
-const Address = require('../entities/address');
 const userDao = require('../models/user-dao');
-const addressDao = require('../models/address-dao');
-const { urlencoded } = require('body-parser'); // TODO:
+const Type = require('../entities/constants/user-type');
+const { urlencoded } = require('body-parser'); // TODO: ?
 const logger = require('../util/logger');
 
 router.get("/", (_req, res, _next) => {
@@ -42,36 +41,21 @@ router.post("/", [
             throw new Error("Passwords do not match");
         }
 
+        logger.logDebug(JSON.stringify(req.body));
+
         const user = new User(
             undefined,
             req.body.fname,
             req.body.lname,
             req.body.email,
             req.body.password,
-            undefined
+            req.body.address,
+            Type.CUSTOMER
         );
 
         // add the new user to the database
         let userId = await userDao.addUser(user);
         logger.logInfo(`New user added with id: ${userId}`);
-
-        // if address was submitted, add it to the database
-        if (req.body.address != undefined) {
-            const address = new Address(
-                undefined,
-                userId,
-                req.body.address
-            );
-
-            const addressId = await addressDao.addAddress(address);
-            logger.logInfo(`New address added with id: ${addressId}`);
-
-            // and associate it with the user
-            user.address_id = addressId;
-
-            userId = await userDao.updateUser(user);
-            logger.logInfo(`Updated user with id: ${userId}`);
-        }
 
         res.render("login", {
             title: "Login", message: "Successfully registered", styles: [

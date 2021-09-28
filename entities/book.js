@@ -1,6 +1,4 @@
-const Author = require('./author');
 const baseEntity = require('./baseEntity');
-const Publisher = require('./publisher');
 
 /**
  * @class Book represents a book entity.

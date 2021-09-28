@@ -44,7 +44,8 @@
                                 <% if (user.type==="admin" ) { %>
                                     <button class="btn btn-primary" id="add-book" type="button" data-bs-toggle="modal"
                                     data-bs-target="#add-book-modal">Add</button>
-                                    <!-- Modal -->
+                                    
+                                    <%# Modal %>
                                     
                                     <div class="modal fade show" id="add-book-modal"
                                     aria-labelledby="add-book-modal-title" aria-modal="true" role="dialog">
@@ -56,13 +57,14 @@
                                                 aria-label="Close"></button>
                                             </div>
                                             
-                                            <!-- Form -->
+                                            <%# Modal %>
                                             
                                             <form method="POST" action="/books">
                                                 <div class="modal-body">
 
-                                                    <!-- TODO: image input -->
+                                                    <%# TODO: image input %>
                                                     
+                                                    <%# Title %>
                                                     <div class="form-group">
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control" id="title"
@@ -74,6 +76,7 @@
 
                                                     <br />
 
+                                                    <%# Author %>
                                                     <div class="form-group">
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control" id="author"
@@ -85,6 +88,7 @@
 
                                                     <br />
 
+                                                    <%# ISBN %>
                                                     <div class="form-group">
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control" id="isbn"
@@ -96,16 +100,18 @@
 
                                                     <br />
 
+                                                    <%# Radio btn paper %>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="paper"
+                                                        <input class="form-check-input" type="radio" name="type"
                                                         id="paper">
                                                         <label class="form-check-label" for="paper">
                                                             Paper
                                                         </label>
                                                     </div>
                                                 
+                                                    <%# Radio btn ebook %>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="ebook"
+                                                        <input class="form-check-input" type="radio" name="type"
                                                         id="ebook" checked>
                                                         <label class="form-check-label" for="ebook">
                                                             EBook
@@ -114,18 +120,21 @@
 
                                                     <br />
 
+                                                    <%# Range in stock (paper books) %>
                                                     <div class="form-group">
                                                         <label for="stock-range" class="form-label" id="stock-range-label">In stock: 1</label>
                                                         <input type="range" name="stock" class="form-range" min="1" max="300" step="1" value="1" id="stock-range" required>
-                                                        <small class="small text-muted">Leave as it is if EBook</small>
+                                                        <small class="small text-muted">Leave 1 if EBook</small>
                                                     </div>
 
                                                     <br />
                                                     
+                                                    <%# Select language %>
                                                     <%- include('partials/languages') -%>
 
                                                     <br/>
                                                     
+                                                    <%# Publisher %>
                                                     <div class="form-group">
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control" id="publisher"
@@ -137,6 +146,7 @@
 
                                                     <br/>
 
+                                                    <%# Range pages %>
                                                     <div class="form-group">
                                                         <label for="pages-range" class="form-label" id="pages-range-label">Pages: 1</label>
                                                         <input type="range" name="pages" class="form-range" min="1" max="10000" step="1" value="1" id="pages-range" required>
@@ -144,6 +154,7 @@
 
                                                     <br />
 
+                                                    <%# Date published %>
                                                     <div class="form-group">
                                                         <div class="form-floating">
                                                             <input type="date" class="form-control" id="date-published"
@@ -155,6 +166,7 @@
 
                                                     <br />
 
+                                                    <%# Text area description %>
                                                     <div class="form-group">
                                                         <label for="description" class="form-label" id="description-label">Book Description</label>
                                                         <textarea class="form-control" name="description" id="description" rows="3" maxlength="250" required></textarea>
@@ -163,6 +175,7 @@
 
                                                     <br />
 
+                                                    <%# TODO: currency %>
                                                     <div class="form-group">
                                                         <div class="form-floating">
                                                             <input type="number" class="form-control" id="price"
@@ -191,15 +204,15 @@
                                 </div>
                                 
                                 <% } %>
-                                <% } %>
+                            <% } %>
                                 
                                 <div class="row">
                                     
-                                    <% if (typeof books !=="undefined" ) { %>
+                                    <% if (typeof books !== "undefined" ) { %>
                                         
-                                        <% if (books.length> 0) { %>
+                                        <% if (books.length > 0) { %>
                                             
-                                            <% books.forEach((book)=> { %>
+                                            <% books.forEach((book) => { %>
                                                 <div class="card">
                                                     
                                                     <div class="card-img-top">
@@ -273,8 +286,8 @@
                                                     d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z" />
                                                     <path
                                                     d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
-                                                </svg>
-                                    </button>
+                                                    </svg>
+                                                    </button>
                                 </div>
                             </div>
                         <% }); %>
@@ -283,7 +296,10 @@
                 <% } %>
                                     
             </div>
+            <hr class="divider">
         </div>
     </main>
+
+
                         
 <%- include('partials/footer'); -%>

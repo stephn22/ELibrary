@@ -2,7 +2,6 @@
 
 const db = require('../db');
 const crypt = require('bcrypt');
-const Type = require('../entities/constants/user-type');
 const User = require('../entities/user');
 const logger = require('../util/logger');
 
@@ -13,7 +12,7 @@ const logger = require('../util/logger');
  */
 function addUser(user) {
     return new Promise(async (resolve, reject) => {
-        const query = "INSERT INTO users (fname, lname, email, password, address_id, type) VALUES (?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO users (fname, lname, email, password, address, type) VALUES (?, ?, ?, ?, ?, ?)";
 
         user.password = await crypt.hash(user.password, 10);
 
@@ -22,8 +21,8 @@ function addUser(user) {
             user.lastname,
             user.email,
             user.password,
-            user.address_id,
-            Type.CUSTOMER], function (err) {
+            user.address,
+            user.type], function (err) {
                 if (err) {
                     logger.logError(err);
                     reject(err);
@@ -42,18 +41,22 @@ function addUser(user) {
  */
 function updateUser(user, newPassword = null) {
     return new Promise(async (resolve, reject) => {
-        const query = "UPDATE users SET fname = ?, lname = ?, email = ?, password = ?, address_id = ?, type = ? WHERE id = ?";
+        let query = "UPDATE users SET fname = ?, lname = ?, email = ?, address = ?, type = ? WHERE id = ?";
 
         if (newPassword !== null) {
             user.password = await crypt.hash(newPassword, 10);
+
+            query = "UPDATE users SET fname = ?, lname = ?, email = ?, password = ?, address = ?, type = ? WHERE id = ?"
         }
+
+        logger.logDebug(JSON.stringify(user));
 
         db.run(query, [
             user.firstname,
             user.lastname,
             user.email,
             user.password,
-            user.address_id,
+            user.address,
             user.type,
             user.id], (err) => {
                 if (err) {
@@ -109,7 +112,7 @@ function findUserById(id) {
                     row.lname,
                     row.email,
                     row.password,
-                    row.address_id,
+                    row.address,
                     row.type);
 
                 resolve(user);
@@ -141,7 +144,7 @@ function findUserByEmail(email) {
                     row.lname,
                     row.email,
                     row.password,
-                    row.address_id,
+                    row.address,
                     row.type);
 
                 resolve(user);
@@ -174,7 +177,7 @@ function findUserByEmailAndPassword(email, password) {
                     row.lname,
                     row.email,
                     row.password,
-                    row.address_id,
+                    row.address,
                     row.type);
 
                 const check = await crypt.compare(password, row.password);

@@ -123,7 +123,6 @@ signupBtn.addEventListener("click", (e) => {
     }
 });
 
-
 /************************** VALIDATION METHODS *****************************/
 
 /**

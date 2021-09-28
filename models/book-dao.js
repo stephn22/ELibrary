@@ -2,8 +2,6 @@
 
 const db = require('../db');
 const Book = require('../entities/book');
-const authorDao = require('../models/author-dao');
-const publisherDao = require('../models/publisher-dao');
 const logger = require('../util/logger');
 
 /**
@@ -13,17 +11,17 @@ const logger = require('../util/logger');
  */
 function addBook(book) {
     return new Promise((resolve, reject) => {
-        const query = "INSERT INTO books (title, author_id, isbn, type, stock, language, pages, publisher_id, datePub, description, imgUrl, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO books (title, author, isbn, type, stock, language, pages, publisher, datePub, description, imgUrl, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         db.run(query, [
             book.title,
-            book.author_id,
+            book.author,
             book.isbn,
             book.type,
             book.stock,
             book.language,
             book.pages,
-            book.publisher_id,
+            book.publisher,
             new Date(book.datePub).getTime(),
             book.description,
             book.imgUrl,
@@ -45,17 +43,17 @@ function addBook(book) {
  */
 function updateBook(book) {
     return new Promise((resolve, reject) => {
-        const query = "UPDATE books SET title = ?, author_id = ?, isbn = ?, type = ?, stock = ?, language = ?, pages = ?, publisher_id = ?, datePub = ?, description = ?, imgUrl = ?, price = ? WHERE id = ?";
+        const query = "UPDATE books SET title = ?, author = ?, isbn = ?, type = ?, stock = ?, language = ?, pages = ?, publisher = ?, datePub = ?, description = ?, imgUrl = ?, price = ? WHERE id = ?";
 
         db.run(query, [
             book.title,
-            book.author_id,
+            book.author,
             book.isbn,
             book.type,
             book.stock,
             book.language,
             book.pages,
-            book.publisher_id,
+            book.publisher,
             new Date(book.datePub).getTime(),
             book.description,
             book.imgUrl,
@@ -100,7 +98,7 @@ function findBookById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM books WHERE id = ?";
 
-        db.get(query, [id], async function (err, row) {
+        db.get(query, [id], function (err, row) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -111,7 +109,7 @@ function findBookById(id) {
                 const book = new Book(
                     row.id,
                     row.title,
-                    row.author_id,
+                    row.author,
                     row.isbn,
                     row.type,
                     row.stock,
@@ -122,13 +120,6 @@ function findBookById(id) {
                     row.description,
                     row.imgUrl,
                     row.price);
-
-                // fill properties
-                const author = await authorDao.findAuthorById(row.author_id);
-                book.author = author;
-
-                const publisher = await publisherDao.findPublisherById(row.publisher_id);
-                book.publisher = publisher;
 
                 resolve(book);
             }
@@ -154,11 +145,11 @@ function findAllBooks() {
             } else {
                 const books = [];
 
-                rows.forEach(async (row) => {
+                rows.forEach((row) => {
                     const book = new Book(
                         row.id,
                         row.title,
-                        row.author_id,
+                        row.author,
                         row.isbn,
                         row.type,
                         row.stock,
@@ -169,13 +160,6 @@ function findAllBooks() {
                         row.description,
                         row.imgUrl,
                         row.price);
-
-                    // fill properties
-                    let author = await authorDao.findAuthorById(row.author_id);
-                    book.author = author;
-
-                    let publisher = await publisherDao.findPublisherById(row.publisher_id);
-                    book.publisher = publisher;
 
                     books.push(book);
                 });
