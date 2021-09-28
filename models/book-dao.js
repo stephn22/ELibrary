@@ -60,7 +60,7 @@ function updateBook(book) {
             book.description,
             book.imgUrl,
             book.price,
-            book.id], (err) => {
+            book.id], function (err) {
                 if (err) {
                     logger.logError(err);
                     reject(err);
@@ -80,7 +80,7 @@ function deleteBook(id) {
     return new Promise((resolve, reject) => {
         const query = "DELETE FROM books WHERE id = ?";
 
-        db.run(query, [id], (err) => {
+        db.run(query, [id], function (err) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -100,7 +100,7 @@ function findBookById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM books WHERE id = ?";
 
-        db.get(query, [id], async (err, row) => {
+        db.get(query, [id], async function (err, row) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -144,7 +144,7 @@ function findAllBooks() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM books";
 
-        db.all(query, (err, rows) => {
+        db.all(query, function (err, rows) {
             if (err) {
                 logger.logError(err);
                 reject(err);

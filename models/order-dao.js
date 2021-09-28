@@ -54,7 +54,7 @@ function updateOrder(order) {
             order.status,
             order.type,
             order.id
-        ], (err) => {
+        ], function (err) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -74,7 +74,7 @@ function deleteOrder(id) {
     return new Promise((resolve, reject) => {
         const query = "DELETE FROM orders WHERE id = ?";
 
-        db.run(query, [id], (err) => {
+        db.run(query, [id], function (err) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -94,7 +94,7 @@ function findOrderById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM orders WHERE id = ?";
 
-        db.get(query, [id], async (err, row) => {
+        db.get(query, [id], async function (err, row) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -134,7 +134,7 @@ function findOrdersByCustomerId(customerId) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM orders WHERE customer_id = ?";
 
-        db.run(query, [customerId], (err, rows) => {
+        db.run(query, [customerId], function (err, rows) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -180,7 +180,7 @@ function findAllOrders() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM orders";
 
-        db.all(query, (err, rows) => {
+        db.all(query, function (err, rows) {
             if (err) {
                 logger.logError(err);
                 reject(err);

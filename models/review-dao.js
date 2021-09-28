@@ -48,7 +48,7 @@ function updateReview(review) {
             review.text,
             review.rating,
             review.id
-        ], (err) => {
+        ], function (err) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -68,7 +68,7 @@ function deleteReview(id) {
     return new Promise((resolve, reject) => {
         const query = "DELETE FROM reviews WHERE id = ?";
 
-        db.run(query, [id], (err) => {
+        db.run(query, [id], function (err) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -88,7 +88,7 @@ function findReviewById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM reviews WHERE id = ?";
 
-        db.get(query, [id], async (err, row) => {
+        db.get(query, [id], async function (err, row) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -126,7 +126,7 @@ function findReviewsByCustomerId(customer_id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM reviews WHERE customer_id = ?";
 
-        db.all(query, [customer_id], (err, rows) => {
+        db.all(query, [customer_id], function (err, rows) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -168,7 +168,7 @@ function findAllReviews() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM reviews";
 
-        db.all(query, (err, rows) => {
+        db.all(query, function (err, rows) {
             if (err) {
                 logger.logError(err);
                 reject(err);

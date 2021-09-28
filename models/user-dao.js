@@ -75,7 +75,7 @@ function deleteUser(id) {
     return new Promise((resolve, reject) => {
         const query = "DELETE FROM users WHERE id = ?";
 
-        db.run(query, [id], (err) => {
+        db.run(query, [id], function (err) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -95,7 +95,7 @@ function findUserById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM users WHERE id = ?";
 
-        db.get(query, [id], (err, row) => {
+        db.get(query, [id], function (err, row) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -127,7 +127,7 @@ function findUserByEmail(email) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM users WHERE email = ?";
 
-        db.get(query, [email], (err, row) => {
+        db.get(query, [email], function (err, row) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -160,7 +160,7 @@ function findUserByEmailAndPassword(email, password) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM users WHERE email = ?";
 
-        db.get(query, [email], async (err, row) => {
+        db.get(query, [email], async function (err, row) {
             if (err) {
                 logger.logError(err);
                 reject(err);

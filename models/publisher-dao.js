@@ -34,7 +34,7 @@ function updatePublisher(publisher) {
     return new Promise((resolve, reject) => {
         const query = "UPDATE publishers SET name = ? WHERE id = ?";
 
-        db.run(query, [publisher.name, publisher.id], (err) => {
+        db.run(query, [publisher.name, publisher.id], function (err) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -54,7 +54,7 @@ function deletePublisher(id) {
     return new Promise((resolve, reject) => {
         const query = "DELETE FROM publishers WHERE id = ?";
 
-        db.run(query, [id], (err) => {
+        db.run(query, [id], function (err) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -74,7 +74,7 @@ function findPublisherById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM publishers WHERE id = ?";
 
-        db.get(query, [id], (err, row) => {
+        db.get(query, [id], function (err, row) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -97,7 +97,7 @@ function findPublishersByName(name) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM publishers WHERE name LIKE ?";
 
-        db.all(query, [`%${name}%`], (err, rows) => {
+        db.all(query, [`%${name}%`], function (err, rows) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -120,7 +120,7 @@ function findAllPublishers() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM publishers";
 
-        db.all(query, (err, rows) => {
+        db.all(query, function (err, rows) {
             if (err) {
                 logger.logError(err);
                 reject(err);

@@ -38,7 +38,7 @@ function updateAddress(address) {
         db.run(query, [
             address.customerId,
             address.placename,
-            address.id], (err) => {
+            address.id], function (err) {
                 if (err) {
                     logger.logError(err);
                     reject(err);
@@ -58,7 +58,7 @@ function deleteAddress(id) {
     return new Promise((resolve, reject) => {
         const query = "DELETE FROM addresses WHERE id = ?";
 
-        db.run(query, [id], (err) => {
+        db.run(query, [id], function (err) {
             if (err) {
                 reject(err);
             } else {
@@ -77,7 +77,7 @@ function findAddressById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM addresses WHERE id = ?";
 
-        db.get(query, id, async (err, row) => {
+        db.get(query, id, async function(err, row) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -109,7 +109,7 @@ function findAddressByCustomerId(customer_id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM addresses WHERE customer_id = ?";
 
-        db.get(query, customer_id, async (err, row) => {
+        db.get(query, customer_id, async function(err, row) {
             if (err) {
                 logger.logError(err);
                 reject(err);

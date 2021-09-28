@@ -35,7 +35,7 @@ function updateAuthor(author) {
         const query = "UPDATE authors SET name = ? WHERE id = ?";
 
         db.run(query, [author.name, author.id],
-            (err) => {
+            function (err) {
                 if (err) {
                     logger.logError(err);
                     reject(err);
@@ -55,7 +55,7 @@ function deleteAuthor(id) {
     return new Promise((resolve, reject) => {
         const query = "DELETE FROM authors WHERE id = ?";
 
-        db.run(query, [id], (err) => {
+        db.run(query, [id], function (err) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -75,7 +75,7 @@ function findAuthorById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM authors WHERE id = ?";
 
-        db.get(query, [id], (err, row) => {
+        db.get(query, [id], function (err, row) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -98,7 +98,7 @@ function findAuthorsByName(name) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM authors WHERE name LIKE ?";
 
-        db.all(query, [`%${name}%`], (err, rows) => {
+        db.all(query, [`%${name}%`], function (err, rows) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -121,7 +121,7 @@ function findAllAuthors() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM authors";
 
-        db.all(query, (err, rows) => {
+        db.all(query, function (err, rows) {
             if (err) {
                 logger.logError(err);
                 reject(err);
