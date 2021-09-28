@@ -27,9 +27,6 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">Action</a></li>
                             <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
                             <% if (typeof user !== "undefined") { %>
                                 <% if (user.type === "admin") { %>
                                     <li><a class="dropdown-item" href="#">Something else here</a></li>
@@ -47,6 +44,7 @@
                 <div class="text-end">
                     <% if (typeof user === "undefined" ) { %> <%# If there's no logged user %> 
                         <a class="btn btn-outline-light me2" href="/login" id="login-btn" type="button">
+                            
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd"
@@ -54,6 +52,7 @@
                                 <path fill-rule="evenodd"
                                     d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
                             </svg>
+                            
                             Login
                         </a>
 
@@ -71,12 +70,14 @@
                             <div class="btn-group">
                                 <a class="btn btn-outline-light me2 rounded-pill dropdown-toggle" href="#" type="button"
                                     role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdown-btn">
+
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-person-circle" viewBox="0 0 16 16">
                                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                                         <path fill-rule="evenodd"
                                             d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
                                     </svg>
+                                    
                                     <%= user.email %>
                                 </a>
 
