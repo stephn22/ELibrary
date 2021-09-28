@@ -13,17 +13,16 @@ class User extends baseEntity {
      * @param {string} lastname lastname of the user
      * @param {string} email email of the user
      * @param {string} password password of the user
-     * @param {number} address_id id of address of the user
+     * @param {number} address address of the user
      * @param {string} type type of the user (admin or customer)
      */
-    constructor (id, firstname, lastname, email, password, address_id, type) {
+    constructor (id, firstname, lastname, email, password, address, type) {
         super(id);
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
-        this.address_id = address_id;
-        this.address = undefined;
+        this.address = address;
         this.type = type;
     }
 }

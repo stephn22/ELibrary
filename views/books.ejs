@@ -102,7 +102,7 @@
 
                                                     <%# Radio btn paper %>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="type"
+                                                        <input class="form-check-input" type="radio" value="Paper" name="type"
                                                         id="paper">
                                                         <label class="form-check-label" for="paper">
                                                             Paper
@@ -111,7 +111,7 @@
                                                 
                                                     <%# Radio btn ebook %>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="type"
+                                                        <input class="form-check-input" type="radio" value="EBook" name="type"
                                                         id="ebook" checked>
                                                         <label class="form-check-label" for="ebook">
                                                             EBook
@@ -226,16 +226,13 @@
                                                         <h6 class="card-subtitle mb-2 text-muted">
                                                             <%= book.type %>
                                                         </h6>
-                                                        <p class="card-text">
-                                                            <%= book.description %>
-                                                        </p>
-                                                        <p class="card-text text-muted">Type: <%= book.type
-                                                            %>
-                                                        </p>
-                                                        <% if (book.type !=="ebook" ) { %>
+
+                                                        <% if (book.type !== "Ebook" ) { %>
                                                             <p class="card-text text-muted">In stock: <%=
                                                                 book.stock %>
                                                             </p>
+                                                            <% } else { %>
+                                                            <p class="card-text text-muted">In stock: --- </p>
                                                             <% } %>
                                                             <p class="card-text">Price: <%= book.price
                                                                 %>
@@ -258,6 +255,10 @@
                                                             <p class="card-text text-muted">Date
                                                                 published: <%= book.datePub %>
                                                             </p>
+
+                                                            <a class="link-primary" href="#details<%= book.id %>">Details</a>
+
+                                                            <hr />
                                                             
                                                             <button class="btn btn-outline-dark"
                                                             type="button" data-bs-toggle="modal"

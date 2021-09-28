@@ -7,9 +7,6 @@ const loginBtn = document.getElementById("login-btn");
 const loginEmail = document.getElementById("login-email");
 const loginEmailValidation = document.getElementById("login-email-validation");
 
-const loginPassword = document.getElementById("login-password");
-const loginPasswordValidation = document.getElementById("login-password-validation");
-
 /************************** EVENT LISTENERS *****************************/
 
 let valid = true;
@@ -22,19 +19,6 @@ loginEmail.addEventListener("input", () => {
         valid = false;
     } else {
         clearValidationMsg(loginEmailValidation);
-        enableBtn(loginBtn);
-        valid = true;
-    }
-});
-
-// check password as input changes
-loginPassword.addEventListener("input", () => {
-    if (!validatePassword(loginPassword.value)) {
-        setValidationMessage(loginPasswordValidation, "Please enter a valid password");
-        disableBtn(loginBtn);
-        valid = false;
-    } else {
-        clearValidationMsg(loginPasswordValidation);
         enableBtn(loginBtn);
         valid = true;
     }
@@ -57,18 +41,6 @@ loginBtn.addEventListener("click", (e) => {
  */
  function validateEmail(email) {
     return /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email);
-}
-
-/**
- * Checks if password is valid
- * @constraint password must be at least 8 characters long
- * @constraint password must contain at least one digit
- * @constraint password must contain at least one special character
- * @param {string} password password to be checked
- * @returns true if password is valid, false otherwise
- */
-function validatePassword(password) {
-    return /^.*(?=.{8,})(?=.*[\d])(?=.*[\W]).*$/.test(password);
 }
 
 /**

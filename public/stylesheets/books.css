@@ -15,7 +15,7 @@ body::-webkit-scrollbar {
 }
 
 button {
-    margin: 1rem;
+    margin: 0.1rem;
 }
 
 h1 {
@@ -27,7 +27,7 @@ h1 {
 .card {
     background: rgba(65, 117, 133, 0.22);
     border-radius: 15px;
-    width: 18rem;
+    width: 20rem;
     margin: 1rem;
 }
 

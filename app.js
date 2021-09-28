@@ -117,7 +117,7 @@ app.use('/', (_req, _res, next) => {
 });
 
 // error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
     res.locals.message = err.message;
     res.locals.error = req.app.get("env") === "development" ? err : {};
 
@@ -125,10 +125,5 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.render("error");
 });
-
-// const port = 3000;
-// app.listen(port, () => {
-//     console.log(`Server listening on port ${port}`);
-// });
 
 module.exports = app;

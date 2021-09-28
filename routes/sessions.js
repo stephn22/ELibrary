@@ -7,7 +7,7 @@ const logger = require('../util/logger');
 
 // login
 router.get("/login", (_req, res, _next) => {
-    res.render("login", { title: "Login", styles: [
+    res.render("login", { styles: [
         '/stylesheets/forms.css'
     ], scripts: [ '/javascripts/login-form.js' ] });
 });
@@ -20,6 +20,7 @@ router.post("/sessions", (req, res, next) => {
         }
         if (!user) {
             logger.logError(info.message);
+
             return res.render("login", { errors: info.message, styles: [
                 '/stylesheets/forms.css'
             ], scripts: [ '/javascripts/login-form.js' ] });

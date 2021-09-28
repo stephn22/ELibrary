@@ -34,6 +34,8 @@ router.post('/', [
 
     if (errors.isEmpty()) {
 
+        logger.logDebug(`Creating new book: ${JSON.stringify(req.body)}`);
+
         const book = new Book(
             undefined,
             req.body.title,
@@ -44,7 +46,7 @@ router.post('/', [
             req.body.language,
             req.body.pages,
             req.body.publisher,
-            req.body.datePublished,
+            req.body['date-published'],
             req.body.description,
             undefined, // imgurl
             req.body.price
@@ -63,8 +65,10 @@ router.post('/', [
     } else {
         logger.logError(`Book not added: ${JSON.stringify(errors)}`);
 
+        const books = await bookDao.findAllBooks();
+
         res.render('books', {
-            user: req.user, books: [], styles: [
+            user: req.user, books: books, styles: [
                 '/stylesheets/books.css'
             ], scripts: ['/javascripts/books.js'], errors: errors.array()
         });

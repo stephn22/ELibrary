@@ -1,6 +1,6 @@
 const bookType = {
-    PAPER: 'paper',
-    EBOOK: 'ebook'
+    PAPER: 'Paper',
+    EBOOK: 'Ebook'
 };
 
 module.exports = bookType;

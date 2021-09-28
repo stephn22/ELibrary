@@ -1,4 +1,4 @@
-<%- include('partials/header'); -%>
+<%- include('partials/header', { title: "Login" }); -%>
 
     <main class="form-signin">
 
@@ -47,7 +47,6 @@
                                         placeholder="Password" required>
                                     <label for="login-password">Password</label>
                                 </div>
-                                <span class="text-danger" id="login-password-validation"></span>
                             </div>
 
                             <!-- <div class="checkbox mb-3">

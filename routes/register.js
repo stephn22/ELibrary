@@ -10,8 +10,7 @@ const { urlencoded } = require('body-parser'); // TODO: ?
 const logger = require('../util/logger');
 
 router.get("/", (_req, res, _next) => {
-    res.render("register", {
-        title: "Register", styles: [
+    res.render("register", { styles: [
             '/stylesheets/forms.css'
         ], scripts: ['/javascripts/register-form.js']
     });

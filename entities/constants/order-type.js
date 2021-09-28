@@ -1,4 +1,4 @@
 const orderType = {
-    BUY = "buy",
-    RESERVATION = "reservation"
+    BUY = "Buy",
+    RESERVATION = "Reservation"
 };
