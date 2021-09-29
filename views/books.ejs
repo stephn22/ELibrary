@@ -7,6 +7,7 @@
             <p>
                 <%= message %>
             </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <% } %>
 
@@ -23,6 +24,7 @@
                     <%= errors %>
                 </p>
             <% } %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <% } %>
 
@@ -58,10 +60,18 @@
                                         aria-label="Close"></button>
                             </div>
 
-                            <form method="POST" action="/books">
+                            <img id="img-uploaded" src="" class="img-fluid square float-center" alt="" hidden>
+
+                            <form method="POST" action="/books" enctype="multipart/form-data">
+
                                 <div class="modal-body">
 
-                                    <%# TODO: image input %>
+                                    <div class="form-group">
+                                        <div class="mb-3">
+                                            <label class="form-label"></label>
+                                            <input class="form-control" type="file" id="book-image" name="book-image" required>
+                                        </div>
+                                    </div>
 
                                     <%# Title %>
                                     <div class="form-group">
@@ -173,9 +183,11 @@
                                     <div class="form-group">
                                         <label for="description" class="form-label" id="description-label">Book
                                             Description</label>
-                                        <textarea class="form-control" name="description" id="description" rows="3"
+                                        <textarea class="form-control" name="description" id="description" rows="5"
                                                   maxlength="250" required></textarea>
+                                        <small class="small text-muted" id="description-info">Remaining: 250</small>
                                         <span class="text-danger" id="description-validation"></span>
+
                                     </div>
 
                                     <br/>
@@ -223,7 +235,7 @@
                         <div class="card">
 
                             <div class="card-img-top">
-                                <!-- TODO: book image -->
+                                <img src="data:image/bmp;base64"<%= +Base64.encode(book.imgUrl) %> alt="<%= book.title %>">
                             </div>
 
                             <div class="card-body">
@@ -250,43 +262,61 @@
 
                                 <a class="link-primary" href="book-details/<%= book.id %>">Details</a>
 
-                                <%# Book details modal %>
-
                                 <hr/>
 
-                                <button class="btn btn-outline-dark"
-                                        type="button" data-bs-toggle="modal"
-                                        title="Add to cart"
-                                        data-bs-target="#addToCartModal">
+                                <% if (typeof user !== "undefined") { %> <%# if user is logged %>
 
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         width="16" height="16"
-                                         fill="currentColor"
-                                         class="bi bi-cart-plus"
-                                         viewBox="0 0 16 16">
-                                        <path
-                                                d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/>
-                                        <path
-                                                d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                                    </svg>
-                                    
-                                </button>
+                                    <%# Add to cart button %>
+                                    <button class="btn btn-outline-dark"
+                                            type="button" data-bs-toggle="modal"
+                                            title="Add to cart"
+                                            data-bs-target="#addToCartModal">
 
-                                <button class="btn btn-outline-dark"
-                                        type="button" title="Add to favourites">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            width="16" height="16"
+                                            fill="currentColor"
+                                            class="bi bi-cart-plus"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                    d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/>
+                                            <path
+                                                    d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                        </svg>
+                                        
+                                    </button>
 
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         width="16" height="16"
-                                         fill="currentColor"
-                                         class="bi bi-bookmark-star"
-                                         viewBox="0 0 16 16">
-                                        <path
-                                                d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z"/>
-                                        <path
-                                                d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
-                                    </svg>
+                                    <%# Add to favourites button %>
+                                    <button class="btn btn-outline-dark"
+                                            type="button" title="Add to favourites">
 
-                                </button>
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            width="16" height="16"
+                                            fill="currentColor"
+                                            class="bi bi-bookmark-star"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                    d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z"/>
+                                            <path
+                                                    d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                        </svg>
+
+                                    </button>
+                                <% } %>
+
+                                <% if (typeof user !== "undefined") { %>
+                                    <% if (user.type === "admin") { %>
+                                        <%# Delete book (admin only) %>
+                                        <button class="btn btn-outline-danger delete-button"
+                                            type="button" title="Delete book" value="" data-id="<%= book.id %>">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                            </svg>
+
+                                        </button>
+                                    <% } %>
+                                <% } %>
                             </div>
                         </div>
                     <% }); %>

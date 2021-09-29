@@ -36,7 +36,10 @@ h1 {
 }
 
 .divider {
-    margin: 5rem 0;
+    margin-left: 5rem 0;
+    margin-right: 5rem 0;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .social {
@@ -52,4 +55,17 @@ h1 {
 
 #footer-text {
     font-family: 'Roboto Light', sans-serif;
+}
+
+.square {
+    margin-left: 1rem;
+    position: center;
+    height: 250px;
+    width: 250px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+#add-book {
+    margin-left: 0.3rem;
 }

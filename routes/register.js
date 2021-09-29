@@ -48,7 +48,7 @@ router.post("/", [
             req.body.lname,
             req.body.email,
             req.body.password,
-            req.body.address,
+            req.body.address, // FIXME: address always empty ""
             Type.CUSTOMER
         );
 

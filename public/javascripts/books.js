@@ -2,6 +2,11 @@
 
 /************************** CONSTANTS *****************************/
 
+const bookImage = document.getElementById('book-image');
+const imgUploaded = document.getElementById('img-uploaded');
+
+const deleteBtns = document.getElementsByClassName('delete-button');
+
 const title = document.getElementById('title');
 const titleValidation = document.getElementById('title-validation');
 
@@ -10,9 +15,6 @@ const authorValidation = document.getElementById('author-validation');
 
 const isbn = document.getElementById('isbn');
 const isbnValidation = document.getElementById('isbn-validation');
-
-const ebook = document.getElementById('ebook');
-const ebookValidation = document.getElementById('ebook-validation');
 
 const publisher = document.getElementById('publisher');
 const publisherValidation = document.getElementById('publisher-validation');
@@ -27,6 +29,7 @@ const datePublished = document.getElementById('date-published');
 const datePublishedValidation = document.getElementById('date-published-validation');
 
 const description = document.getElementById('description');
+const descriptionInfo = document.getElementById('description-info');
 const descriptionValidation = document.getElementById('description-validation');
 
 const price = document.getElementById('price');
@@ -36,108 +39,147 @@ const saveBtn = document.getElementById('save');
 
 /************************** EVENT LISTENERS *****************************/
 
-if (title && author && isbn && paper && ebook && publisher && stockRange && pagesRange && datePublished && description && price && saveBtn) {
+if (bookImage && title && author && isbn && paper && ebook && publisher && stockRange && pagesRange && datePublished && description && price && saveBtn) {
     let valid = true;
 
-title.addEventListener('input', () => {
-    if (!validateTitle(title.value)) {
-        setValidationMessage(titleValidation, "Please enter a valid title name, must be between 1 and 100 characters");
-        disableBtn(saveBtn);
-        valid = false;
-    } else {
-        clearValidationMsg(titleValidation);
-        enableBtn(saveBtn);
-        valid = true;
-    }
-});
+    bookImage.addEventListener('change', (input) => {
+        if (input.target.files && input.target.files[0]) {
+            const reader = new FileReader();
 
-author.addEventListener('input', () => {
-    if (!validateName(author.value)) {
-        setValidationMessage(authorValidation, "Please enter a valid author name, must be between 1 and 100 characters");
-        disableBtn(saveBtn);
-        valid = false;
-    } else {
-        clearValidationMsg(authorValidation);
-        enableBtn(saveBtn);
-        valid = true;
-    }
-});
+            reader.onload = function (e) {
+                imgUploaded.setAttribute("src", e.target.result);
+                imgUploaded.removeAttribute("hidden");
+            };
 
-isbn.addEventListener('input', () => {
-    if (!validateISBN(isbn.value)) {
-        setValidationMessage(isbnValidation, "Please enter a valid ISBN");
-        disableBtn(saveBtn);
-        valid = false;
-    } else {
-        clearValidationMsg(isbnValidation);
-        enableBtn(saveBtn);
-        valid = true;
-    }
-});
+            reader.readAsDataURL(input.target.files[0]);
+        }
+    });
 
-publisher.addEventListener('input', () => {
-    if (!validateName(publisher.value)) {
-        setValidationMessage(publisherValidation, "Please enter a valid publisher name, must be between 1 and 100 characters");
-        disableBtn(saveBtn);
-        valid = false;
-    } else {
-        clearValidationMsg(publisherValidation);
-        enableBtn(saveBtn);
-        valid = true;
-    }
-});
+    title.addEventListener('input', () => {
+        if (!validateTitle(title.value)) {
+            setValidationMessage(titleValidation, "Please enter a valid title name, must be between 1 and 100 characters");
+            disableBtn(saveBtn);
+            valid = false;
+        } else {
+            clearValidationMsg(titleValidation);
+            enableBtn(saveBtn);
+            valid = true;
+        }
+    });
 
-datePublished.addEventListener('input', () => {
-    if (!validateDate(datePublished.value)) {
-        setValidationMessage(datePublishedValidation, "Please enter a valid date, must be in the past");
-        disableBtn(saveBtn);
-        valid = false;
-    } else {
-        clearValidationMsg(datePublishedValidation);
-        enableBtn(saveBtn);
-        valid = true;
-    }
-});
+    author.addEventListener('input', () => {
+        if (!validateName(author.value)) {
+            setValidationMessage(authorValidation, "Please enter a valid author name, must be between 1 and 100 characters");
+            disableBtn(saveBtn);
+            valid = false;
+        } else {
+            clearValidationMsg(authorValidation);
+            enableBtn(saveBtn);
+            valid = true;
+        }
+    });
 
-description.addEventListener('input', () => {
-    if (!validateDescription(description.value)) {
-        description.setAttribute("readonly", "readonly");
-        setValidationMessage(descriptionValidation, "Please enter a valid description, must be between 1 and 250 characters");
-        disableBtn(saveBtn);
-        valid = false;
-    } else {
-        clearValidationMsg(descriptionValidation);
-        description.removeAttribute("readonly");
-        enableBtn(saveBtn);
-        valid = true;
-    }
-});
+    isbn.addEventListener('input', () => {
+        if (!validateISBN(isbn.value)) {
+            setValidationMessage(isbnValidation, "Please enter a valid ISBN");
+            disableBtn(saveBtn);
+            valid = false;
+        } else {
+            clearValidationMsg(isbnValidation);
+            enableBtn(saveBtn);
+            valid = true;
+        }
+    });
 
-price.addEventListener('input', () => {
-    if (!validatePrice(price.value)) {
-        setValidationMessage(priceValidation, "Please enter a valid price, must be between 0.01 and 100.00");
-        disableBtn(saveBtn);
-        valid = false;
-    } else {
-        clearValidationMsg(priceValidation);
-        enableBtn(saveBtn);
-        valid = true;
-    }
-});
+    publisher.addEventListener('input', () => {
+        if (!validateName(publisher.value)) {
+            setValidationMessage(publisherValidation, "Please enter a valid publisher name, must be between 1 and 100 characters");
+            disableBtn(saveBtn);
+            valid = false;
+        } else {
+            clearValidationMsg(publisherValidation);
+            enableBtn(saveBtn);
+            valid = true;
+        }
+    });
 
-stockRange.addEventListener('input', () => {
-    stockRangeLabel.innerHTML = `In stock: ${stockRange.value}`;
-});
+    datePublished.addEventListener('input', () => {
+        if (!validateDate(datePublished.value)) {
+            setValidationMessage(datePublishedValidation, "Please enter a valid date, must be in the past");
+            disableBtn(saveBtn);
+            valid = false;
+        } else {
+            clearValidationMsg(datePublishedValidation);
+            enableBtn(saveBtn);
+            valid = true;
+        }
+    });
 
-pagesRange.addEventListener('input', () => {
-    pagesRangeLabel.innerHTML = `Pages: ${pagesRange.value}`;
-});
+    description.addEventListener('input', () => {
+        
+        descriptionInfo.innerHTML = `Remaining: ${250 - description.value.length}`;
 
-saveBtn.addEventListener('click', (e) => {
-    if (!valid) {
-        e.preventDefault();
-    }
-});
+        if (!validateDescription(description.value)) {
+            setValidationMessage(descriptionValidation, "Please enter a valid description, must be between 1 and 250 characters");
+            disableBtn(saveBtn);
+            valid = false;
+        } else {
+            clearValidationMsg(descriptionValidation);
+            enableBtn(saveBtn);
+            valid = true;
+        }
+    });
+
+    price.addEventListener('input', () => {
+        if (!validatePrice(price.value)) {
+            setValidationMessage(priceValidation, "Please enter a valid price, must be between 0.01 and 100.00");
+            disableBtn(saveBtn);
+            valid = false;
+        } else {
+            clearValidationMsg(priceValidation);
+            enableBtn(saveBtn);
+            valid = true;
+        }
+    });
+
+    stockRange.addEventListener('input', () => {
+        stockRangeLabel.innerHTML = `In stock: ${stockRange.value}`;
+    });
+
+    pagesRange.addEventListener('input', () => {
+        pagesRangeLabel.innerHTML = `Pages: ${pagesRange.value}`;
+    });
+
+    saveBtn.addEventListener('click', (e) => {
+        if (!valid) {
+            e.preventDefault();
+        }
+    });
+}
+
+// add event listeners to buttons delete
+for (let i = 0; i < deleteBtns.length; i++) {
+    // get the book id
+    deleteBtns[i].addEventListener('click', () => {
+        const id = deleteBtns[i].getAttribute('data-id');
+
+        // and delete the book if clicked
+        if (id) {
+            deleteBook(parseInt(id));
+        }
+    });
+}
+
+/************************** FETCH API METHODS *****************************/
+
+/**
+ * Using the fetch API to delete a book by its id
+ * @param {number} bookId the book id
+ */
+function deleteBook(bookId) {
+    fetch(`/books/${bookId}`, { method: "DELETE" })
+        .then()
+        .catch(error => console.error('Error:', error));
 }
 
 /************************** VALIDATION METHODS *****************************/
@@ -197,24 +239,11 @@ function validatePrice(price) {
 }
 
 /**
- * Updates radio buttons at click
- * @param {HTMLElement} radio1 radio button 1
- * @param {HTMLElement} radio2 radio button 2
- */
-function updateRadios(radio1, radio2) {
-    if (radio1.checked) {
-        radio2.checked = false;
-    } else {
-        radio2.checked = true;
-    }
-}
-
-/**
  * Sets the validation message for the given element
  * @param {HTMLElement} element 
  * @param {string} message 
  */
- function setValidationMessage(element, message) {
+function setValidationMessage(element, message) {
     element.innerHTML = message;
 }
 
