@@ -23,6 +23,7 @@ const sessionsRouter = require('./routes/sessions.js');
 const regiserRouter = require('./routes/register.js');
 const profileRouter = require('./routes/profile.js');
 const booksRouter = require('./routes/books.js');
+const bookDetailsRouter = require('./routes/book-details.js');
 
 /************** SETUP *************/
 
@@ -109,8 +110,7 @@ app.use('/', indexRouter);
 app.use('/register', regiserRouter);
 app.use('/profile', isLoggedIn, profileRouter);
 app.use('/books', booksRouter);
-
-// app.use('/', isLoggedIn, another routher);
+app.use('/book-details', bookDetailsRouter);
 
 app.use('/', (_req, _res, next) => {
     next(createError(404));

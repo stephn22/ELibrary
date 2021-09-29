@@ -50,7 +50,7 @@ router.post("/update-email", [
 
 router.post("/profile/update-password", [
     body('new-password').matches(/^.*(?=.{8,})(?=.*[\d])(?=.*[\W]).*$/).escape().withMessage("Password must be at least 8 characters long and contain at least one number and one non-alphanumeric character"),
-], async (req, res, _next) => {
+], async function (req, res, _next) {
     const errors = validationResult(req);
 
     if (errors.isEmpty()) {

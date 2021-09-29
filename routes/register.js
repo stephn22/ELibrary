@@ -21,7 +21,7 @@ router.post("/", [
     body("fname").trim().matches(/^[a-zA-Z ]{1,50}$/).escape().withMessage("Please enter a valid first name"),
     body("lname").trim().matches(/^[a-zA-Z ]{1,50}$/).escape().withMessage("Please enter a valid last name"),
     body("email").trim().isEmail().withMessage("Please enter a valid email").escape()
-        .custom(async email => {
+        .custom(async function(email) {
             const user = await userDao.findUserByEmail(email);
 
             if (!user.hasOwnProperty("error")) { // if findUserByEmail finds a user and not the error "user not found";
@@ -31,7 +31,7 @@ router.post("/", [
         }),
     body("password").matches(/^.*(?=.{8,})(?=.*[\d])(?=.*[\W]).*$/).escape().withMessage("Password must be at least 8 characters long and contain at least one number and one non-alphanumeric character"),
     body("address").trim().isLength(0, 50).escape().withMessage("Please enter a valid address"),
-], async (req, res) => {
+], async function (req, res) {
     const errors = validationResult(req);
 
     if (errors.isEmpty()) {

@@ -58,8 +58,6 @@
                                         aria-label="Close"></button>
                             </div>
 
-                            <%# Modal %>
-
                             <form method="POST" action="/books">
                                 <div class="modal-body">
 
@@ -235,19 +233,10 @@
                                 <h6 class="card-subtitle mb-2 text-muted">
                                     <%= book.type %>
                                 </h6>
-
-                                <% if (book.type !== "Ebook" ) { %>
-                                    <p class="card-text text-muted">In stock: <%=
-                                            book.stock %>
-                                    </p>
-                                <% } else { %>
-                                    <p class="card-text text-muted">In stock: --- </p>
-                                <% } %>
-                                <p class="card-text">Price: <%= book.price
-                                    %>
+                                <p class="card-text text-muted">In stock: 
+                                    <%= (book.type !== "Ebook" ) ? book.stock : "---" %>
                                 </p>
-                                <p class="card-text text-muted">Language:
-                                    <%= book.language %>
+                                <p class="card-text">Price: <%= book.price %> €
                                 </p>
                                 <p class="card-text text-muted">Publisher:
                                     <%= book.publisher %>
@@ -255,17 +244,13 @@
                                 <p class="card-text text-muted">Author: <%=
                                         book.author %>
                                 </p>
-                                <p class="card-text text-muted">ISBN: <%=
-                                        book.isbn %>
-                                </p>
-                                <p class="card-text text-muted">Pages: <%=
-                                        book.pages %>
-                                </p>
-                                <p class="card-text text-muted">Date
-                                    published: <%= book.datePub %>
+                                <p class="card-text text-muted">Language:
+                                    <%= book.language %>
                                 </p>
 
-                                <a class="link-primary" href="#details<%= book.id %>">Details</a>
+                                <a class="link-primary" href="book-details/<%= book.id %>">Details</a>
+
+                                <%# Book details modal %>
 
                                 <hr/>
 
@@ -273,6 +258,7 @@
                                         type="button" data-bs-toggle="modal"
                                         title="Add to cart"
                                         data-bs-target="#addToCartModal">
+
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="16" height="16"
                                          fill="currentColor"
@@ -283,10 +269,12 @@
                                         <path
                                                 d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                                     </svg>
+                                    
                                 </button>
 
                                 <button class="btn btn-outline-dark"
                                         type="button" title="Add to favourites">
+
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="16" height="16"
                                          fill="currentColor"
@@ -297,6 +285,7 @@
                                         <path
                                                 d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
                                     </svg>
+
                                 </button>
                             </div>
                         </div>

@@ -29,7 +29,7 @@ router.post('/', [
     body('date-published').isDate().isBefore(moment().format('YYYY-MM-DD')),
     body('description').isLength({ min: 1, max: 250 }).withMessage('Please enter a valid description'),
 
-], async (req, res) => {
+], async function (req, res) {
     const errors = validationResult(req);
 
     if (errors.isEmpty()) {
