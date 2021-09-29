@@ -1,64 +1,64 @@
 <%- include('partials/header', { title: "Login" }); -%>
 
-    <main class="form-signin">
+<main class="form-signin">
 
-        <form method="POST" action="/sessions" autocomplete>
+    <form method="POST" action="/sessions" autocomplete>
 
-            <img class="mb-4" src="/images/icons/book_black_48d.svg" alt="book_black">
+        <img class="mb-4" src="/images/icons/book_black_48d.svg" alt="book_black">
 
-            <h1 class="h3 mb-3 fw-normal">Login</h1>
+        <h1 class="h3 mb-3 fw-normal">Login</h1>
 
-            <% if (message.length> 0) { %>
-                <div class="alert alert-primary" role="alert">
+        <% if (message.length > 0) { %>
+            <div class="alert alert-primary" role="alert">
+                <p>
+                    <%= message %>
+                </p>
+            </div>
+        <% } %>
+
+        <% if (errors.length > 0) { %>
+            <div class="alert alert-danger" role="alert">
+                <% if (Array.isArray(errors)) { %>
+                    <% errors.forEach((error)=> { %>
+                        <p>
+                            <%= error.msg %>
+                        </p>
+                    <% }); %>
+                <% } else { %>
                     <p>
-                        <%= message %>
+                        <%= errors %>
                     </p>
-                </div>
                 <% } %>
+            </div>
+        <% } %>
 
-                    <% if (errors.length> 0) { %>
-                        <div class="alert alert-danger" role="alert">
-                            <% if (Array.isArray(errors)) { %>
-                                <% errors.forEach((error)=> { %>
-                                    <p>
-                                        <%= error.msg %>
-                                    </p>
-                                    <% }); %>
-                                        <% } else { %>
-                                            <p>
-                                                <%= errors %>
-                                            </p>
-                                            <% } %>
-                        </div>
-                        <% } %>
+        <div class="form-group">
+            <div class="form-floating">
+                <input type="email" name="email" class="form-control" id="login-email"
+                       placeholder="name@example.com" required>
+                <label for="login-email">Email</label>
+            </div>
+            <span class="text-danger" id="login-email-validation"></span>
+        </div>
 
-                            <div class="form-group">
-                                <div class="form-floating">
-                                    <input type="email" name="email" class="form-control" id="login-email"
-                                        placeholder="name@example.com" required>
-                                    <label for="login-email">Email</label>
-                                </div>
-                                <span class="text-danger" id="login-email-validation"></span>
-                            </div>
+        <div class="form-group">
+            <div class="form-floating">
+                <input type="password" name="password" class="form-control" id="login-password"
+                       placeholder="Password" required>
+                <label for="login-password">Password</label>
+            </div>
+        </div>
 
-                            <div class="form-group">
-                                <div class="form-floating">
-                                    <input type="password" name="password" class="form-control" id="login-password"
-                                        placeholder="Password" required>
-                                    <label for="login-password">Password</label>
-                                </div>
-                            </div>
+        <!-- <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" id="login-remember-me" value="remember-me"> Remember me
+            </label>
+        </div> -->
 
-                            <!-- <div class="checkbox mb-3">
-                                <label>
-                                    <input type="checkbox" id="login-remember-me" value="remember-me"> Remember me
-                                </label>
-                            </div> -->
+        <button class="w-100 btn btn-lg btn-secondary" id="login-btn" type="submit">Login</button>
+    </form>
 
-                            <button class="w-100 btn btn-lg btn-secondary" id="login-btn" type="submit">Login</button>
-        </form>
-
-    </main>
+</main>
 
 </body>
 </html>

@@ -1,196 +1,197 @@
 <%- include('partials/header', { title: "Profile" }); -%>
 
-    <main>
-        <br />
-        <div class="container">
+<main>
+    <br/>
+    <div class="container">
 
-            <div class="d-flex align-items-start">
+        <div class="d-flex align-items-start">
 
-                <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 
-                    <button class="nav-link active" aria-selected="true" id="v-pills-email-tab" data-bs-toggle="pill"
+                <button class="nav-link active" aria-selected="true" id="v-pills-email-tab" data-bs-toggle="pill"
                         data-bs-target="#v-pills-email" type="button" role="tab" aria-controls="v-pills-email">
 
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-envelope" viewBox="0 0 16 16">
-                            <path
-                                d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z" />
-                        </svg>
-                        Email
-                    </button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-envelope" viewBox="0 0 16 16">
+                        <path
+                                d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
+                    </svg>
+                    Email
+                </button>
 
-                    <button class="nav-link" aria-selected="false" id="v-pills-password-tab" data-bs-toggle="pill"
+                <button class="nav-link" aria-selected="false" id="v-pills-password-tab" data-bs-toggle="pill"
                         data-bs-target="#v-pills-password" type="button" role="tab" aria-controls="v-pills-password">
 
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-key" viewBox="0 0 16 16">
-                            <path
-                                d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z" />
-                            <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                        </svg>
-                        Password
-                    </button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-key" viewBox="0 0 16 16">
+                        <path
+                                d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z"/>
+                        <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                    </svg>
+                    Password
+                </button>
 
-                    <button class="nav-link" aria-selected="false" id="v-pills-favourites-tab" data-bs-toggle="pill"
-                        data-bs-target="#v-pills-favourites" type="button" role="tab" aria-controls="v-pills-favourites">
+                <button class="nav-link" aria-selected="false" id="v-pills-favourites-tab" data-bs-toggle="pill"
+                        data-bs-target="#v-pills-favourites" type="button" role="tab"
+                        aria-controls="v-pills-favourites">
 
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-bookmark-star" viewBox="0 0 16 16">
-                            <path
-                                d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z" />
-                            <path
-                                d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
-                        </svg>
-                        Favourites
-                    </button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-bookmark-star" viewBox="0 0 16 16">
+                        <path
+                                d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z"/>
+                        <path
+                                d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                    </svg>
+                    Favourites
+                </button>
 
-                    <button class="nav-link" aria-selected="false" id="v-pills-orders-tab" data-bs-toggle="pill"
+                <button class="nav-link" aria-selected="false" id="v-pills-orders-tab" data-bs-toggle="pill"
                         data-bs-target="#v-pills-orders" type="button" role="tab" aria-controls="v-pills-orders">
 
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-clock-history" viewBox="0 0 16 16">
-                            <path
-                                d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zm.53 2.507a6.991 6.991 0 0 0-.1-1.025l.985-.17c.067.386.106.778.116 1.17l-1 .025zm-.131 1.538c.033-.17.06-.339.081-.51l.993.123a7.957 7.957 0 0 1-.23 1.155l-.964-.267c.046-.165.086-.332.12-.501zm-.952 2.379c.184-.29.346-.594.486-.908l.914.405c-.16.36-.345.706-.555 1.038l-.845-.535zm-.964 1.205c.122-.122.239-.248.35-.378l.758.653a8.073 8.073 0 0 1-.401.432l-.707-.707z" />
-                            <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0v1z" />
-                            <path
-                                d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z" />
-                        </svg>
-                        Orders
-                    </button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-clock-history" viewBox="0 0 16 16">
+                        <path
+                                d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zm.53 2.507a6.991 6.991 0 0 0-.1-1.025l.985-.17c.067.386.106.778.116 1.17l-1 .025zm-.131 1.538c.033-.17.06-.339.081-.51l.993.123a7.957 7.957 0 0 1-.23 1.155l-.964-.267c.046-.165.086-.332.12-.501zm-.952 2.379c.184-.29.346-.594.486-.908l.914.405c-.16.36-.345.706-.555 1.038l-.845-.535zm-.964 1.205c.122-.122.239-.248.35-.378l.758.653a8.073 8.073 0 0 1-.401.432l-.707-.707z"/>
+                        <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0v1z"/>
+                        <path
+                                d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
+                    Orders
+                </button>
 
-                </div>
-                <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane fade show active" id="v-pills-email" role="tabpanel"
-                        aria-labelledby="v-pills-email-tab">
+            </div>
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-email" role="tabpanel"
+                     aria-labelledby="v-pills-email-tab">
 
-                        <form method="POST" action="/profile/update-email">
+                    <form method="POST" action="/profile/update-email">
 
-                            <% if (typeof user !== "undefined" ) { %>
-                                <% if (user.email) { %>
-                                    <div class="form-group">
-                                        <div class="form-floating col-5">
-                                            <input type="email" id="email" value="<%= user.email %>"
-                                                class="form-control" disabled>
-                                            <label for="email">Email</label>
-                                        </div>
+                        <% if (typeof user !== "undefined" ) { %>
+                            <% if (user.email) { %>
+                                <div class="form-group">
+                                    <div class="form-floating col-5">
+                                        <input type="email" id="email" value="<%= user.email %>"
+                                               class="form-control" disabled>
+                                        <label for="email">Email</label>
                                     </div>
-                                    <% } %>
-                                        <br />
-                                        <div class="form-group">
-                                            <div class="form-floating col-5">
-                                                <input type="email" id="new-email" name="new-email" class="form-control"
-                                                    placeholder="New Email" required>
-                                                <label for="new-email">New Email</label>
-                                            </div>
-                                            <span class="text-danger" id="new-email-validation"></span>
-                                        </div>
-                                        <br />
-                                        <button type="submit" class="btn btn-primary" id="save-new-email">Save</button>
-                                        <% } %>
-                        </form>
-
-                        <img src="/images/profile.svg" alt="profile" height="50%" width="50%">
-
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-password" role="tabpanel"
-                        aria-labelledby="v-pills-password-tab">
-
-                        <form method="POST" action="/profile/update-password">
-                            <div class="form-group">
-                                <div class="form-floating">
-                                    <input type="password" id="current-password" name="current-password"
-                                        class="form-control" placeholder="Current Password" required>
-                                    <label for="current-password">Current Password</label>
-                                </div>
-                            </div>
-                            <br />
-                            <div class="form-group">
-                                <div class="form-floating">
-                                    <input type="password" id="new-password" name="new-password" class="form-control"
-                                        placeholder="New Password" required>
-                                    <label for="new-password">New Password</label>
-                                </div>
-                                <span class="text-danger" id="new-password-validation"></span>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-floating">
-                                    <input type="password" id="confirm-new-password" name="confirm-new-password"
-                                        class="form-control" placeholder="Confirm Password" required>
-                                    <label for="confirm-new-password">Confirm Password</label>
-                                </div>
-                                <span class="text-danger" id="confirm-new-password-validation"></span>
-                            </div>
-                            <br />
-                            <button type="submit" class="btn btn-primary" id="save-new-password">Save</button>
-
-                        </form>
-                        <br />
-                        <img src="/images/password.svg" alt="profile" height="30%" width="30%">
-
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-favourites" role="tabpanel"
-                        aria-labelledby="v-pills-favourites-tab">
-
-                        <!-- TODO: -->
-
-
-                        <img src="/images/bookmarks.svg" alt="bookmarks" height="50%" width="50%">
-
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-orders" role="tabpanel" aria-labelledby="v-pills-orders-tab">
-
-                        <% if (typeof orders !== "undefined" ) { %>
-                            <% if (orders.length > 0) { %>
-                                <table class="table">
-                                    <thead>
-                                        <tr class="table-primary">
-                                            <th>Date</th>
-                                            <th>Book</th>
-                                            <th>Order Type</th>
-                                            <th>Status</th>
-                                            <th>Price</th>
-                                            <th>Address</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% orders.forEach(order => { %>
-                                            <tr>
-                                                <td>
-                                                    <%= order.date %>
-                                                </td>
-                                                <td>
-                                                    <%= order.book.title %>
-                                                </td>
-                                                <td>
-                                                    <%= order.type %>
-                                                </td>
-                                                <td>
-                                                    <%= order.status %>
-                                                </td>
-                                                <td>
-                                                    <%= order.price %>
-                                                </td>
-                                                <td>
-                                                    <%= order.address %>
-                                                </td>
-                                            </tr>
-                                            <% }); %>
-                                    </tbody>
-                                </table>
-                            <% } else { %>
-                                <div class="alert alert-info" role="alert">
-                                    You have no orders yet.
                                 </div>
                             <% } %>
+                            <br/>
+                            <div class="form-group">
+                                <div class="form-floating col-5">
+                                    <input type="email" id="new-email" name="new-email" class="form-control"
+                                           placeholder="New Email" required>
+                                    <label for="new-email">New Email</label>
+                                </div>
+                                <span class="text-danger" id="new-email-validation"></span>
+                            </div>
+                            <br/>
+                            <button type="submit" class="btn btn-primary" id="save-new-email">Save</button>
                         <% } %>
-                    </div>
+                    </form>
+
+                    <img src="/images/profile.svg" alt="profile" height="50%" width="50%">
+
+                </div>
+                <div class="tab-pane fade" id="v-pills-password" role="tabpanel"
+                     aria-labelledby="v-pills-password-tab">
+
+                    <form method="POST" action="/profile/update-password">
+                        <div class="form-group">
+                            <div class="form-floating">
+                                <input type="password" id="current-password" name="current-password"
+                                       class="form-control" placeholder="Current Password" required>
+                                <label for="current-password">Current Password</label>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <div class="form-floating">
+                                <input type="password" id="new-password" name="new-password" class="form-control"
+                                       placeholder="New Password" required>
+                                <label for="new-password">New Password</label>
+                            </div>
+                            <span class="text-danger" id="new-password-validation"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-floating">
+                                <input type="password" id="confirm-new-password" name="confirm-new-password"
+                                       class="form-control" placeholder="Confirm Password" required>
+                                <label for="confirm-new-password">Confirm Password</label>
+                            </div>
+                            <span class="text-danger" id="confirm-new-password-validation"></span>
+                        </div>
+                        <br/>
+                        <button type="submit" class="btn btn-primary" id="save-new-password">Save</button>
+
+                    </form>
+                    <br/>
+                    <img src="/images/password.svg" alt="profile" height="30%" width="30%">
+
+                </div>
+                <div class="tab-pane fade" id="v-pills-favourites" role="tabpanel"
+                     aria-labelledby="v-pills-favourites-tab">
+
+                    <!-- TODO: -->
+
+
+                    <img src="/images/bookmarks.svg" alt="bookmarks" height="50%" width="50%">
+
+                </div>
+                <div class="tab-pane fade" id="v-pills-orders" role="tabpanel" aria-labelledby="v-pills-orders-tab">
+
+                    <% if (typeof orders !== "undefined" ) { %>
+                        <% if (orders.length > 0) { %>
+                            <table class="table">
+                                <thead>
+                                <tr class="table-primary">
+                                    <th>Date</th>
+                                    <th>Book</th>
+                                    <th>Order Type</th>
+                                    <th>Status</th>
+                                    <th>Price</th>
+                                    <th>Address</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% orders.forEach(order => { %>
+                                    <tr>
+                                        <td>
+                                            <%= order.date %>
+                                        </td>
+                                        <td>
+                                            <%= order.book.title %>
+                                        </td>
+                                        <td>
+                                            <%= order.type %>
+                                        </td>
+                                        <td>
+                                            <%= order.status %>
+                                        </td>
+                                        <td>
+                                            <%= order.price %>
+                                        </td>
+                                        <td>
+                                            <%= order.address %>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                                </tbody>
+                            </table>
+                        <% } else { %>
+                            <div class="alert alert-info" role="alert">
+                                You have no orders yet.
+                            </div>
+                        <% } %>
+                    <% } %>
                 </div>
             </div>
         </div>
+    </div>
 
-        </div>
-    </main>
+    </div>
+</main>
 
-    <hr class="divider" />
+<hr class="divider"/>
 
 <%- include('partials/footer-alt'); -%>
