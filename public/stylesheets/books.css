@@ -28,6 +28,11 @@ h1 {
     border-radius: 15px;
     width: 20rem;
     margin: 0.3rem;
+    transition: 0.3s ease-in-out;
+}
+
+.fade {
+    opacity: 0;
 }
 
 .container {

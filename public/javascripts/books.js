@@ -5,14 +5,9 @@
 const bookImage = document.getElementById('book-image');
 const imgUploaded = document.getElementById('img-uploaded');
 
-const titleOrder = document.getElementById('title-alphabetical-order');
-const authorOrder = document.getElementById('author-alphabetical-order');
-const priceOrder = document.getElementById('price-alphabetical-order');
-
 const search = document.getElementById('search-book');
 
 const addToCartBtns = document.getElementsByClassName('add-to-cart');
-const addToFavouritesBtns = document.getElementsByClassName('add-to-favourites');
 const reserveBookBtns = document.getElementsByClassName('reserve-book');
 const deleteBtns = document.getElementsByClassName('delete-button');
 
@@ -175,44 +170,25 @@ search.addEventListener('keyup', () => {
         const author = book.querySelector('.author').innerHTML.toLowerCase();
 
         if (title.includes(searchValue) || author.includes(searchValue)) {
-            book.removeAttribute('hidden');
+            fadeIn(book);
         } else {
-            book.setAttribute('hidden', '');
+            fadeOut(book);
         }
     });
+
+    if (search.value.lenght === 0) {
+        books.forEach(book => { fadeIn(book); });
+    }
+
 });
 
-titleOrder.addEventListener('click', () => {
+search.addEventListener('search', () => {
     const books = document.querySelectorAll('.book');
-
-    books.forEach(book => {
-        // TODO: order by title
-    });
-});
-
-authorOrder.addEventListener('click', () => {
-    const books = document.querySelectorAll('.book');
-
-    books.forEach(book => {
-        // TODO: order by author
-    });
-});
-
-priceOrder.addEventListener('click', () => {
-    const books = document.querySelectorAll('.book');
-
-    books.forEach(book => {
-        // TODO: order by price
-    });
+    books.forEach(book => { fadeIn(book); });
 });
 
 // add event listeners to buttons add to cart
 for (let i = 0; i < addToCartBtns.length; i++) {
-    // TODO:
-}
-
-// add event listeners to buttons add to favourites
-for (let i = 0; i < addToFavouritesBtns.length; i++) {
     // TODO:
 }
 
@@ -345,4 +321,27 @@ function enableBtn(btn) {
  */
 function disableBtn(btn) {
     btn.setAttribute("disabled", "disabled");
+}
+
+/**
+ * Animates an element with fade in transition (0.3s)
+ * @param {Element} element element to be animated
+ */
+function fadeIn(element) {
+    element.removeAttribute("hidden");
+    
+    setTimeout(() => {
+        element.classList.remove("fade");
+    }, 280);
+}
+
+/**
+ * Animates an element with fade out transition (0.3s)
+ * @param {Element} element element to be animated
+ */
+function fadeOut(element) {
+    element.classList.add("fade");
+    setTimeout(() => {
+        element.setAttribute("hidden", "");
+    }, 350);
 }
