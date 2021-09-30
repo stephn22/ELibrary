@@ -5,6 +5,15 @@
 const bookImage = document.getElementById('book-image');
 const imgUploaded = document.getElementById('img-uploaded');
 
+const titleOrder = document.getElementById('title-alphabetical-order');
+const authorOrder = document.getElementById('author-alphabetical-order');
+const priceOrder = document.getElementById('price-alphabetical-order');
+
+const search = document.getElementById('search-book');
+
+const addToCartBtns = document.getElementsByClassName('add-to-cart');
+const addToFavouritesBtns = document.getElementsByClassName('add-to-favourites');
+const reserveBookBtns = document.getElementsByClassName('reserve-book');
 const deleteBtns = document.getElementsByClassName('delete-button');
 
 const title = document.getElementById('title');
@@ -116,7 +125,7 @@ if (bookImage && title && author && isbn && paper && ebook && publisher && stock
     });
 
     description.addEventListener('input', () => {
-        
+
         descriptionInfo.innerHTML = `Remaining: ${250 - description.value.length}`;
 
         if (!validateDescription(description.value)) {
@@ -157,6 +166,61 @@ if (bookImage && title && author && isbn && paper && ebook && publisher && stock
     });
 }
 
+search.addEventListener('keyup', () => {
+    const searchValue = search.value.toLowerCase();
+    const books = document.querySelectorAll('.book');
+
+    books.forEach(book => {
+        const title = book.querySelector('.title').innerHTML.toLowerCase();
+        const author = book.querySelector('.author').innerHTML.toLowerCase();
+
+        if (title.includes(searchValue) || author.includes(searchValue)) {
+            book.removeAttribute('hidden');
+        } else {
+            book.setAttribute('hidden', '');
+        }
+    });
+});
+
+titleOrder.addEventListener('click', () => {
+    const books = document.querySelectorAll('.book');
+
+    books.forEach(book => {
+        // TODO: order by title
+    });
+});
+
+authorOrder.addEventListener('click', () => {
+    const books = document.querySelectorAll('.book');
+
+    books.forEach(book => {
+        // TODO: order by author
+    });
+});
+
+priceOrder.addEventListener('click', () => {
+    const books = document.querySelectorAll('.book');
+
+    books.forEach(book => {
+        // TODO: order by price
+    });
+});
+
+// add event listeners to buttons add to cart
+for (let i = 0; i < addToCartBtns.length; i++) {
+    // TODO:
+}
+
+// add event listeners to buttons add to favourites
+for (let i = 0; i < addToFavouritesBtns.length; i++) {
+    // TODO:
+}
+
+// add event listeners to buttons reserve book
+for (let i = 0; i < reserveBookBtns.length; i++) {
+    // TODO:
+}
+
 // add event listeners to buttons delete
 for (let i = 0; i < deleteBtns.length; i++) {
     // get the book id
@@ -178,8 +242,20 @@ for (let i = 0; i < deleteBtns.length; i++) {
  */
 function deleteBook(bookId) {
     fetch(`/books/${bookId}`, { method: "DELETE" })
-        .then()
+        .then(window.location.reload())
         .catch(error => console.error('Error:', error));
+}
+
+/**
+ * Using the fetch API get all books
+ * @returns {Book[]} an array of books
+ */
+async function getAllBooks() {
+    const response = await fetch('/api/books').js;
+    const json = await response.json();
+
+    const books = JSON.parse(json);
+    return books;
 }
 
 /************************** VALIDATION METHODS *****************************/
