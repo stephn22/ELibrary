@@ -15,7 +15,7 @@ router.get('/:bookId', function (req, res) {
             res.render('book-details', { user: req.user, book: book, styles: ['/stylesheets/books.css'] });
         })
         .catch(err => {
-            res.status(500).render('book-details', { user: req.user, errors: [err] });
+            res.status(500).render('book-details', { user: req.user, errors: [err], styles: ['/stylesheets/books.css'] });
         });
 });
 

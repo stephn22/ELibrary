@@ -27,7 +27,7 @@ h1 {
     background: rgba(65, 117, 133, 0.22);
     border-radius: 15px;
     width: 20rem;
-    margin: 1rem;
+    margin: 0.3rem;
 }
 
 .container {
@@ -57,15 +57,28 @@ h1 {
     font-family: 'Roboto Light', sans-serif;
 }
 
-.square {
+.input-group {
+    width: auto;
     margin-left: 1rem;
+}
+
+.square {
+    margin: 1rem;
     position: center;
-    height: 250px;
-    width: 250px;
+    height: 190px;
+    width: 190px;
     object-fit: cover;
     border-radius: 20px;
 }
 
 #add-book {
     margin-left: 0.3rem;
+}
+
+#filter-collapse-btn {
+    width: auto;
+}
+
+#filter-collapse-body {
+    background-color: white;
 }

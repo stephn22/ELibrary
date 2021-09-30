@@ -28,7 +28,66 @@
         </div>
     <% } %>
 
-    <h1>Books catalog</h1>
+    <div class="row">
+        <h1>Books catalog</h1>
+
+        <div class="input-group col-2 float-end">
+            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+            <span class="input-group-append">
+                <button class="btn btn-outline-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </button>
+            </span>
+        </div>
+
+        <button id="filter-collapse-btn" class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#filter-collapse" aria-expanded="false" aria-controls="filter-collapse">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
+            </svg>
+        </button>
+
+        <%# Filter collapse %>
+
+        <div id="filter-collapse" class="collapse">
+            <div class="card card-body" id="filter-collapse-body">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="filter" value="" id="title-alphabetical-order" title="Title alphabetical order">
+                    <label class="form-check-label" for="alphabetical-order">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-alpha-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371h-1.781zm1.57-.785L11 2.687h-.047l-.652 2.157h1.351z"/>
+                            <path d="M12.96 14H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V14zM4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293V2.5z"/>
+                        </svg>
+                          Title
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" value="" name="filter" id="author-alphabetical-order" title="Author alphabetical order">
+                    <label class="form-check-label" for="alphabetical-order">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-alpha-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371h-1.781zm1.57-.785L11 2.687h-.047l-.652 2.157h1.351z"/>
+                            <path d="M12.96 14H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V14zM4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293V2.5z"/>
+                        </svg>
+                          Author
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" value="" name="filter" id="price-alphabetical-order" title="Author alphabetical order">
+                    <label class="form-check-label" for="alphabetical-order">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-down-alt" viewBox="0 0 16 16">
+                            <path d="M3.5 3.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 12.293V3.5zm4 .5a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1h-1zm0 3a.5.5 0 0 1 0-1h3a.5.5 0 0 1 0 1h-3zm0 3a.5.5 0 0 1 0-1h5a.5.5 0 0 1 0 1h-5zM7 12.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5z"/>
+                        </svg>
+                          Price
+                    </label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 
     <div class="container">
 
@@ -62,7 +121,7 @@
 
                             <img id="img-uploaded" src="" class="img-fluid square float-center" alt="" hidden>
 
-                            <form method="POST" action="/books" enctype="multipart/form-data">
+                            <form method="POST" action="/books" role="form" enctype="multipart/form-data">
 
                                 <div class="modal-body">
 
@@ -235,7 +294,7 @@
                         <div class="card">
 
                             <div class="card-img-top">
-                                <img src="data:image/bmp;base64"<%= +Base64.encode(book.imgUrl) %> alt="<%= book.title %>">
+                                <img src="data:image/bmp;base64,<%= book.imgUrl.toString('base64')%>" class="square img-rounded" alt="<%= book.title %>">
                             </div>
 
                             <div class="card-body">
@@ -245,16 +304,13 @@
                                 <h6 class="card-subtitle mb-2 text-muted">
                                     <%= book.type %>
                                 </h6>
-                                <p class="card-text text-muted">In stock: 
-                                    <%= (book.type !== "Ebook" ) ? book.stock : "---" %>
-                                </p>
                                 <p class="card-text">Price: <%= book.price %> €
+                                </p>
+                                <p class="card-text text-muted">Author: <%=
+                                    book.author %>
                                 </p>
                                 <p class="card-text text-muted">Publisher:
                                     <%= book.publisher %>
-                                </p>
-                                <p class="card-text text-muted">Author: <%=
-                                        book.author %>
                                 </p>
                                 <p class="card-text text-muted">Language:
                                     <%= book.language %>
@@ -267,10 +323,10 @@
                                 <% if (typeof user !== "undefined") { %> <%# if user is logged %>
 
                                     <%# Add to cart button %>
-                                    <button class="btn btn-outline-dark"
+                                    <button class="btn btn-outline-dark add-to-cart"
                                             type="button" data-bs-toggle="modal"
                                             title="Add to cart"
-                                            data-bs-target="#addToCartModal">
+                                            data-bs-target="#addToCartModal" data-id="<%= book.id %>">
 
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             width="16" height="16"
@@ -286,8 +342,8 @@
                                     </button>
 
                                     <%# Add to favourites button %>
-                                    <button class="btn btn-outline-dark"
-                                            type="button" title="Add to favourites">
+                                    <button class="btn btn-outline-dark add-to-favourites"
+                                            type="button" title="Add to favourites" data-id="<%= book.id %>">
 
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             width="16" height="16"
@@ -301,13 +357,26 @@
                                         </svg>
 
                                     </button>
+
+
+                                    <%# Reserve book %>
+
+                                    <button class="btn btn-outline-dark reserve-book"
+                                        type="button" title="Reserve book" data-id="<%= book.id %>">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                                            <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                                        </svg>
+
+                                    </button>
+
                                 <% } %>
 
                                 <% if (typeof user !== "undefined") { %>
                                     <% if (user.type === "admin") { %>
                                         <%# Delete book (admin only) %>
                                         <button class="btn btn-outline-danger delete-button"
-                                            type="button" title="Delete book" value="" data-id="<%= book.id %>">
+                                            type="button" title="Delete book" data-id="<%= book.id %>">
 
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>

@@ -1,13 +1,21 @@
 "use strict";
 
 const express = require('express');
-const { body, validationResult } = require('express-validator');
+const multer = require('multer');
+const { check, validationResult } = require('express-validator');
 const Book = require('../entities/book');
 const router = express.Router();
 const bookDao = require('../models/book-dao');
 const logger = require('../util/logger');
 const moment = require('moment');
 const bookType = require('../entities/constants/book-type');
+
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: {
+        fileSize: 5 * 1024 * 1024
+    }
+});
 
 router.get('/', async (req, res, _next) => {
     const books = await bookDao.findAllBooks();
@@ -19,25 +27,23 @@ router.get('/', async (req, res, _next) => {
     });
 });
 
-router.post('/', [
-    body('title').isString().escape().withMessage('Please enter a valid title'),
-    body('author').isAlpha().escape().withMessage('Please enter a valid author name'),
-    body('isbn').trim().isISBN().escape().withMessage('Please enter a valid ISBN'),
-    body('publisher').trim().isString().escape().withMessage('Please enter a valid publisher'),
-    body('stock').trim().isInt({ min: 1, max: 300 }).escape().withMessage('Please enter a valid stock'),
-    body('pages').trim().isInt({ min: 1, max: 10000 }).escape().withMessage('Please enter a valid number of pages'),
-    body('date-published').isDate().isBefore(moment().format('YYYY-MM-DD')),
-    body('description').isLength({ min: 1, max: 250 }).withMessage('Please enter a valid description'),
+router.post('/', upload.single('book-image'), async function (req, res, _next) {
+    check('title').isString().isLength({ min: 1, max: 100 }).withMessage('Please enter a valid title');
+    check('author').isString().isLength({ min: 1, max: 100 }).withMessage('Please enter a valid author name');
+    check('isbn').isISBN().withMessage('Please enter a valid ISBN');
+    check('publisher').isString().isLength({ min: 1, max: 100 }).withMessage('Please enter a valid publisher name');
+    check('stock').isInt({ min: 1, max: 300 }).withMessage('Please enter a valid stock');
+    check('pages').isInt({ min: 1, max: 10000 }).withMessage('Please enter a valid number of pages');
+    check('price').isFloat({ min: 0.01, max: 100000 }).withMessage('Please enter a valid price');
+    check('type').isIn([bookType.PAPER, bookType.EBOOK]).withMessage('Please enter a valid book type');
+    check('date-published').isDate().isBefore(moment().format('YYYY-MM-DD')).withMessage('Please enter a valid date');
+    check('description').isString().isLength({ min: 1, max: 250 }).withMessage('Please enter a valid description');
 
-], async function (req, res) {
     const errors = validationResult(req);
 
-    // FIXME: req.body empty
+    logger.logDebug(JSON.stringify(req.body));
 
     if (errors.isEmpty()) {
-
-        logger.logDebug(`Creating new book: ${JSON.stringify(req.body)}`);
-
         const book = new Book(
             undefined,
             req.body.title,
@@ -50,9 +56,8 @@ router.post('/', [
             req.body.publisher,
             req.body['date-published'],
             req.body.description,
-            req.body['book-image'],
-            req.body.price
-        );
+            req.file.buffer,
+            req.body.price);
 
         bookDao.addBook(book)
             .then(async function (id) {
@@ -61,7 +66,7 @@ router.post('/', [
                 const books = await bookDao.findAllBooks();
 
                 res.render('books', {
-                    user: req.user, message: "Book successsfully added", books: books, styles: [
+                    user: req.user, errors: [`Error adding book: ${err}`], books: books, styles: [
                         '/stylesheets/books.css'
                     ], scripts: ['/javascripts/books.js']
                 });
@@ -93,7 +98,7 @@ router.post('/', [
 router.delete('/:id', async function (req, res) {
     const bookId = req.params.id;
 
-    await bookDao.deleteBook(bookId);
+    await bookDao.deleteBook(parseInt(bookId));
     logger.logInfo(`Deleted book with id: ${bookId}`);
 
     const books = await bookDao.findAllBooks();
