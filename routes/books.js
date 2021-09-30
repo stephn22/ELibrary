@@ -8,6 +8,7 @@ const router = express.Router();
 const bookDao = require('../models/book-dao');
 const logger = require('../util/logger');
 const moment = require('moment');
+const favouritesDao = require('../models/favourites-dao');
 const bookType = require('../entities/constants/book-type');
 
 const upload = multer({
@@ -20,8 +21,10 @@ const upload = multer({
 router.get('/', async (req, res, _next) => {
     const books = await bookDao.findAllBooks();
 
+    const favourites = getFavourites(req.user);
+
     res.render('books', {
-        user: req.user, books: books, styles: [
+        user: req.user, books: books, favourites: favourites, styles: [
             '/stylesheets/books.css'
         ], scripts: ['/javascripts/books.js']
     });
@@ -64,9 +67,10 @@ router.post('/', upload.single('book-image'), async function (req, res, _next) {
                 logger.logInfo(`Added book with id: ${id}`);
 
                 const books = await bookDao.findAllBooks();
+                const favourites = getFavourites(req.user);
 
                 res.render('books', {
-                    user: req.user, errors: [`Error adding book: ${err}`], books: books, styles: [
+                    user: req.user, errors: [`Error adding book: ${err}`], books: books, favourites: favourites, styles: [
                         '/stylesheets/books.css'
                     ], scripts: ['/javascripts/books.js']
                 });
@@ -75,9 +79,10 @@ router.post('/', upload.single('book-image'), async function (req, res, _next) {
                 logger.logError(`Error adding book: ${err}`);
 
                 const books = await bookDao.findAllBooks();
+                const favourites = getFavourites(req.user);
 
                 res.render('books', {
-                    user: req.user, errors: [`Error adding book: ${err}`], books: books, styles: [
+                    user: req.user, errors: [`Error adding book: ${err}`], books: books, favourites: favourites, styles: [
                         '/stylesheets/books.css'
                     ], scripts: ['/javascripts/books.js']
                 });
@@ -86,9 +91,10 @@ router.post('/', upload.single('book-image'), async function (req, res, _next) {
         logger.logError(`Book not added: ${JSON.stringify(errors)}`);
 
         const books = await bookDao.findAllBooks();
+        const favourites = getFavourites(req.user);
 
         res.render('books', {
-            user: req.user, books: books, styles: [
+            user: req.user, books: books, favourites: favourites, styles: [
                 '/stylesheets/books.css'
             ], scripts: ['/javascripts/books.js'], errors: errors.array()
         });
@@ -102,12 +108,26 @@ router.delete('/:id', async function (req, res) {
     logger.logInfo(`Deleted book with id: ${bookId}`);
 
     const books = await bookDao.findAllBooks();
+    const favourites = getFavourites(req.user);
 
     res.render('books', {
-        user: req.user, books: books, message: "Book successfully deleted", styles: [
+        user: req.user, books: books, favourites: favourites, message: "Book successfully deleted", styles: [
             '/stylesheets/books.css'
         ], scripts: ['/javascripts/books.js']
     });
 });
+
+/**
+ * Get favourites of user if logged in
+ * @param {User} user user
+ * @returns {Favourites} returns the Favourites object if logged in, favourites of user, otherwise undefined
+ */
+async function getFavourites(user) {
+    if (user) {
+        return await favouritesDao.findFavouritesByUserId(user.id);
+    } else {
+        return undefined;
+    }
+}
 
 module.exports = router;
