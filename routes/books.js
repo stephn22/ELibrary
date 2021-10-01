@@ -96,16 +96,30 @@ router.post('/', upload.single('book-image'), async function (req, res, _next) {
 router.delete('/:id', async function (req, res) {
     const bookId = req.params.id;
 
-    await bookDao.deleteBook(parseInt(bookId));
-    logger.logInfo(`Deleted book with id: ${bookId}`);
+    bookDao.deleteBook(parseInt(bookId))
+        .then(async function () {
+            logger.logInfo(`Deleted book with id: ${bookId}`);
 
-    const books = await bookDao.findAllBooks();
+            const books = await bookDao.findAllBooks();
 
-    res.render('books', {
-        user: req.user, books: books, message: "Book successfully deleted", styles: [
-            '/stylesheets/books.css'
-        ], scripts: ['/javascripts/books.js']
-    });
+            res.render('books', {
+                user: req.user, books: books, message: "Book successfully deleted", styles: [
+                    '/stylesheets/books.css'
+                ], scripts: ['/javascripts/books.js']
+            });
+        })
+        .catch(async function (err) {
+            logger.logError(`Error deleting book: ${err}`);
+
+            const books = await bookDao.findAllBooks();
+
+            res.render('books', {
+                user: req.user, books: books, errors: [`Error deleting book: ${err}`], styles: [
+                    '/stylesheets/books.css'
+                ], scripts: ['/javascripts/books.js']
+            });
+        });
+
 });
 
 module.exports = router;
