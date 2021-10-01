@@ -3,19 +3,24 @@
 const express = require('express');
 const router = express.Router();
 const bookDao = require('../models/book-dao');
-const logger = require('../util/logger');
 
 router.get('/:bookId', function (req, res) {
-    const bookId  = req.params.bookId;
-
-    logger.logDebug(`Book details requested for bookId: ${bookId}`);
+    const bookId = req.params.bookId;
 
     bookDao.findBookById(bookId)
         .then(book => {
-            res.render('book-details', { user: req.user, book: book, styles: ['/stylesheets/books.css'] });
+            res.render('book-details', {
+                user: req.user, book: book,
+                styles: ['/stylesheets/book-details.css'],
+                scripts: ['/javascripts/book-details.js']
+            });
         })
         .catch(err => {
-            res.status(500).render('book-details', { user: req.user, errors: [err], styles: ['/stylesheets/books.css'] });
+            res.status(404).render('book-details', {
+                user: req.user, errors: [err],
+                styles: ['/stylesheets/book-details.css'],
+                scripts: ['/javascripts/book-details.js']
+            });
         });
 });
 

@@ -32,83 +32,268 @@
     <br />
 
     <% if (typeof book !== "undefined") { %>
+        <% if (typeof user !== "undefined" && user.type === "admin") { %>
 
-        <div class="container">
-            <!-- TODO: image -->
-            <h5>
-                <%= book.title %>
-            </h5>
-            <hr />
-            <div class="row col-md-5">
-               <p>
-                    <%= book.description %>
-               </p>
+                <div class="container book-form">
+
+                    <form id="edit-book-form<%= book.id %>" action="/books/<%= book.id %>" method="POST"> <%# POST? %>
+    
+                        <div class="form-row square">
+                            <img src="data:image/jpeg;base64,<%= book.imgUrl.toString('base64')%>" id="book-image" class="square img-rounded" alt="<%= book.title %>">
+
+                        <button class="btn btn-secondary edit-img-btn" type="button" id="upload-new-img">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                            </svg>
+                        </button>
+
+                        <input type="file" id="new-img-input" />
+                        </div>
+                        <br />
+                        <%# Title %>
+                        <div class="form-group">
+                            <div class="form-floating col-6">
+                                <input type="text" class="form-control" id="title"
+                                       name="title" value="<%= book.title %>" placeholder="Book Title" required>
+                                <label for="title">Title</label>
+                            </div>
+                            <span class="text-danger" id="title-validation"></span>
+                        </div>
+    
+                        <br/>
+    
+                        <%# Author %>
+                        <div class="form-group">
+                            <div class="form-floating col-6">
+                                <input type="text" class="form-control" id="author"
+                                       name="author" value="<%= book.author %>" placeholder="Book Author" required>
+                                <label for="author">Author</label>
+                            </div>
+                            <span class="text-danger" id="author-validation"></span>
+                        </div>
+    
+                        <br/>
+    
+                        <%# ISBN %>
+                        <div class="form-group">
+                            <div class="form-floating col-6">
+                                <input type="text" class="form-control" id="isbn"
+                                       name="isbn" value="<%= book.isbn %>" placeholder="Book ISBN" required>
+                                <label for="isbn">ISBN</label>
+                            </div>
+                            <span class="text-danger" id="isbn-validation"></span>
+                        </div>
+    
+                        <br/>
+    
+                        <%# Radio btn paper %>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="Paper" name="type"
+                                   id="paper" <%= (book.type === "Paper") ? 'checked' : '' %>>
+                            <label class="form-check-label" for="paper">
+                                Paper
+                            </label>
+                        </div>
+    
+                        <%# Radio btn ebook %>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="EBook" name="type"
+                                   id="ebook" <%= (book.type === "Ebook") ? 'checked' : '' %>>
+                            <label class="form-check-label" for="ebook">
+                                EBook
+                            </label>
+                        </div>
+    
+                        <br/>
+    
+                        <%# Range in stock (paper books) %>
+                        <div class="form-group col-6">
+                            <label for="stock-range" class="form-label" id="stock-range-label">In stock: <%= book.stock %></label>
+                            <input type="range" name="stock" class="form-range" min="1" max="300" step="1"
+                                   value="<%= book.stock %>" id="stock-range" required>
+                            <small class="small text-muted">Leave 1 if EBook</small>
+                        </div>
+    
+                        <br/>
+    
+                        <div class="col-6">
+                            <small class="small"><%= book.language %></small>
+                            <%# Select language %>
+                            <%- include('partials/languages'); -%>
+                            
+                        </div>
+                        
+                        <br/>
+    
+                        <%# Publisher %>
+                        <div class="form-group">
+                            <div class="form-floating col-6">
+                                <input type="text" class="form-control" id="publisher"
+                                       name="publisher" value="<%= book.publisher %>" placeholder="Book Publisher" required>
+                                <label for="publisher">Publisher</label>
+                            </div>
+                            <span class="text-danger" id="publisher-validation"></span>
+                        </div>
+    
+                        <br/>
+    
+                        <%# Range pages %>
+                        <div class="form-group col-6">
+                            <label for="pages-range" class="form-label" id="pages-range-label">Pages: <%= book.pages %></label>
+                            <input type="range" name="pages" class="form-range" min="1" max="10000" step="1"
+                                   value="<%= book.pages %>" id="pages-range" required>
+                        </div>
+    
+                        <br/>
+    
+                        <%# FIXME: Date published %>
+                        <div class="form-group">
+                            <div class="form-floating col-6">
+                                <input type="date" class="form-control" id="date-published"
+                                       name="date-published" value="<%= new Date(book.datePub).toISOString().split('T')[0]; %>" placeholder="Date Published" required>
+                                <label for="date-published">Date Published</label>
+                            </div>
+                            <span class="text-danger" id="date-published-validation"></span>
+                        </div>
+    
+                        <br/>
+    
+                        <%# Text area description %>
+                        <div class="form-group col-6">
+                            <label for="description" class="form-label" id="description-label">Book
+                                Description</label>
+                            <textarea class="form-control" name="description" id="description" rows="5"
+                                      maxlength="250" required><%= book.description %></textarea>
+                            <small class="small text-muted" id="description-info">Remaining: 250</small>
+                            <span class="text-danger" id="description-validation"></span>
+                        </div>
+
+                        <%# TODO: currency %>
+                        <div class="form-group">
+                            <div class="form-floating col-6">
+                                <input type="number" class="form-control" id="price"
+                                       name="price" value="<%= book.price %>" placeholder="Book Price" required>
+                                <label for="price">Price €</label>
+                            </div>
+                            <span class="text-danger" id="price-validation"></span>
+                        </div>
+                        <br />
+                        <button class="btn btn-primary" id="save-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+                                <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+                            </svg>
+                            Save
+                        </button>
+    
+                    </form>
+                    <hr class="col-6" />
+                    <button class="btn btn-outline-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
+                            <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/>
+                            <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                          </svg>
+                        Add to cart
+                    </button>
+                    <button class="btn btn-outline-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-star" viewBox="0 0 16 16">
+                            <path d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z"/>
+                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                          </svg>
+                        Add to favourites
+                    </button>
+                    <button class="btn btn-outline-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                            <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                        </svg>
+                        Reserve book
+                    </button>
+                </div>    
+
+
+        <% } else { %>
+
+            <div class="container">
+            
+                <img src="data:image/bmp;base64,<%= book.imgUrl.toString('base64')%>" class="square img-rounded" alt="<%= book.title %>">
+    
+                <h5>
+                    <%= book.title %>
+                </h5>
+                <hr />
+                <div class="row col-md-5">
+                   <p>
+                        <%= book.description %>
+                   </p>
+                </div>
+                <div class="row">
+                    <p>
+                        Author: <%= book.author %>
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        Publisher: <%= book.publisher %>
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        Date Published: <%= new Date(book.datePub).toDateString(); %>
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        Type: <%= book.type %>
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        Price: <%= book.price %> €
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        Stock: <%= (book.type !== "Ebook" ) ? book.stock : "---" %>
+                    </p> 
+                </div>
+                <div class="row">
+                    <p>
+                        Language: <%= book.language %>
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        ISBN: <%= book.isbn %>
+                    </p>
+                </div>
+                <hr />
+                <% if (typeof user !== "undefined" && user.type !== "admin") { %>
+
+                    <button class="btn btn-outline-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
+                            <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/>
+                            <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                          </svg>
+                        Add to cart
+                    </button>
+                    <button class="btn btn-outline-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-star" viewBox="0 0 16 16">
+                            <path d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z"/>
+                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                          </svg>
+                        Add to favourites
+                    </button>
+                    <button class="btn btn-outline-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                            <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                        </svg>
+                        Reserve book
+                    </button>
+
+                <% } %>
             </div>
-            <div class="row">
-                <p>
-                    Author: <%= book.author %>
-                </p>
-            </div>
-            <div class="row">
-                <p>
-                    Publisher: <%= book.publisher %>
-                </p>
-            </div>
-            <div class="row">
-                <p>
-                    Date Published: <%= book.datePub %>
-                </p>
-            </div>
-            <div class="row">
-                <p>
-                    Type: <%= book.type %>
-                </p>
-            </div>
-            <div class="row">
-                <p>
-                    Price: <%= book.price %> €
-                </p>
-            </div>
-            <div class="row">
-                <p>
-                    Stock: <%= (book.type !== "Ebook" ) ? book.stock : "---" %>
-                </p> 
-            </div>
-            <div class="row">
-                <p>
-                    Language: <%= book.language %>
-                </p>
-            </div>
-            <div class="row">
-                <p>
-                    ISBN: <%= book.isbn %>
-                </p>
-            </div>
-            <hr />
-            <% if (typeof user !== "undefined") { %>
-                <button class="btn btn-outline-dark">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
-                        <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/>
-                        <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                      </svg>
-                    Add to cart
-                </button>
-                <button class="btn btn-outline-dark">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-star" viewBox="0 0 16 16">
-                        <path d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z"/>
-                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
-                      </svg>
-                    Add to favourites
-                </button>
-                <button class="btn btn-outline-dark">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
-                        <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
-                    </svg>
-                    Reserve book
-                </button>
-            <% } %>
-        </div>
+
         <% } %>
+    <% } %>
 
 </main>
 
