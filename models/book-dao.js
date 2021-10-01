@@ -116,7 +116,7 @@ function findBookById(id) {
                     row.language,
                     row.pages,
                     row.publisher,
-                    new Date(row.datePub).toDateString(),
+                    new Date(row.datePub),
                     row.description,
                     row.imgUrl,
                     row.price);
