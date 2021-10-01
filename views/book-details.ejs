@@ -36,7 +36,7 @@
 
                 <div class="container book-form">
 
-                    <form id="edit-book-form<%= book.id %>" action="/books/<%= book.id %>" method="POST"> <%# POST? %>
+                    <form id="edit-book-form" data-id="<%= book.id %>">
     
                         <div class="form-row square">
                             <img src="data:image/jpeg;base64,<%= book.imgUrl.toString('base64')%>" id="book-image" class="square img-rounded" alt="<%= book.title %>">
@@ -47,7 +47,7 @@
                             </svg>
                         </button>
 
-                        <input type="file" id="new-img-input" />
+                        <input type="file" id="new-img-input" name="new-img" value="<%= book.imgUrl %>" />
                         </div>
                         <br />
                         <%# Title %>
@@ -116,8 +116,9 @@
     
                         <br/>
     
+                        <%# language %>
                         <div class="col-6">
-                            <small class="small"><%= book.language %></small>
+                            <small class="small" id="language-info" data-language="<%= book.language %>"><%= book.language %></small>
                             <%# Select language %>
                             <%- include('partials/languages'); -%>
                             
@@ -146,10 +147,10 @@
     
                         <br/>
     
-                        <%# FIXME: Date published %>
+                        <%# Date published %>
                         <div class="form-group">
                             <div class="form-floating col-6">
-                                <input type="date" class="form-control" id="date-published"
+                                <input type="date" class="form-control" id="date-published" data-date="<%= new Date(book.datePub).toISOString().split('T')[0]; %>"
                                        name="date-published" value="<%= new Date(book.datePub).toISOString().split('T')[0]; %>" placeholder="Date Published" required>
                                 <label for="date-published">Date Published</label>
                             </div>
@@ -167,6 +168,8 @@
                             <small class="small text-muted" id="description-info">Remaining: 250</small>
                             <span class="text-danger" id="description-validation"></span>
                         </div>
+
+                        <br/>
 
                         <%# TODO: currency %>
                         <div class="form-group">

@@ -43,29 +43,55 @@ function addBook(book) {
  */
 function updateBook(book) {
     return new Promise((resolve, reject) => {
-        const query = "UPDATE books SET title = ?, author = ?, isbn = ?, type = ?, stock = ?, language = ?, pages = ?, publisher = ?, datePub = ?, description = ?, imgUrl = ?, price = ? WHERE id = ?";
 
-        db.run(query, [
-            book.title,
-            book.author,
-            book.isbn,
-            book.type,
-            book.stock,
-            book.language,
-            book.pages,
-            book.publisher,
-            new Date(book.datePub).getTime(),
-            book.description,
-            book.imgUrl,
-            book.price,
-            book.id], function (err) {
-                if (err) {
-                    logger.logError(err);
-                    reject(err);
-                } else {
-                    resolve(book.id);
-                }
-            });
+        if (book.imgUrl === null) {
+            const query = "UPDATE books SET title = ?, author = ?, isbn = ?, type = ?, stock = ?, language = ?, pages = ?, publisher = ?, datePub = ?, description = ?, price = ? WHERE id = ?";
+
+            db.run(query, [
+                book.title,
+                book.author,
+                book.isbn,
+                book.type,
+                book.stock,
+                book.language,
+                book.pages,
+                book.publisher,
+                new Date(book.datePub).getTime(),
+                book.description,
+                book.price,
+                book.id], function (err) {
+                    if (err) {
+                        logger.logError(err);
+                        reject(err);
+                    } else {
+                        resolve(book.id);
+                    }
+                });
+        } else {
+            const query = "UPDATE books SET title = ?, author = ?, isbn = ?, type = ?, stock = ?, language = ?, pages = ?, publisher = ?, datePub = ?, description = ?, imgUrl = ?, price = ? WHERE id = ?";
+
+            db.run(query, [
+                book.title,
+                book.author,
+                book.isbn,
+                book.type,
+                book.stock,
+                book.language,
+                book.pages,
+                book.publisher,
+                new Date(book.datePub).getTime(),
+                book.description,
+                book.imgUrl,
+                book.price,
+                book.id], function (err) {
+                    if (err) {
+                        logger.logError(err);
+                        reject(err);
+                    } else {
+                        resolve(book.id);
+                    }
+                });
+        }
     });
 }
 

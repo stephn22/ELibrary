@@ -4,6 +4,8 @@
 
 const bookImage = document.getElementById('book-image');
 
+const form = document.getElementById('edit-book-form');
+
 const uploadNewImg = document.getElementById('upload-new-img');
 const newImgInput = document.getElementById('new-img-input');
 
@@ -18,6 +20,9 @@ const isbnValidation = document.getElementById('isbn-validation');
 
 const paper = document.getElementById('paper');
 const ebook = document.getElementById('ebook');
+
+const language = document.getElementById('languages-select');
+const languageInfo = document.getElementById('language-info');
 
 const publisher = document.getElementById('publisher');
 const publisherValidation = document.getElementById('publisher-validation');
@@ -39,6 +44,8 @@ const price = document.getElementById('price');
 const priceValidation = document.getElementById('price-validation');
 
 const saveBtn = document.getElementById('save-btn');
+
+const formData = new FormData();
 
 /************************** EVENT LISTENERS *****************************/
 
@@ -101,6 +108,10 @@ isbn.addEventListener('input', () => {
     }
 });
 
+language.addEventListener('change', () => {
+    enableBtn(saveBtn);
+});
+
 paper.addEventListener('click', () => {
     enableBtn(saveBtn);
 });
@@ -161,18 +172,55 @@ price.addEventListener('input', () => {
 });
 
 stockRange.addEventListener('input', () => {
+    enableBtn(saveBtn);
     stockRangeLabel.innerHTML = `In stock: ${stockRange.value}`;
 });
 
 pagesRange.addEventListener('input', () => {
+    enableBtn(saveBtn);
     pagesRangeLabel.innerHTML = `Pages: ${pagesRange.value}`;
 });
 
 saveBtn.addEventListener('click', (e) => {
     if (!valid) {
         e.preventDefault();
+    } else {
+        // get book id
+        const bookId = parseInt(form.getAttribute('data-id'));
+
+        // prepare the form data
+        formData.append('title', title.value);
+        formData.append('author', author.value);
+        formData.append('isbn', isbn.value);
+        formData.append('publisher', publisher.value);
+        formData.append('stock', stockRange.value);
+        formData.append('language', language.value === '--' ? languageInfo.getAttribute('data-language') : language.value);
+        formData.append('pages', pagesRange.value);
+        formData.append('price', price.value);
+        formData.append('type', paper.checked ? 'Paper' : 'Ebook');
+        formData.append('date-published', datePublished.value);
+        formData.append('description', description.value);
+        formData.append('new-img', newImgInput.files[0]);
+
+        // send the form data
+        updateBook(bookId, formData);
     }
 });
+
+/************************** FETCH API METHODS *****************************/
+
+/**
+ * Using fetch API to update the book
+ * @param {number} bookId id of the book to be updated
+ * @param {FormData} formData form data to be sent to the server
+ */
+function updateBook(bookId, formData) {
+    fetch(`/book-details/${bookId}`, {
+        method: 'PUT',
+        body: formData
+    }).then(window.location.reload())
+        .catch(error => console.error(error));
+}
 
 /************************** VALIDATION METHODS *****************************/
 
