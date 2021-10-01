@@ -41,8 +41,6 @@ router.post('/', upload.single('book-image'), async function (req, res, _next) {
 
     const errors = validationResult(req);
 
-    logger.logDebug(JSON.stringify(req.body));
-
     if (errors.isEmpty()) {
         const book = new Book(
             undefined,
@@ -66,7 +64,7 @@ router.post('/', upload.single('book-image'), async function (req, res, _next) {
                 const books = await bookDao.findAllBooks();
 
                 res.render('books', {
-                    user: req.user, errors: [`Error adding book: ${err}`], books: books, styles: [
+                    user: req.user, message: "Book added successfully", books: books, styles: [
                         '/stylesheets/books.css'
                     ], scripts: ['/javascripts/books.js']
                 });

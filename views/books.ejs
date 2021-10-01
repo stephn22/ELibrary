@@ -215,7 +215,6 @@
                                         <span class="text-danger" id="price-validation"></span>
                                     </div>
 
-
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
@@ -310,6 +309,7 @@
 
                                 <% if (typeof user !== "undefined") { %>
                                     <% if (user.type === "admin") { %>
+
                                         <%# Delete book (admin only) %>
                                         <button class="btn btn-outline-danger delete-button"
                                             type="button" title="Delete book" data-id="<%= book.id %>">
@@ -320,6 +320,7 @@
                                             </svg>
 
                                         </button>
+
                                     <% } %>
                                 <% } %>
                             </div>

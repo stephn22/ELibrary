@@ -199,8 +199,9 @@ for (let i = 0; i < reserveBookBtns.length; i++) {
 
 // add event listeners to buttons delete
 for (let i = 0; i < deleteBtns.length; i++) {
-    // get the book id
     deleteBtns[i].addEventListener('click', () => {
+
+        // get the book id
         const id = deleteBtns[i].getAttribute('data-id');
 
         // and delete the book if clicked
@@ -223,7 +224,7 @@ function deleteBook(bookId) {
 }
 
 /**
- * Using the fetch API get all books
+ * Using the fetch API to get all books
  * @returns {Book[]} an array of books
  */
 async function getAllBooks() {
@@ -331,7 +332,7 @@ function fadeIn(element) {
     element.removeAttribute("hidden");
     
     setTimeout(() => {
-        element.classList.remove("fade");
+        element.classList.remove("fade-effect");
     }, 280);
 }
 
@@ -340,7 +341,7 @@ function fadeIn(element) {
  * @param {Element} element element to be animated
  */
 function fadeOut(element) {
-    element.classList.add("fade");
+    element.classList.add("fade-effect");
     setTimeout(() => {
         element.setAttribute("hidden", "");
     }, 350);
