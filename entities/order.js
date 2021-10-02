@@ -18,12 +18,11 @@ class Order extends baseEntity {
      * @param {number} book_id id of the book
      * @param {Book} book book entity
      * @param {number} price price of the order
-     * @param {number} address_id id of the address
      * @param {Address} address address entity
      * @param {string} status status of the order
      * @param {string} type type of the order (buy, reservation)
      */
-    constructor (id, customer_id, date, book_id, price, address_id, status, type) {
+    constructor (id, customer_id, date, book_id, price, address, status, type) {
         super(id);
         this.customer_id = customer_id;
         this.customer = undefined;
@@ -31,8 +30,7 @@ class Order extends baseEntity {
         this.book_id = book_id;
         this.book = undefined;
         this.price = price;
-        this.address_id = address_id;
-        this.address = undefined;
+        this.address = address;
         this.status = status;
         this.type = type;
     }

@@ -168,8 +168,9 @@ search.addEventListener('keyup', () => {
     books.forEach(book => {
         const title = book.querySelector('.title').innerHTML.toLowerCase();
         const author = book.querySelector('.author').innerHTML.toLowerCase();
+        const isbn = book.querySelector('.isbn').innerHTML.toLowerCase();
 
-        if (title.includes(searchValue) || author.includes(searchValue)) {
+        if (title.includes(searchValue) || author.includes(searchValue) || isbn.includes(searchValue)) {
             fadeIn(book);
         } else {
             fadeOut(book);

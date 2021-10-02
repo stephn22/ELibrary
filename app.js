@@ -16,6 +16,7 @@ const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
 const userDao = require('./models/user-dao.js');
 const cookieParser = require('cookie-parser');
+const userType = require('./entities/constants/user-type.js');
 
 // routes
 const indexRouter = require('./routes/index.js');
@@ -25,6 +26,7 @@ const profileRouter = require('./routes/profile.js');
 const booksRouter = require('./routes/books.js');
 const bookDetailsRouter = require('./routes/book-details.js');
 const apiRouter = require('./routes/api.js');
+const ordersRouter = require('./routes/orders.js');
 
 /************** SETUP *************/
 
@@ -104,6 +106,14 @@ const isLoggedIn = (req, res, next) => {
     }
 };
 
+const isAdmin = (req, res, next) => {
+    if (req.user.type === userType.ADMIN && req.isAuthenticated()) {
+        return next();
+    } else {
+        res.redirect("/"); // TODO:
+    }
+};
+
 /************** ROUTES *************/
 
 app.use('/', sessionsRouter);
@@ -113,6 +123,7 @@ app.use('/profile', isLoggedIn, profileRouter);
 app.use('/books', booksRouter);
 app.use('/book-details', bookDetailsRouter);
 app.use('/api', apiRouter);
+app.use('/orders', isAdmin, ordersRouter);
 
 app.use('/', (_req, _res, next) => {
     next(createError(404));

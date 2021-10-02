@@ -113,8 +113,10 @@ function findOrderById(id) {
 
                 // fill properties with relative objects
                 const user = await userDao.findUserById(row.customer_id);
+                const book = await bookDao.findBookById(row.book_id);
 
                 order.customer = user;
+                order.book = book;
 
                 resolve(order);
             }
@@ -198,8 +200,10 @@ function findAllOrders() {
 
                     // fill properties with relative objects
                     let user = await userDao.findUserById(row.customer_id);
+                    let book = await bookDao.findBookById(row.book_id);
 
                     order.customer = user;
+                    order.book = book;
 
                     orders.push(order);
                 });
