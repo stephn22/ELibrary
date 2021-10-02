@@ -173,8 +173,9 @@ search.addEventListener('keyup', () => {
         const title = book.querySelector('.title').innerHTML.toLowerCase();
         const author = book.querySelector('.author').innerHTML.toLowerCase();
         const isbn = book.querySelector('.isbn').innerHTML.toLowerCase();
+        const type = book.querySelector('.type').innerHTML.toLowerCase();
 
-        if (title.includes(searchValue) || author.includes(searchValue) || isbn.includes(searchValue)) {
+        if (title.includes(searchValue) || author.includes(searchValue) || isbn.includes(searchValue) || type.includes(searchValue)) {
             fadeIn(book);
         } else {
             fadeOut(book);
@@ -196,9 +197,12 @@ ebookFilter.addEventListener('change', () => {
     const books = document.querySelectorAll('.book');
 
     books.forEach(book => {
-        if (ebookFilter.checked && book.querySelector('.type').innerHTML.toLowerCase() === 'ebook') {
+        const type = book.querySelector('.type').innerHTML.toLowerCase();
+
+        if (ebookFilter.checked && type.includes('ebook')) {
             fadeIn(book);
         } else {
+            console.log(type);
             fadeOut(book);
         }
     });
@@ -208,7 +212,9 @@ paperFilter.addEventListener('change', () => {
     const books = document.querySelectorAll('.book');
 
     books.forEach(book => {
-        if (paperFilter.checked && book.querySelector('.type').innerHTML.toLowerCase() === 'paper') {
+        const type = book.querySelector('.type').innerHTML.toLowerCase();
+
+        if (paperFilter.checked && type.includes('paper')) {
             fadeIn(book);
         } else {
             fadeOut(book);
