@@ -24,7 +24,7 @@ function logInfo(msg) {
  * @param {string} msg message to log
  */
 function logWarn(msg) {
-    console.warn(`[${now().white.bgYellow}] WARN: ${msg}`.yellow);
+    console.warn(`[${now().black.bgYellow}] WARN: ${msg}`.yellow);
 }
 
 /**

@@ -41,31 +41,46 @@ function addUser(user) {
  */
 function updateUser(user, newPassword = null) {
     return new Promise(async (resolve, reject) => {
-        let query = "UPDATE users SET fname = ?, lname = ?, email = ?, address = ?, type = ? WHERE id = ?";
-
         if (newPassword !== null) {
             user.password = await crypt.hash(newPassword, 10);
 
-            query = "UPDATE users SET fname = ?, lname = ?, email = ?, password = ?, address = ?, type = ? WHERE id = ?"
+            const query = "UPDATE users SET fname = ?, lname = ?, email = ?, password = ?, address = ?, type = ? WHERE id = ?"
+
+            db.run(query, [
+                user.firstname,
+                user.lastname,
+                user.email,
+                user.password,
+                user.address,
+                user.type,
+                user.id], (err) => {
+                    if (err) {
+                        logger.logError(err);
+                        reject(err);
+                    } else {
+                        resolve(user.id);
+                    }
+                });
+        } else {
+            const query = "UPDATE users SET fname = ?, lname = ?, email = ?, address = ?, type = ? WHERE id = ?";
+
+            db.run(query, [
+                user.firstname,
+                user.lastname,
+                user.email,
+                user.address,
+                user.type,
+                user.id], (err) => {
+                    if (err) {
+                        logger.logError(err);
+                        reject(err);
+                    } else {
+                        resolve(user.id);
+                    }
+                });
         }
 
-        logger.logDebug(JSON.stringify(user));
 
-        db.run(query, [
-            user.firstname,
-            user.lastname,
-            user.email,
-            user.password,
-            user.address,
-            user.type,
-            user.id], (err) => {
-                if (err) {
-                    logger.logError(err);
-                    reject(err);
-                } else {
-                    resolve(user.id);
-                }
-            });
     });
 }
 

@@ -25,7 +25,7 @@ router.post("/update-email", [
     body('new-email').trim().isEmail().withMessage("Please enter a valid email").escape()
 ], async (req, res, _next) => {
     const errors = validationResult(req);
-
+    
     if (errors.isEmpty()) {
         const orders = orderDao.findOrdersByCustomerId(req.user.id);
         const user = await userDao.findUserByEmail(req.user.email);
@@ -55,7 +55,7 @@ router.post("/update-email", [
     }
 });
 
-router.post("/profile/update-password", [
+router.post("/update-password", [
     body('new-password').matches(/^.*(?=.{8,})(?=.*[\d])(?=.*[\W]).*$/).escape().withMessage("Password must be at least 8 characters long and contain at least one number and one non-alphanumeric character"),
 ], async function (req, res, _next) {
     const errors = validationResult(req);
