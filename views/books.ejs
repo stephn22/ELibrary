@@ -46,7 +46,7 @@
             </svg>
         </button>
 
-        <%# FIXME: Filter collapse %>
+        <%# Filter collapse %>
 
         <div id="filter-collapse" class="collapse">
             <div class="card card-body" id="filter-collapse-body">
@@ -321,93 +321,6 @@
                                 <a class="link-primary" href="book-details/<%= book.id %>">Details</a>
 
                                 <hr/>
-
-                                <% if (typeof user !== "undefined") { %> <%# if user is logged %>
-
-                                    <%# Add to cart button %>
-                                    <button class="btn btn-outline-dark add-to-cart shadow-lg rounded"
-                                            type="button" data-bs-toggle="modal"
-                                            title="Add to cart"
-                                            data-bs-target="#addToCartModal<%= book.id %>" data-id="<%= book.id %>">
-
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            width="16" height="16"
-                                            fill="currentColor"
-                                            class="bi bi-cart-plus"
-                                            viewBox="0 0 16 16">
-                                            <path
-                                                    d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/>
-                                            <path
-                                                    d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                                        </svg>
-                                        
-                                    </button>
-
-                                    <%# FIXME: Add to cart modal %>
-
-                                    <div class="modal fade" id="addToCartModal<%= book.id %>" tabindex="-1" aria-labelledby="addToCartModal-label<%= book.id %>" aria-hidden="true">
-                                        <div class="modal dialog modal-dialog-centered">
-                                            <div class="modal-content">
-
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="addToCartModal-label<%= book.id %>">
-                                                        Add to cart
-                                                    </h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label-close></button>
-                                                </div>
-
-                                                <div class="modal-body">
-                                                    <p>Are you sure you want to add this book to your cart?</p>
-                                                </div>
-
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                    <button type="button" class="btn btn-primary add-to-cart-confirm" data-bs-dismiss="modal">
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <%# Reserve book (for modal) %>
-
-                                    <button class="btn btn-outline-dark shadow-lg rounded" data-bs-toggle="modal" data-bs-target="#reserve-book-modal<%= book.id %>"
-                                        type="button" title="Reserve book" data-id="<%= book.id %>" data-user="<%= user.id %>">
-
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
-                                            <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
-                                        </svg>
-
-                                    </button>
-
-
-                                    <%# FIXME: Reserve book modal %>
-
-                                    <div class="modal fade" id="reserve-book-modal<%= book.id %>" tabindex="-1" aria-labelledby="reserve-book-modal-label<%= book.id %>" aria-hidden="true">
-                                        <div class="modal dialog modal-dialog-centered">
-                                            <div class="modal-content">
-
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="reserve-book-modal-label<%= book.id %>">
-                                                        Reserve <%= book.title %>
-                                                    </h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label-close></button>
-                                                </div>
-
-                                                <div class="modal-body">
-                                                    <p>Are you sure you want to reserve <%= book.title %>?</p>
-                                                </div>
-
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                    <button type="button" class="btn btn-primary reserve-book" data-bs-dismiss="modal" data-id="<%= book.id %>" data-user="<%= user.id %>">Reserve</button>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                <% } %>
 
                                 <% if (typeof user !== "undefined") { %>
                                     <% if (user.type === "admin") { %>

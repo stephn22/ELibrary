@@ -11,8 +11,6 @@ const paperFilter = document.getElementById('paper-filter');
 
 const clear = document.getElementById('clear');
 
-const addToCartBtns = document.getElementsByClassName('add-to-cart');
-const reserveBookBtns = document.getElementsByClassName('reserve-book');
 const deleteBtns = document.getElementsByClassName('delete-button');
 
 const title = document.getElementById('title');
@@ -165,6 +163,7 @@ if (bookImage && title && author && isbn && paper && ebook && publisher && stock
     });
 }
 
+// TODO: improve filtering
 search.addEventListener('keyup', () => {
     const searchValue = search.value.toLowerCase();
     const books = document.querySelectorAll('.book');
@@ -175,7 +174,10 @@ search.addEventListener('keyup', () => {
         const isbn = book.querySelector('.isbn').innerHTML.toLowerCase();
         const type = book.querySelector('.type').innerHTML.toLowerCase();
 
-        if (title.includes(searchValue) || author.includes(searchValue) || isbn.includes(searchValue) || type.includes(searchValue)) {
+        if (title.includes(searchValue)
+            || author.includes(searchValue)
+            || isbn.includes(searchValue)
+            || type.includes(searchValue)) {
             fadeIn(book);
         } else {
             fadeOut(book);
@@ -202,7 +204,6 @@ ebookFilter.addEventListener('change', () => {
         if (ebookFilter.checked && type.includes('ebook')) {
             fadeIn(book);
         } else {
-            console.log(type);
             fadeOut(book);
         }
     });
@@ -230,23 +231,6 @@ clear.addEventListener('click', () => {
     });
 });
 
-// add event listeners to buttons add to cart
-for (let i = 0; i < addToCartBtns.length; i++) {
-    // TODO:
-}
-
-// add event listeners to buttons reserve book
-for (let i = 0; i < reserveBookBtns.length; i++) {
-    reserveBookBtns[i].addEventListener('click', () => {
-        const bookId = reserveBookBtns[i].getAttribute('data-id');
-        const userId = reserveBookBtns[i].getAttribute('data-user');
-
-        if (bookId && userId) {
-            createOrder(bookId, userId, "Reservation");
-        }
-    });
-}
-
 // add event listeners to buttons delete
 for (let i = 0; i < deleteBtns.length; i++) {
     deleteBtns[i].addEventListener('click', () => {
@@ -262,33 +246,6 @@ for (let i = 0; i < deleteBtns.length; i++) {
 }
 
 /************************** FETCH API METHODS *****************************/
-
-/**
- * Using the fetch API to create a new order
- * @param {number} bookId id of the book
- * @param {number} userId id of the user
- * @param {string} type type of the order
- * @param {number} price price of the book (only if buying)
- * @param {string} address address of the user (only if buying)
- */
-function createOrder(bookId, userId, type, price = 0.00, address = "") {
-    const body = {
-        bookId: bookId,
-        userId: userId,
-        price: price,
-        type: type,
-        address: address
-    }
-
-    fetch("/orders", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    }).then(window.location.reload())
-        .catch(err => console.log(err));
-}
 
 /**
  * Using the fetch API to delete a book by its id
