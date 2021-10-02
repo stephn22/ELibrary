@@ -14,9 +14,10 @@ router.get("/", (req, res, _next) => {
     const orders = orderDao.findOrdersByCustomerId(req.user.id);
 
     res.render("profile", {
-        user: req.user, orders: orders, styles: [
-            '/stylesheets/profile.css'
-        ], scripts: ['/javascripts/profile.js']
+        user: req.user,
+        orders: orders,
+        styles: ['/stylesheets/profile.css'],
+        scripts: ['/javascripts/profile.js']
     });
 });
 
@@ -35,15 +36,21 @@ router.post("/update-email", [
         logger.logInfo(`Updated user with id: ${user.id}`);
 
         res.render("profile", {
-            user: user, orders: orders, styles: ['/stylesheets/profile.css'],
-            scripts: ['/javascripts/profile.js'], message: "Email updated successfully"
+            user: user,
+            orders: orders,
+            styles: ['/stylesheets/profile.css'],
+            scripts: ['/javascripts/profile.js'],
+            message: "Email updated successfully"
         });
     } else {
         logger.logError(JSON.stringify(errors));
 
         res.render("profile", {
-            user: req.user, orders: orders, styles: ['/stylesheets/profile.css'],
-            scripts: ['/javascripts/profile.js'], errors: errors.array()
+            user: req.user,
+            orders: orders,
+            styles: ['/stylesheets/profile.css'],
+            scripts: ['/javascripts/profile.js'],
+            errors: errors.array()
         });
     }
 });
@@ -72,15 +79,21 @@ router.post("/profile/update-password", [
         logger.logInfo(`Updated user with id: ${user.id}`);
 
         res.render("profile", {
-            user: user, orders: orders, styles: ['/stylesheets/profile.css'],
-            scripts: ['/javascripts/profile.js'], message: "Password updated successfully"
+            user: user,
+            orders: orders,
+            styles: ['/stylesheets/profile.css'],
+            scripts: ['/javascripts/profile.js'],
+            message: "Password updated successfully"
         });
     } else {
         logger.logError(JSON.stringify(errors));
 
         res.render("profile", {
-            user: req.user, orders: orders, styles: ['/stylesheets/profile.css'],
-            scripts: ['/javascripts/profile.js'], errors: errors.array()
+            user: req.user,
+            orders: orders,
+            styles: ['/stylesheets/profile.css'],
+            scripts: ['/javascripts/profile.js'],
+            errors: errors.array()
         });
     }
 });

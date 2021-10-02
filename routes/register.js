@@ -10,9 +10,9 @@ const { urlencoded } = require('body-parser'); // TODO: ?
 const logger = require('../util/logger');
 
 router.get("/", (_req, res, _next) => {
-    res.render("register", { styles: [
-            '/stylesheets/forms.css'
-        ], scripts: ['/javascripts/register-form.js']
+    res.render("register", {
+        styles: ['/stylesheets/forms.css'],
+        scripts: ['/javascripts/register-form.js']
     });
 });
 
@@ -21,7 +21,7 @@ router.post("/", [
     body("fname").trim().matches(/^[a-zA-Z ]{1,50}$/).escape().withMessage("Please enter a valid first name"),
     body("lname").trim().matches(/^[a-zA-Z ]{1,50}$/).escape().withMessage("Please enter a valid last name"),
     body("email").trim().isEmail().withMessage("Please enter a valid email").escape()
-        .custom(async function(email) {
+        .custom(async function (email) {
             const user = await userDao.findUserByEmail(email);
 
             if (!user.hasOwnProperty("error")) { // if findUserByEmail finds a user and not the error "user not found";
@@ -57,17 +57,19 @@ router.post("/", [
         logger.logInfo(`New user added with id: ${userId}`);
 
         res.render("login", {
-            title: "Login", message: "Successfully registered", styles: [
-                '/stylesheets/forms.css'
-            ], scripts: ['/javascripts/login-form.js']
+            title: "Login",
+            message: "Successfully registered",
+            styles: ['/stylesheets/forms.css'],
+            scripts: ['/javascripts/login-form.js']
         });
     } else {
         logger.logError(JSON.stringify(errors));
 
         res.render("register", {
-            title: "Register", errors: errors.array(), styles: [
-                '/stylesheets/forms.css'
-            ], scripts: ['/javascripts/register-form.js']
+            title: "Register",
+            errors: errors.array(),
+            styles: ['/stylesheets/forms.css'],
+            scripts: ['/javascripts/register-form.js']
         });
     }
 });

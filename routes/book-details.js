@@ -25,14 +25,16 @@ router.get('/:bookId', function (req, res) {
     bookDao.findBookById(bookId)
         .then(book => {
             res.render('book-details', {
-                user: req.user, book: book,
+                user: req.user,
+                book: book,
                 styles: ['/stylesheets/book-details.css'],
                 scripts: ['/javascripts/book-details.js']
             });
         })
         .catch(err => {
             res.status(404).render('book-details', {
-                user: req.user, errors: [err],
+                user: req.user,
+                errors: [err],
                 styles: ['/stylesheets/book-details.css'],
                 scripts: ['/javascripts/book-details.js']
             });
@@ -77,7 +79,9 @@ router.put('/:bookId', upload.single('new-img'), async function (req, res) {
                 logger.logInfo(`Updated book with id: ${id}`);
 
                 res.render('book-details', {
-                    user: req.user, message: "Book updated successfully", book: book,
+                    user: req.user,
+                    message: "Book updated successfully",
+                    book: book,
                     styles: ['/stylesheets/book-details.css'],
                     scripts: ['/javascripts/book-details.js']
                 });
@@ -88,7 +92,9 @@ router.put('/:bookId', upload.single('new-img'), async function (req, res) {
                 const book = await bookDao.findBookById(bookId);
 
                 res.render('book-details', {
-                    user: req.user, book: book, errors: [err],
+                    user: req.user,
+                    book: book,
+                    errors: [err],
                     styles: ['/stylesheets/book-details.css'],
                     scripts: ['/javascripts/book-details.js']
                 });

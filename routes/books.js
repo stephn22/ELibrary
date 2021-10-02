@@ -21,9 +21,10 @@ router.get('/', async (req, res, _next) => {
     const books = await bookDao.findAllBooks();
 
     res.render('books', {
-        user: req.user, books: books, styles: [
-            '/stylesheets/books.css'
-        ], scripts: ['/javascripts/books.js']
+        user: req.user,
+        books: books,
+        styles: ['/stylesheets/books.css'],
+        scripts: ['/javascripts/books.js']
     });
 });
 
@@ -64,9 +65,11 @@ router.post('/', upload.single('book-image'), async function (req, res, _next) {
                 const books = await bookDao.findAllBooks();
 
                 res.render('books', {
-                    user: req.user, message: "Book added successfully", books: books, styles: [
-                        '/stylesheets/books.css'
-                    ], scripts: ['/javascripts/books.js']
+                    user: req.user,
+                    message: "Book added successfully",
+                    books: books,
+                    styles: ['/stylesheets/books.css'],
+                    scripts: ['/javascripts/books.js']
                 });
             })
             .catch(async (err) => {
@@ -75,9 +78,11 @@ router.post('/', upload.single('book-image'), async function (req, res, _next) {
                 const books = await bookDao.findAllBooks();
 
                 res.render('books', {
-                    user: req.user, errors: [`Error adding book: ${err}`], books: books, styles: [
-                        '/stylesheets/books.css'
-                    ], scripts: ['/javascripts/books.js']
+                    user: req.user,
+                    errors: [`Error adding book: ${err}`],
+                    books: books,
+                    styles: ['/stylesheets/books.css'],
+                    scripts: ['/javascripts/books.js']
                 });
             });
     } else {
@@ -86,9 +91,11 @@ router.post('/', upload.single('book-image'), async function (req, res, _next) {
         const books = await bookDao.findAllBooks();
 
         res.render('books', {
-            user: req.user, books: books, styles: [
-                '/stylesheets/books.css'
-            ], scripts: ['/javascripts/books.js'], errors: errors.array()
+            user: req.user,
+            books: books,
+            styles: ['/stylesheets/books.css'],
+            scripts: ['/javascripts/books.js'],
+            errors: errors.array()
         });
     }
 });
@@ -103,9 +110,11 @@ router.delete('/:id', async function (req, res) {
             const books = await bookDao.findAllBooks();
 
             res.render('books', {
-                user: req.user, books: books, message: "Book successfully deleted", styles: [
-                    '/stylesheets/books.css'
-                ], scripts: ['/javascripts/books.js']
+                user: req.user,
+                books: books,
+                message: "Book successfully deleted",
+                styles: ['/stylesheets/books.css'],
+                scripts: ['/javascripts/books.js']
             });
         })
         .catch(async function (err) {
@@ -114,9 +123,11 @@ router.delete('/:id', async function (req, res) {
             const books = await bookDao.findAllBooks();
 
             res.render('books', {
-                user: req.user, books: books, errors: [`Error deleting book: ${err}`], styles: [
-                    '/stylesheets/books.css'
-                ], scripts: ['/javascripts/books.js']
+                user: req.user,
+                books: books,
+                errors: [`Error deleting book: ${err}`],
+                styles: ['/stylesheets/books.css'],
+                scripts: ['/javascripts/books.js']
             });
         });
 

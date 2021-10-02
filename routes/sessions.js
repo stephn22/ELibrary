@@ -8,9 +8,7 @@ const logger = require('../util/logger');
 // login
 router.get("/login", (_req, res, _next) => {
     res.render("login", {
-        styles: [
-            '/stylesheets/forms.css'
-        ]
+        styles: ['/stylesheets/forms.css']
     });
 });
 
@@ -24,9 +22,8 @@ router.post("/sessions", (req, res, next) => {
             logger.logError(info.message);
 
             return res.render("login", {
-                errors: info.message, styles: [
-                    '/stylesheets/forms.css'
-                ]
+                errors: info.message,
+                styles: ['/stylesheets/forms.css']
             });
         }
 
@@ -37,9 +34,8 @@ router.post("/sessions", (req, res, next) => {
                 return next(err);
             }
             res.render("index", {
-                user: user, styles: [
-                    '/stylesheets/index.css'
-                ]
+                user: user,
+                styles: ['/stylesheets/index.css']
             });
 
             logger.logInfo("User logged in successfully");
