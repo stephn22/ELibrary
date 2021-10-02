@@ -55,7 +55,7 @@
                         <% if (typeof user !== "undefined" ) { %>
                             <% if (user.email) { %>
                                 <div class="form-group">
-                                    <div class="form-floating col-5">
+                                    <div class="form-floating col-5 shadow-lg rounded">
                                         <input type="email" id="email" value="<%= user.email %>"
                                                class="form-control" disabled>
                                         <label for="email">Email</label>
@@ -64,7 +64,7 @@
                             <% } %>
                             <br/>
                             <div class="form-group">
-                                <div class="form-floating col-5">
+                                <div class="form-floating col-5 shadow-lg rounded">
                                     <input type="email" id="new-email" name="new-email" class="form-control"
                                            placeholder="New Email" required>
                                     <label for="new-email">New Email</label>
@@ -72,7 +72,7 @@
                                 <span class="text-danger" id="new-email-validation"></span>
                             </div>
                             <br/>
-                            <button type="submit" class="btn btn-primary" id="save-new-email">Save</button>
+                            <button type="submit" class="btn btn-primary shadow-lg rounded" id="save-new-email">Save</button>
                         <% } %>
                     </form>
 
@@ -84,7 +84,7 @@
 
                     <form method="POST" action="/profile/update-password">
                         <div class="form-group">
-                            <div class="form-floating col-5">
+                            <div class="form-floating col-5 shadow-lg rounded">
                                 <input type="password" id="current-password" name="current-password"
                                        class="form-control" placeholder="Current Password" required>
                                 <label for="current-password">Current Password</label>
@@ -92,7 +92,7 @@
                         </div>
                         <br/>
                         <div class="form-group">
-                            <div class="form-floating col-5">
+                            <div class="form-floating col-5 shadow-lg rounded">
                                 <input type="password" id="new-password" name="new-password" class="form-control"
                                        placeholder="New Password" required>
                                 <label for="new-password">New Password</label>
@@ -100,7 +100,7 @@
                             <span class="text-danger" id="new-password-validation"></span>
                         </div>
                         <div class="form-group">
-                            <div class="form-floating col-5">
+                            <div class="form-floating col-5 shadow-lg rounded">
                                 <input type="password" id="confirm-new-password" name="confirm-new-password"
                                        class="form-control" placeholder="Confirm Password" required>
                                 <label for="confirm-new-password">Confirm Password</label>
@@ -108,7 +108,7 @@
                             <span class="text-danger" id="confirm-new-password-validation"></span>
                         </div>
                         <br/>
-                        <button type="submit" class="btn btn-primary" id="save-new-password">Save</button>
+                        <button type="submit" class="btn btn-primary shadow-lg rounded" id="save-new-password">Save</button>
 
                     </form>
                     <br/>
