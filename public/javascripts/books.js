@@ -6,6 +6,10 @@ const bookImage = document.getElementById('book-image');
 const imgUploaded = document.getElementById('img-uploaded');
 
 const search = document.getElementById('search-book');
+const ebookFilter = document.getElementById('ebook-filter');
+const paperFilter = document.getElementById('paper-filter');
+
+const clear = document.getElementById('clear');
 
 const addToCartBtns = document.getElementsByClassName('add-to-cart');
 const reserveBookBtns = document.getElementsByClassName('reserve-book');
@@ -188,6 +192,38 @@ search.addEventListener('search', () => {
     books.forEach(book => { fadeIn(book); });
 });
 
+ebookFilter.addEventListener('change', () => {
+    const books = document.querySelectorAll('.book');
+
+    books.forEach(book => {
+        if (ebookFilter.checked && book.querySelector('.type').innerHTML.toLowerCase() === 'ebook') {
+            fadeIn(book);
+        } else {
+            fadeOut(book);
+        }
+    });
+});
+
+paperFilter.addEventListener('change', () => {
+    const books = document.querySelectorAll('.book');
+
+    books.forEach(book => {
+        if (paperFilter.checked && book.querySelector('.type').innerHTML.toLowerCase() === 'paper') {
+            fadeIn(book);
+        } else {
+            fadeOut(book);
+        }
+    });
+});
+
+clear.addEventListener('click', () => {
+    const books = document.querySelectorAll('.book');
+
+    books.forEach(book => {
+        fadeIn(book);
+    });
+});
+
 // add event listeners to buttons add to cart
 for (let i = 0; i < addToCartBtns.length; i++) {
     // TODO:
@@ -195,7 +231,14 @@ for (let i = 0; i < addToCartBtns.length; i++) {
 
 // add event listeners to buttons reserve book
 for (let i = 0; i < reserveBookBtns.length; i++) {
-    // TODO:
+    reserveBookBtns[i].addEventListener('click', () => {
+        const bookId = reserveBookBtns[i].getAttribute('data-id');
+        const userId = reserveBookBtns[i].getAttribute('data-user');
+
+        if (bookId && userId) {
+            createOrder(bookId, userId, "Reservation");
+        }
+    });
 }
 
 // add event listeners to buttons delete
@@ -213,6 +256,33 @@ for (let i = 0; i < deleteBtns.length; i++) {
 }
 
 /************************** FETCH API METHODS *****************************/
+
+/**
+ * Using the fetch API to create a new order
+ * @param {number} bookId id of the book
+ * @param {number} userId id of the user
+ * @param {string} type type of the order
+ * @param {number} price price of the book (only if buying)
+ * @param {string} address address of the user (only if buying)
+ */
+function createOrder(bookId, userId, type, price = 0.00, address = "") {
+    const body = {
+        bookId: bookId,
+        userId: userId,
+        price: price,
+        type: type,
+        address: address
+    }
+
+    fetch("/orders", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    }).then(window.location.reload())
+        .catch(err => console.log(err));
+}
 
 /**
  * Using the fetch API to delete a book by its id
@@ -331,7 +401,7 @@ function disableBtn(btn) {
  */
 function fadeIn(element) {
     element.removeAttribute("hidden");
-    
+
     setTimeout(() => {
         element.classList.remove("fade-effect");
     }, 280);
