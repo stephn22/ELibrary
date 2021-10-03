@@ -87,7 +87,7 @@ passport.deserializeUser(function (id, done) {
 // session
 
 app.use(session({
-    //store: new FileStore(), // by default, Passport uses a MemoryStore to keep track of the sessions - if you want to use this, launch nodemon with the option: --ignore sessions/
+    cookie: { maxAge: 24 * 60 * 60 * 1000 }, // 24 hours
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
