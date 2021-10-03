@@ -88,3 +88,7 @@ h1 {
     left: 50%;
     top: 60%;
 }
+
+#profile-dropdown {
+    margin-left: 0.5rem;
+}

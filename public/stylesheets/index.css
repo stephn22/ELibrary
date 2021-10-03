@@ -188,3 +188,7 @@ h2 {
 #search {
     font-family: 'Roboto Light', sans-serif;
 }
+
+#profile-dropdown {
+    margin-left: 0.5rem;
+}

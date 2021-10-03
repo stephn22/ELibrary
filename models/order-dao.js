@@ -14,7 +14,7 @@ const logger = require('../util/logger');
  * @returns {Promise<number>} id of order that was inserted.
  */
 function addOrder(order) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async function (resolve, reject) {
         const query = "INSERT INTO orders (customer_id, date, book_id, price, status, type) VALUES (?, ?, ?, ?, ?, ?)";
 
         db.run(query, [
@@ -32,6 +32,12 @@ function addOrder(order) {
                     resolve(this.lastID);
                 }
             });
+        // update book quantity
+        const book = await bookDao.findBookById(order.book_id);
+
+        book.stock -= 1;
+
+        await bookDao.updateBook(book);
     });
 }
 

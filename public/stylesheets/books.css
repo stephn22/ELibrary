@@ -83,3 +83,7 @@ h1 {
 #filter-collapse-body {
     background-color: white;
 }
+
+#profile-dropdown {
+    margin-left: 0.5rem;
+}
