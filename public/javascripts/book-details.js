@@ -9,6 +9,9 @@ const form = document.getElementById('edit-book-form');
 const uploadNewImg = document.getElementById('upload-new-img');
 const newImgInput = document.getElementById('new-img-input');
 
+const addToCart = document.getElementById('add-to-cart-confirm');
+const reserveBook = document.getElementById('reserve-book-confirm');
+
 const title = document.getElementById('title');
 const titleValidation = document.getElementById('title-validation');
 
@@ -51,7 +54,8 @@ const formData = new FormData();
 
 let valid = true;
 
-descriptionInfo.innerHTML = `Remaining: ${250 - description.value.length}`;
+if (title && author && isbn && paper && language && publisher && stockRange && pagesRange && datePublished && description && price) {
+    descriptionInfo.innerHTML = `Remaining: ${250 - description.value.length}`;
 disableBtn(saveBtn);
 
 uploadNewImg.addEventListener('click', () => {
@@ -206,8 +210,46 @@ saveBtn.addEventListener('click', (e) => {
         updateBook(bookId, formData);
     }
 });
+}
+
+if (reserveBook && addToCart) {
+    reserveBook.addEventListener('click', () => {
+        const bookId = parseInt(reserveBook.getAttribute('data-id'));
+        const userId = parseInt(reserveBook.getAttribute('data-user'));
+    
+        // TODO:
+        createOrder(bookId, userId, "Reservation");
+    });
+}
 
 /************************** FETCH API METHODS *****************************/
+
+/**
+ * Using the fetch API to create a new order
+ * @param {number} bookId id of the book
+ * @param {number} userId id of the user
+ * @param {string} type type of the order
+ * @param {number} price price of the book (only if buying)
+ * @param {string} address address of the user (only if buying)
+ */
+ function createOrder(bookId, userId, type, price = 0.00, address = "") {
+    const body = {
+        bookId: bookId,
+        userId: userId,
+        price: price,
+        type: type,
+        address: address
+    }
+
+    fetch("/orders", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    }).then(window.location.reload())
+        .catch(err => console.log(err));
+}
 
 /**
  * Using fetch API to update the book
