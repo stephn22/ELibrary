@@ -231,6 +231,29 @@ clear.addEventListener('click', () => {
     });
 });
 
+
+// add event listeners to buttons add to cart
+for (let i = 0; i < addToCartBtns.length; i++) {
+    // TODO:
+}
+
+// add event listeners to buttons add to favourites
+for (let i = 0; i < addToFavouritesBtns.length; i++) {
+    addToFavouritesBtns[i].addEventListener('click', () => {
+        const userId = addToFavouritesBtns[i].getAttribute('data-user-id');
+        const bookId = addToFavouritesBtns[i].getAttribute('data-id');
+
+        if (userId && bookId) {
+            addToFavourites(userId, bookId);
+        }
+    });
+}
+
+// add event listeners to buttons reserve book
+for (let i = 0; i < reserveBookBtns.length; i++) {
+    // TODO:
+}
+
 // add event listeners to buttons delete
 for (let i = 0; i < deleteBtns.length; i++) {
     deleteBtns[i].addEventListener('click', () => {
@@ -246,6 +269,22 @@ for (let i = 0; i < deleteBtns.length; i++) {
 }
 
 /************************** FETCH API METHODS *****************************/
+
+/**
+ * Using the fetch API to post a favourite
+ * @param {number} userId 
+ * @param {number} bookId 
+ */
+function addToFavourites(userId, bookId) {
+    fetch(`/books/${userId}`, {
+        method: "POST",
+        body: JSON.stringify(bookId),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(window.location.reload())
+        .catch(error => console.error('Error:', error));
+}
 
 /**
  * Using the fetch API to delete a book by its id
