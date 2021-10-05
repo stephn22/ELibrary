@@ -10,10 +10,13 @@ const logger = require("../util/logger");
 
 router.get('/', async (req, res, _next) => {
     const orders = await orderDao.findAllOrders();
+    const cart = req.session.cart;
 
     if (orders.hasOwnProperty("error")) {
         res.render('orders', {
-            user: req.user, message: "No orders found"
+            user: req.user,
+            cart: cart,
+            message: "No orders found"
         });
     } else {
         res.render('orders', {
@@ -41,17 +44,21 @@ router.post('/', async function (req, res, next) {
     );
 
     orderDao.addOrder(order)
-        .then((id) => {
+        .then(async (id) => {
             logger.logInfo(`Added order with id: ${id}`);
+            const cart = req.session.cart;
+            const orders = await orderDao.findAllOrders();
             // TODO: render to customer orders
         })
         .catch(async (err) => {
             logger.logError(err);
 
             const books = await bookDao.findAllBooks();
+            const cart = req.session.cart;
 
             res.render('books', {
                 user: req.user,
+                cart: cart,
                 errors: [err],
                 books: books,
                 styles: ['/stylesheets/books.css'],

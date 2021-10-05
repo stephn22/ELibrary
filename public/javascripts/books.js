@@ -253,7 +253,7 @@ for (let i = 0; i < deleteBtns.length; i++) {
  */
 function deleteBook(bookId) {
     fetch(`/books/${bookId}`, { method: "DELETE" })
-        .then(window.location.reload())
+        .then(window.location.reload()) // TODO:
         .catch(error => console.error('Error:', error));
 }
 

@@ -1,5 +1,6 @@
 
 const Book = require('./book');
+const CartItem = require('./cartItem');
 
 /**
  * @class Cart represents a shopping cart
@@ -14,7 +15,7 @@ class Cart {
     constructor(items = []) {
         this.items = items;
         this.total = items.length;
-        this.price = this.price;
+        this.price = this.getTotalPrice();
     }
 
     /**
@@ -25,7 +26,7 @@ class Cart {
     add(item, quantity) {
         this.items.forEach(element => {
             if (element.book.id === item.id) {
-                element.updateQuantity(element.quantity + 1);
+                element.updateQuantity(element.quantity + quantity);
             } else {
                 this.items.push(new CartItem(item, quantity));
             }
@@ -53,49 +54,15 @@ class Cart {
         }
     }
 
-    get price() {
-        let price = 0.00;
+    getTotalPrice() {
+        let total = 0;
 
         this.items.forEach(element => {
-            price += element.book.price * element.quantity;
+            total += (element.price * element.quantity);
         });
 
-        return price;
-    }
-
-    set price(value) {
-        this.total = value;
+        return total;
     }
 }
 
-/**
- * @class CartItem represents a single item in a cart
- */
-class CartItem {
-
-    /**
-     * Creates a new cart item
-     * @param {Book} book book in the cart item
-     * @param {number} quantity quantity of the book in the cart item
-     */
-    constructor(book, quantity = 1) {
-        this.book = book;
-        this.quantity = quantity;
-
-        /**
-         * @type {number}
-         */
-        this.price = book.price * quantity;
-    }
-
-    /**
-     * Updates the quantity of the cart item
-     * @param {number} quantity new quantity
-     */
-    updateQuantity(quantity) {
-        this.quantity = quantity;
-        this.price = this.book.price * quantity;
-    }
-}
-
-module.exports = Cart, CartItem;
+module.exports = Cart;

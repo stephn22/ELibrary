@@ -5,6 +5,7 @@ const router = express.Router();
 const passport = require('passport');
 const logger = require('../util/logger');
 const Cart = require('../entities/cart');
+const CartItem = require('../entities/cartItem');
 const bookDao = require('../models/book-dao');
 
 // login
@@ -54,17 +55,17 @@ router.delete("/sessions/current", (req, res, _next) => {
 /************************** SHOPPING CART *****************************/
 
 router.get('/sessions/cart', function (req, res, next) {
-    if (!req.sessions.cart) {
-        res.render('/', {
+    if (!req.session.cart) {
+        res.render('cart', {
             user: req.user,
             cart: undefined,
-            styles: ['/stylesheets/index.css']
+            styles: ['/stylesheets/cart.css']
         });
     } else {
-        res.render('/', {
+        res.render('cart', {
             user: req.user,
-            cart: req.sessions.cart,
-            styles: ['/stylesheets/index.css']
+            cart: req.session.cart,
+            styles: ['/stylesheets/cart.css']
         });
     }
 });
@@ -79,21 +80,33 @@ router.put('/sessions/cart/:id/:qty', async function (req, res, _next) {
     /**
      * @type {Cart}
      */
-    const cart = req.session.cart ? req.session.cart : undefined;
+    let cart = req.session.cart ? req.session.cart : undefined;
 
-    if (cart) {
-        cart.add(book, quantity);
+    if (cart !== undefined) {
+        logger.logDebug(cart.total);
+
+        cart.items.forEach(element => {
+            if (element.id === bookId) {
+                element.updateQuantity(element.quantity + quantity);
+            } else {
+                cart.items.push(new CartItem(book, quantity));
+            }
+        });
+
+        logger.logInfo("Book added to cart successfully");
     } else {
         cart = new Cart([book]);
+        logger.logDebug(cart.total);
+        logger.logInfo("Book added to cart successfully (created a new cart)");
     }
 
     req.session.cart = cart;
-    res.redirect('/');
+    res.send(cart);
 });
 
 router.delete('/sessions/cart/:id/:qty?', async function (req, res, _next) {
     const bookId = parseInt(req.params.id);
-    const quantity = parseInt(req.params.qty);
+    const quantity = req.params.qty ? parseInt(req.params.qty) : 0;
 
     const book = await bookDao.findBookById(bookId);
 
@@ -104,6 +117,7 @@ router.delete('/sessions/cart/:id/:qty?', async function (req, res, _next) {
 
     if (cart) {
         cart.remove(book, quantity);
+        logger.logInfo("Book removed from cart successfully");
     }
 
     req.session.cart = cart;
