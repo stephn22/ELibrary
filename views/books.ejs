@@ -290,7 +290,7 @@
                 <% if (books.length > 0) { %>
 
                     <% books.forEach((book) => { %>
-                        <div class="card book shadow-lg">
+                        <div class="card book shadow-lg" data-id="<%= book.id %>">
 
                             <div class="card-img-top">
                                 <img src="data:image/bmp;base64,<%= book.imgUrl.toString('base64')%>" class="square img-rounded shadow-lg" alt="<%= book.title %>">

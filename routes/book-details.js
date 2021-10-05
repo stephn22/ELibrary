@@ -17,8 +17,6 @@ const upload = multer({
     }
 });
 
-// FIXME: error 500
-
 router.get('/:bookId', function (req, res) {
     const bookId = req.params.bookId;
     const cart = req.session.cart;
@@ -44,6 +42,7 @@ router.get('/:bookId', function (req, res) {
         });
 });
 
+// FIXME: error 500
 router.put('/:bookId', upload.single('new-img'), async function (req, res) {
 
     const bookId = parseInt(req.params.bookId);
