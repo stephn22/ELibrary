@@ -13,6 +13,7 @@ const addToCartBtn = document.getElementById('add-to-cart-confirm');
 
 const bookQty = document.getElementById('book-quantity');
 
+const deleteBtn = document.getElementById('delete-book');
 const reserveBook = document.getElementById('reserve-book-confirm');
 
 const title = document.getElementById('title');
@@ -235,6 +236,16 @@ if (reserveBook && addToCartBtn) {
     });
 }
 
+if (deleteBtn) {
+    deleteBtn.addEventListener('click', () => {
+        const bookId = parseInt(deleteBtn.getAttribute('data-id'));
+
+        if (bookId) {
+            deleteBook(bookId);
+        }
+    });
+}
+
 /************************** FETCH API METHODS *****************************/
 
 /**
@@ -288,6 +299,18 @@ function updateBook(bookId, formData) {
         body: formData
     }).then(window.location.reload())
         .catch(error => console.error(error));
+}
+
+/**
+ * Using the fetch API to delete a book by its id
+ * @param {number} bookId the book id
+ */
+function deleteBook(bookId) {
+    fetch(`/books/${bookId}`, { method: "DELETE" })
+        .then((_res) => {
+            window.location.href = "/books";
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 /************************** VALIDATION METHODS *****************************/
