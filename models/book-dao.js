@@ -11,7 +11,7 @@ const logger = require('../util/logger');
  */
 function addBook(book) {
     return new Promise((resolve, reject) => {
-        const query = "INSERT INTO books (title, author, isbn, type, stock, language, pages, publisher, datePub, description, imgUrl, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO books (title, author, isbn, type, stock, language, pages, publisher, datePub, description, imgUrl, price, is_reserved) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         db.run(query, [
             book.title,
@@ -25,7 +25,8 @@ function addBook(book) {
             new Date(book.datePub).getTime(),
             book.description,
             book.imgUrl,
-            book.price], function (err) {
+            book.price,
+            book.isReserved], function (err) {
                 if (err) {
                     logger.logError(err);
                     reject(err);
@@ -45,7 +46,7 @@ function updateBook(book) {
     return new Promise((resolve, reject) => {
 
         if (book.imgUrl === null) {
-            const query = "UPDATE books SET title = ?, author = ?, isbn = ?, type = ?, stock = ?, language = ?, pages = ?, publisher = ?, datePub = ?, description = ?, price = ? WHERE id = ?";
+            const query = "UPDATE books SET title = ?, author = ?, isbn = ?, type = ?, stock = ?, language = ?, pages = ?, publisher = ?, datePub = ?, description = ?, price = ? is_reserved = ? WHERE id = ?";
 
             db.run(query, [
                 book.title,
@@ -59,6 +60,7 @@ function updateBook(book) {
                 new Date(book.datePub).getTime(),
                 book.description,
                 book.price,
+                book.isReserved,
                 book.id], function (err) {
                     if (err) {
                         logger.logError(err);
@@ -68,7 +70,7 @@ function updateBook(book) {
                     }
                 });
         } else {
-            const query = "UPDATE books SET title = ?, author = ?, isbn = ?, type = ?, stock = ?, language = ?, pages = ?, publisher = ?, datePub = ?, description = ?, imgUrl = ?, price = ? WHERE id = ?";
+            const query = "UPDATE books SET title = ?, author = ?, isbn = ?, type = ?, stock = ?, language = ?, pages = ?, publisher = ?, datePub = ?, description = ?, imgUrl = ?, price = ?, is_reserved = ? WHERE id = ?";
 
             db.run(query, [
                 book.title,
@@ -83,6 +85,7 @@ function updateBook(book) {
                 book.description,
                 book.imgUrl,
                 book.price,
+                book.isReserved,
                 book.id], function (err) {
                     if (err) {
                         logger.logError(err);
@@ -145,7 +148,8 @@ function findBookById(id) {
                     new Date(row.datePub),
                     row.description,
                     row.imgUrl,
-                    row.price);
+                    row.price,
+                    row.isReserved);
 
                 resolve(book);
             }
@@ -185,7 +189,8 @@ function findAllBooks() {
                         new Date(row.datePub).toDateString(),
                         row.description,
                         row.imgUrl,
-                        row.price);
+                        row.price,
+                        row.isReserved);
 
                     books.push(book);
                 });

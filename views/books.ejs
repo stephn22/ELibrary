@@ -109,7 +109,7 @@
 
                 <%# Modal to add a new book (admin only) %>
 
-                <div class="modal fade show" id="add-book-modal"
+                <div class="modal fade show" data-bs-backdrop="static" data-bs-keyboard="false" id="add-book-modal"
                      aria-labelledby="add-book-modal-title" aria-modal="true" role="dialog">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -290,7 +290,7 @@
                 <% if (books.length > 0) { %>
 
                     <% books.forEach((book) => { %>
-                        <div class="card book shadow-lg">
+                        <div class="card book shadow-lg" data-id="<%= book.id %>">
 
                             <div class="card-img-top">
                                 <img src="data:image/bmp;base64,<%= book.imgUrl.toString('base64')%>" class="square img-rounded shadow-lg" alt="<%= book.title %>">

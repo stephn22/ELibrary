@@ -1,0 +1,27 @@
+<%- include('partials/header', { title: 'Order details' }); %>
+
+<main>
+    <% if (message.length > 0) { %>
+        <div class="alert alert-primary" role="alert">
+            <p>
+                <%= message %>
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+
+    <% if (errors.length > 0) { %>
+        <div class="alert alert-danger" role="alert">
+            <% if (Array.isArray(errors)) { %>
+                <% errors.forEach((error) => { %>
+                    <p> <%= error.msg %> </p>
+                <% }); %>
+            <% } else { %>
+                <p> <%= errors %> </p>
+            <% } %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+</main>
+
+<%- include('partials/footer'); %>
