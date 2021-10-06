@@ -4,11 +4,10 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const logger = require('../util/logger');
+const Book = require('../entities/book');
 const Cart = require('../entities/cart');
-const CartItem = require('../entities/cartItem');
 const bookDao = require('../models/book-dao');
 
-// login
 router.get("/login", (_req, res, _next) => {
     res.render("login", {
         styles: ['/stylesheets/forms.css']
@@ -54,7 +53,7 @@ router.delete("/sessions/current", (req, res, _next) => {
 
 /************************** SHOPPING CART *****************************/
 
-router.get('/sessions/cart', function (req, res, next) {
+router.get('/sessions/cart', function (req, res, _next) {
     if (!req.session.cart) {
         res.render('cart', {
             user: req.user,
@@ -83,20 +82,11 @@ router.put('/sessions/cart/:id/:qty', async function (req, res, _next) {
     let cart = req.session.cart ? req.session.cart : undefined;
 
     if (cart !== undefined) {
-        logger.logDebug(cart.total);
-
-        cart.items.forEach(element => {
-            if (element.id === bookId) {
-                element.updateQuantity(element.quantity + quantity);
-            } else {
-                cart.items.push(new CartItem(book, quantity));
-            }
-        });
+        addItem(cart, book, quantity);
 
         logger.logInfo("Book added to cart successfully");
     } else {
-        cart = new Cart([book]);
-        logger.logDebug(cart.total);
+        cart = new Cart(book, quantity);
         logger.logInfo("Book added to cart successfully (created a new cart)");
     }
 
@@ -116,12 +106,77 @@ router.delete('/sessions/cart/:id/:qty?', async function (req, res, _next) {
     const cart = req.session.cart ? req.session.cart : undefined;
 
     if (cart) {
-        cart.remove(book, quantity);
+        removeItem(cart, book, quantity);
+
         logger.logInfo("Book removed from cart successfully");
     }
 
     req.session.cart = cart;
     res.redirect('/');
 });
+
+/************************** CART FUNCTIONS *****************************/
+
+/**
+ * Calculates the total price of the cart
+ * @param {Cart} cart cart to calculate the total price
+ * @returns {number} total price of the cart
+ */
+function getTotalPrice(cart) {
+    let totalPrice = 0.00;
+
+    cart.items.forEach(element => {
+        totalPrice += (element.book.price * element.quantity);
+    });
+
+    return totalPrice;
+}
+
+/**
+ * Adds a book to the cart
+ * @param {Cart} cart cart to add the book to
+ * @param {Book} item book to add to the cart
+ * @param {number} quantity quantity of the book to add to the cart
+ */
+function addItem(cart, item, quantity) {
+    cart.items.forEach(element => {
+        if (element.book.id === item.id) {
+            logger.logDebug('same');
+            element.quantity += quantity;
+        } else {
+            logger.logDebug('different');
+            cart.items.push({
+                book: item,
+                quantity: quantity
+            });
+        }
+    });
+
+    cart.price = getTotalPrice(cart);
+}
+
+/**
+ * Removes a book from the cart
+ * @param {Cart} cart cart to remove the book from
+ * @param {Book} item book to remove from the cart
+ * @param {number} quantity quantity of the book to remove from the cart, if 0 remove all items
+ */
+function removeItem(cart, item, quantity = 0) {
+    if (quantity === 0) {
+        const i = cart.items.indexOf(item);
+
+        if (i > -1) {
+            cart.items.splice(i, 1);
+        }
+    } else {
+        cart.items.forEach(element => {
+            if (element.book.id === item.id) {
+                element.quantity -= quantity;
+            }
+        });
+    }
+
+    cart.price = getTotalPrice(cart);
+}
 
 module.exports = router;
