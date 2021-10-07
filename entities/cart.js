@@ -1,7 +1,5 @@
 
 const Book = require('./book');
-const CartItem = require('./cartItem');
-const logger = require('../util/logger');
 
 /**
  * @class Cart represents a shopping cart
