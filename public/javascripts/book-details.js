@@ -220,7 +220,7 @@ if (title && author && isbn && paper && language && publisher && stockRange && p
     });
 }
 
-if (reserveBook && addToCartBtn) {
+if (addToCartBtn) {
     addToCartBtn.addEventListener('click', () => {
         const bookId = parseInt(addToCartBtn.getAttribute('data-id'));
         const quantity = parseInt(bookQty.value);
@@ -229,6 +229,9 @@ if (reserveBook && addToCartBtn) {
             addToCart(bookId, quantity);
         }
     });
+}
+
+if (reserveBook) {
 
     reserveBook.addEventListener('click', () => {
         const bookId = parseInt(reserveBook.getAttribute('data-id'));
