@@ -9,12 +9,16 @@ const form = document.getElementById('edit-book-form');
 const uploadNewImg = document.getElementById('upload-new-img');
 const newImgInput = document.getElementById('new-img-input');
 
+// radio btns
+const inStorePickup = document.getElementById('in-store-pickup');
+const userAddress = document.getElementById('user-address');
+
 const addToCartBtn = document.getElementById('add-to-cart-confirm');
+const reserveBook = document.getElementById('reserve-book-confirm');
 
 const bookQty = document.getElementById('book-quantity');
 
 const deleteBtn = document.getElementById('delete-book');
-const reserveBook = document.getElementById('reserve-book-confirm');
 
 const title = document.getElementById('title');
 const titleValidation = document.getElementById('title-validation');
@@ -229,6 +233,8 @@ if (reserveBook && addToCartBtn) {
     reserveBook.addEventListener('click', () => {
         const bookId = parseInt(reserveBook.getAttribute('data-id'));
         const userId = parseInt(reserveBook.getAttribute('data-user'));
+
+        // TODO:
 
         if (bookId && userId) {
             createOrder(bookId, userId, "Reservation");

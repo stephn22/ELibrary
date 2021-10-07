@@ -74,7 +74,7 @@
                     <% cart.items.forEach(item => { %>
                         <tr>
                             <td>
-                                <%# FIXME: not dislaying image #%>
+                                <%# FIXME: not displaying image #%>
                                 <img src="data:image/jpeg;base64,<%= item.book.imgUrl.toString('base64') %>" id="book-image" class="square img-rounded shadow-lg" alt="<%= item.book.title %>">
                             </td>
                             <td>
