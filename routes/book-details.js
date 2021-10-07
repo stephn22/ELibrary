@@ -17,15 +17,15 @@ const upload = multer({
     }
 });
 
-// FIXME: error 500
-
 router.get('/:bookId', function (req, res) {
     const bookId = req.params.bookId;
+    const cart = req.session.cart;
 
     bookDao.findBookById(bookId)
         .then(book => {
             res.render('book-details', {
                 user: req.user,
+                cart: cart,
                 book: book,
                 styles: ['/stylesheets/book-details.css'],
                 scripts: ['/javascripts/book-details.js']
@@ -34,6 +34,7 @@ router.get('/:bookId', function (req, res) {
         .catch(err => {
             res.status(404).render('book-details', {
                 user: req.user,
+                cart: cart,
                 errors: [err],
                 styles: ['/stylesheets/book-details.css'],
                 scripts: ['/javascripts/book-details.js']
@@ -41,6 +42,7 @@ router.get('/:bookId', function (req, res) {
         });
 });
 
+// FIXME: error 500
 router.put('/:bookId', upload.single('new-img'), async function (req, res) {
 
     const bookId = parseInt(req.params.bookId);
@@ -76,10 +78,12 @@ router.put('/:bookId', upload.single('new-img'), async function (req, res) {
 
         bookDao.updateBook(book)
             .then(async (id) => {
+                const cart = req.session.cart;
                 logger.logInfo(`Updated book with id: ${id}`);
 
                 res.render('book-details', {
                     user: req.user,
+                    cart: cart,
                     message: "Book updated successfully",
                     book: book,
                     styles: ['/stylesheets/book-details.css'],
@@ -90,9 +94,11 @@ router.put('/:bookId', upload.single('new-img'), async function (req, res) {
                 logger.logError(err);
 
                 const book = await bookDao.findBookById(bookId);
+                const cart = req.session.cart;
 
                 res.render('book-details', {
                     user: req.user,
+                    cart: cart,
                     book: book,
                     errors: [err],
                     styles: ['/stylesheets/book-details.css'],

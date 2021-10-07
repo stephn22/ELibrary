@@ -1,0 +1,124 @@
+<%- include('partials/header', {title: 'Cart'}); %>
+
+<main>
+    <% if (message.length > 0) { %>
+        <div class="alert alert-primary" role="alert">
+            <p>
+                <%= message %>
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+
+    <% if (errors.length > 0) { %>
+        <div class="alert alert-danger" role="alert">
+            <% if (Array.isArray(errors)) { %>
+                <% errors.forEach((error) => { %>
+                    <p> <%= error.msg %> </p>
+                <% }); %>
+            <% } else { %>
+                <p> <%= errors %> </p>
+            <% } %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+
+    <%if (typeof cart === "undefined") { %>
+
+        <div class="alert alert-secondary text-center shadow" role alert>
+            Your cart is empty.
+        </div>
+
+        <img id="empty-cart-img" src="/images/empty_cart.svg" alt="empty_cart">
+
+    <% } else { %>
+        <% if (cart.total > 0) { %>
+            <h2 class="text-start">Cart: <%= cart.price %> €</h2>
+            <table class="table">
+                <thead>
+                    <tr class="table-primary">
+                        <th>
+                            Picture
+                        </th>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            Author
+                        </th> 
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            ISBN
+                        </th>
+                        <th>
+                            Language
+                        </th>
+                        <th>
+                            Publisher
+                        </th>
+                        <th>
+                            Date Published
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% cart.items.forEach(item => { %>
+                        <tr>
+                            <td>
+                                <%# FIXME: not dislaying image #%>
+                                <img src="data:image/jpeg;base64,<%= item.book.imgUrl.toString('base64') %>" id="book-image" class="square img-rounded shadow-lg" alt="<%= item.book.title %>">
+                            </td>
+                            <td>
+                                <%= item.book.title %>
+                            </td>
+                            <td>
+                                <%= item.book.author %>
+                            </td>
+                            <td>
+                                <%= item.book.type %>
+                            </td>
+                            <td>
+                                <%= item.book.isbn %>
+                            </td>
+                            <td>
+                                <%= item.book.language %>
+                            </td>
+                            <td>
+                                <%= item.book.publisher %>
+                            </td>
+                            <td>
+                                <%= new Date(item.book.datePub).toDateString(); %>
+                            </td>
+                            <td>
+                                <%= item.quantity %>
+                            </td> 
+                            <td>
+                                <%= item.book.price %> €
+                            </td>
+                            <td>
+                                <!-- TODO: remove from cart btn -->
+                            </td>
+                        </tr>
+                    <% }); %>   
+                </tbody>
+            </table>
+        <% } else { %>
+            <div class="alert-secondary text-center shadow" role alert>
+                Your cart is empty.
+            </div>
+    
+            <img id="empty-cart-img" src="/images/empty_cart.svg" alt="empty_cart">
+        <% } %>
+    <% } %>
+</main>
+
+<%- include('partials/footer'); %>

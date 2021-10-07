@@ -253,7 +253,17 @@ for (let i = 0; i < deleteBtns.length; i++) {
  */
 function deleteBook(bookId) {
     fetch(`/books/${bookId}`, { method: "DELETE" })
-        .then(window.location.reload())
+        .then((_res) => {
+            const books = document.querySelectorAll('.book');
+
+            books.forEach(book => {
+                let id = parseInt(book.getAttribute('data-id'));
+
+                if (id === bookId) {
+                    fadeOut(book);
+                }
+            });
+        })
         .catch(error => console.error('Error:', error));
 }
 

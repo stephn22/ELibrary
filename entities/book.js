@@ -21,8 +21,9 @@ class Book extends baseEntity {
      * @param {string} description brief description of the book
      * @param {Blob} imgUrl represent image of the book
      * @param {number} price price of the book
+     * @param {boolean} isReserved is the book reserved
      */
-    constructor (id, title, author, isbn, type, stock, language, pages, publisher, datePub, description, imgUrl, price) {
+    constructor (id, title, author, isbn, type, stock, language, pages, publisher, datePub, description, imgUrl, price, isReserved = false) {
         super(id);
         this.title = title;
         this.author = author;
@@ -36,6 +37,7 @@ class Book extends baseEntity {
         this.description = description;
         this.imgUrl = imgUrl;
         this.price = price;
+        this.isReserved = isReserved;
     }
 }
 

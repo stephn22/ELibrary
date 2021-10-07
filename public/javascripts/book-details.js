@@ -9,7 +9,11 @@ const form = document.getElementById('edit-book-form');
 const uploadNewImg = document.getElementById('upload-new-img');
 const newImgInput = document.getElementById('new-img-input');
 
-const addToCart = document.getElementById('add-to-cart-confirm');
+const addToCartBtn = document.getElementById('add-to-cart-confirm');
+
+const bookQty = document.getElementById('book-quantity');
+
+const deleteBtn = document.getElementById('delete-book');
 const reserveBook = document.getElementById('reserve-book-confirm');
 
 const title = document.getElementById('title');
@@ -56,173 +60,206 @@ let valid = true;
 
 if (title && author && isbn && paper && language && publisher && stockRange && pagesRange && datePublished && description && price) {
     descriptionInfo.innerHTML = `Remaining: ${250 - description.value.length}`;
-disableBtn(saveBtn);
+    disableBtn(saveBtn);
 
-uploadNewImg.addEventListener('click', () => {
-    newImgInput.click();
-});
+    uploadNewImg.addEventListener('click', () => {
+        newImgInput.click();
+    });
 
-newImgInput.addEventListener('change', (input) => {
-    if (input.target.files && input.target.files[0]) {
-        const reader = new FileReader();
+    newImgInput.addEventListener('change', (input) => {
+        if (input.target.files && input.target.files[0]) {
+            const reader = new FileReader();
 
-        reader.onload = function (e) {
-            bookImage.setAttribute("src", e.target.result);
-            bookImage.removeAttribute("hidden");
-        };
+            reader.onload = function (e) {
+                bookImage.setAttribute("src", e.target.result);
+                bookImage.removeAttribute("hidden");
+            };
 
-        reader.readAsDataURL(input.target.files[0]);
+            reader.readAsDataURL(input.target.files[0]);
+            enableBtn(saveBtn);
+        }
+    });
+
+    title.addEventListener('input', () => {
+        if (!validateTitle(title.value)) {
+            setValidationMessage(titleValidation, "Please enter a valid title name, must be between 1 and 100 characters");
+            disableBtn(saveBtn);
+            valid = false;
+        } else {
+            clearValidationMsg(titleValidation);
+            enableBtn(saveBtn);
+            valid = true;
+        }
+    });
+
+    author.addEventListener('input', () => {
+        if (!validateName(author.value)) {
+            setValidationMessage(authorValidation, "Please enter a valid author name, must be between 1 and 100 characters");
+            disableBtn(saveBtn);
+            valid = false;
+        } else {
+            clearValidationMsg(authorValidation);
+            enableBtn(saveBtn);
+            valid = true;
+        }
+    });
+
+    isbn.addEventListener('input', () => {
+        if (!validateISBN(isbn.value)) {
+            setValidationMessage(isbnValidation, "Please enter a valid ISBN");
+            disableBtn(saveBtn);
+            valid = false;
+        } else {
+            clearValidationMsg(isbnValidation);
+            enableBtn(saveBtn);
+            valid = true;
+        }
+    });
+
+    language.addEventListener('change', () => {
         enableBtn(saveBtn);
-    }
-});
+    });
 
-title.addEventListener('input', () => {
-    if (!validateTitle(title.value)) {
-        setValidationMessage(titleValidation, "Please enter a valid title name, must be between 1 and 100 characters");
-        disableBtn(saveBtn);
-        valid = false;
-    } else {
-        clearValidationMsg(titleValidation);
+    paper.addEventListener('click', () => {
         enableBtn(saveBtn);
-        valid = true;
-    }
-});
+    });
 
-author.addEventListener('input', () => {
-    if (!validateName(author.value)) {
-        setValidationMessage(authorValidation, "Please enter a valid author name, must be between 1 and 100 characters");
-        disableBtn(saveBtn);
-        valid = false;
-    } else {
-        clearValidationMsg(authorValidation);
+    ebook.addEventListener('click', () => {
         enableBtn(saveBtn);
-        valid = true;
-    }
-});
+    });
 
-isbn.addEventListener('input', () => {
-    if (!validateISBN(isbn.value)) {
-        setValidationMessage(isbnValidation, "Please enter a valid ISBN");
-        disableBtn(saveBtn);
-        valid = false;
-    } else {
-        clearValidationMsg(isbnValidation);
+    publisher.addEventListener('input', () => {
+        if (!validateName(publisher.value)) {
+            setValidationMessage(publisherValidation, "Please enter a valid publisher name, must be between 1 and 100 characters");
+            disableBtn(saveBtn);
+            valid = false;
+        } else {
+            clearValidationMsg(publisherValidation);
+            enableBtn(saveBtn);
+            valid = true;
+        }
+    });
+
+    datePublished.addEventListener('input', () => {
+        if (!validateDate(datePublished.value)) {
+            setValidationMessage(datePublishedValidation, "Please enter a valid date, must be in the past");
+            disableBtn(saveBtn);
+            valid = false;
+        } else {
+            clearValidationMsg(datePublishedValidation);
+            enableBtn(saveBtn);
+            valid = true;
+        }
+    });
+
+    description.addEventListener('input', () => {
+
+        descriptionInfo.innerHTML = `Remaining: ${250 - description.value.length}`;
+
+        if (!validateDescription(description.value)) {
+            setValidationMessage(descriptionValidation, "Please enter a valid description, must be between 1 and 250 characters");
+            disableBtn(saveBtn);
+            valid = false;
+        } else {
+            clearValidationMsg(descriptionValidation);
+            enableBtn(saveBtn);
+            valid = true;
+        }
+    });
+
+    price.addEventListener('input', () => {
+        if (!validatePrice(price.value)) {
+            setValidationMessage(priceValidation, "Please enter a valid price, must be between 0.01 and 100.00");
+            disableBtn(saveBtn);
+            valid = false;
+        } else {
+            clearValidationMsg(priceValidation);
+            enableBtn(saveBtn);
+            valid = true;
+        }
+    });
+
+    stockRange.addEventListener('input', () => {
         enableBtn(saveBtn);
-        valid = true;
-    }
-});
+        stockRangeLabel.innerHTML = `In stock: ${stockRange.value}`;
+    });
 
-language.addEventListener('change', () => {
-    enableBtn(saveBtn);
-});
-
-paper.addEventListener('click', () => {
-    enableBtn(saveBtn);
-});
-
-ebook.addEventListener('click', () => {
-    enableBtn(saveBtn);
-});
-
-publisher.addEventListener('input', () => {
-    if (!validateName(publisher.value)) {
-        setValidationMessage(publisherValidation, "Please enter a valid publisher name, must be between 1 and 100 characters");
-        disableBtn(saveBtn);
-        valid = false;
-    } else {
-        clearValidationMsg(publisherValidation);
+    pagesRange.addEventListener('input', () => {
         enableBtn(saveBtn);
-        valid = true;
-    }
-});
+        pagesRangeLabel.innerHTML = `Pages: ${pagesRange.value}`;
+    });
 
-datePublished.addEventListener('input', () => {
-    if (!validateDate(datePublished.value)) {
-        setValidationMessage(datePublishedValidation, "Please enter a valid date, must be in the past");
-        disableBtn(saveBtn);
-        valid = false;
-    } else {
-        clearValidationMsg(datePublishedValidation);
-        enableBtn(saveBtn);
-        valid = true;
-    }
-});
+    saveBtn.addEventListener('click', (e) => {
+        if (!valid) {
+            e.preventDefault();
+        } else {
+            // get book id
+            const bookId = parseInt(form.getAttribute('data-id'));
 
-description.addEventListener('input', () => {
+            // prepare the form data
+            formData.append('title', title.value);
+            formData.append('author', author.value);
+            formData.append('isbn', isbn.value);
+            formData.append('publisher', publisher.value);
+            formData.append('stock', stockRange.value);
+            formData.append('language', language.value === '--' ? languageInfo.getAttribute('data-language') : language.value);
+            formData.append('pages', pagesRange.value);
+            formData.append('price', price.value);
+            formData.append('type', paper.checked ? 'Paper' : 'Ebook');
+            formData.append('date-published', datePublished.value);
+            formData.append('description', description.value);
+            formData.append('new-img', newImgInput.files[0]);
 
-    descriptionInfo.innerHTML = `Remaining: ${250 - description.value.length}`;
-
-    if (!validateDescription(description.value)) {
-        setValidationMessage(descriptionValidation, "Please enter a valid description, must be between 1 and 250 characters");
-        disableBtn(saveBtn);
-        valid = false;
-    } else {
-        clearValidationMsg(descriptionValidation);
-        enableBtn(saveBtn);
-        valid = true;
-    }
-});
-
-price.addEventListener('input', () => {
-    if (!validatePrice(price.value)) {
-        setValidationMessage(priceValidation, "Please enter a valid price, must be between 0.01 and 100.00");
-        disableBtn(saveBtn);
-        valid = false;
-    } else {
-        clearValidationMsg(priceValidation);
-        enableBtn(saveBtn);
-        valid = true;
-    }
-});
-
-stockRange.addEventListener('input', () => {
-    enableBtn(saveBtn);
-    stockRangeLabel.innerHTML = `In stock: ${stockRange.value}`;
-});
-
-pagesRange.addEventListener('input', () => {
-    enableBtn(saveBtn);
-    pagesRangeLabel.innerHTML = `Pages: ${pagesRange.value}`;
-});
-
-saveBtn.addEventListener('click', (e) => {
-    if (!valid) {
-        e.preventDefault();
-    } else {
-        // get book id
-        const bookId = parseInt(form.getAttribute('data-id'));
-
-        // prepare the form data
-        formData.append('title', title.value);
-        formData.append('author', author.value);
-        formData.append('isbn', isbn.value);
-        formData.append('publisher', publisher.value);
-        formData.append('stock', stockRange.value);
-        formData.append('language', language.value === '--' ? languageInfo.getAttribute('data-language') : language.value);
-        formData.append('pages', pagesRange.value);
-        formData.append('price', price.value);
-        formData.append('type', paper.checked ? 'Paper' : 'Ebook');
-        formData.append('date-published', datePublished.value);
-        formData.append('description', description.value);
-        formData.append('new-img', newImgInput.files[0]);
-
-        // send the form data
-        updateBook(bookId, formData);
-    }
-});
+            // send the form data
+            updateBook(bookId, formData);
+        }
+    });
 }
 
-if (reserveBook && addToCart) {
+if (reserveBook && addToCartBtn) {
+    addToCartBtn.addEventListener('click', () => {
+        const bookId = parseInt(addToCartBtn.getAttribute('data-id'));
+        const quantity = parseInt(bookQty.value);
+
+        if (bookId && quantity) {
+            addToCart(bookId, quantity);
+        }
+    });
+
     reserveBook.addEventListener('click', () => {
         const bookId = parseInt(reserveBook.getAttribute('data-id'));
         const userId = parseInt(reserveBook.getAttribute('data-user'));
-    
-        // TODO:
-        createOrder(bookId, userId, "Reservation");
+
+        if (bookId && userId) {
+            createOrder(bookId, userId, "Reservation");
+        }
+    });
+}
+
+if (deleteBtn) {
+    deleteBtn.addEventListener('click', () => {
+        const bookId = parseInt(deleteBtn.getAttribute('data-id'));
+
+        if (bookId) {
+            deleteBook(bookId);
+        }
     });
 }
 
 /************************** FETCH API METHODS *****************************/
+
+/**
+ * Using fetch API to add the book(s) to cart
+ * @param {number} bookId id of the book
+ * @param {number} quantity quantity chosen by the user
+ */
+function addToCart(bookId, quantity) {
+    fetch(`/sessions/cart/${bookId}/${quantity}`, {
+        method: 'PUT',
+        body: {},
+    }).then(window.location.reload())
+        .catch(err => console.log(err));
+}
 
 /**
  * Using the fetch API to create a new order
@@ -232,7 +269,7 @@ if (reserveBook && addToCart) {
  * @param {number} price price of the book (only if buying)
  * @param {string} address address of the user (only if buying)
  */
- function createOrder(bookId, userId, type, price = 0.00, address = "") {
+function createOrder(bookId, userId, type, price = 0.00, address = "") {
     const body = {
         bookId: bookId,
         userId: userId,
@@ -262,6 +299,18 @@ function updateBook(bookId, formData) {
         body: formData
     }).then(window.location.reload())
         .catch(error => console.error(error));
+}
+
+/**
+ * Using the fetch API to delete a book by its id
+ * @param {number} bookId the book id
+ */
+function deleteBook(bookId) {
+    fetch(`/books/${bookId}`, { method: "DELETE" })
+        .then((_res) => {
+            window.location.href = "/books";
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 /************************** VALIDATION METHODS *****************************/
