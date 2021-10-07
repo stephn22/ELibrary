@@ -46,7 +46,7 @@ function updateBook(book) {
     return new Promise((resolve, reject) => {
 
         if (book.imgUrl === null) {
-            const query = "UPDATE books SET title = ?, author = ?, isbn = ?, type = ?, stock = ?, language = ?, pages = ?, publisher = ?, datePub = ?, description = ?, price = ? is_reserved = ? WHERE id = ?";
+            const query = "UPDATE books SET title = ?, author = ?, isbn = ?, type = ?, stock = ?, language = ?, pages = ?, publisher = ?, datePub = ?, description = ?, price = ?, is_reserved = ? WHERE id = ?";
 
             db.run(query, [
                 book.title,

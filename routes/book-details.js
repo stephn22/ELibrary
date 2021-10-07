@@ -61,6 +61,9 @@ router.put('/:bookId', upload.single('new-img'), async function (req, res) {
     const errors = validationResult(req);
 
     if (errors.isEmpty()) {
+        const oldBook = await bookDao.findBookById(bookId);
+
+
         const book = new Book(
             bookId,
             req.body.title,
@@ -74,7 +77,8 @@ router.put('/:bookId', upload.single('new-img'), async function (req, res) {
             req.body['date-published'],
             req.body.description,
             req.file === undefined ? null : req.file.buffer,
-            req.body.price);
+            req.body.price,
+            oldBook.isReserved);
 
         bookDao.updateBook(book)
             .then(async (id) => {
