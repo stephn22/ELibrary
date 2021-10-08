@@ -1,0 +1,35 @@
+<%- include('partials/header', { title: "Checkout" }); %>
+
+<main>
+    <% if (typeof cart !== "undefined") { %>
+        <div class="row g-5">
+            <div class="col-md-5 col-lg-4 order-md-last">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-primary">Your cart</span>
+                <span class="badge bg-primary rounded-pill"><%= cart.total %></span>
+            </h4>
+            <ul class="list-group mb-3">
+                <% cart.items.forEach(item => { %>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">
+                                <%= item.book.title %>
+                            </h6>
+                            <small class="text-muted">
+                                <%= item.book.type %>
+                            </small>
+                        </div>
+                        <span class="text-muted"><%= item.book.price %> €</span>
+                    </li>
+                <% }); %>
+                <li class="list-group-item d-flex justify-content-between">
+                <span>Total (EUR)</span>
+                <strong><%= cart.price %> €</strong>
+                </li>
+            </ul>
+        </div>
+  
+    <% } %>
+</main>
+
+<%- include('partials/footer'); %>

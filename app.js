@@ -27,6 +27,7 @@ const booksRouter = require('./routes/books.js');
 const bookDetailsRouter = require('./routes/book-details.js');
 const apiRouter = require('./routes/api.js');
 const ordersRouter = require('./routes/orders.js');
+const checkoutRouter = require('./routes/checkout.js');
 
 /************** SETUP *************/
 
@@ -124,6 +125,7 @@ app.use('/books', booksRouter);
 app.use('/book-details', bookDetailsRouter);
 app.use('/api', apiRouter);
 app.use('/orders', isAdmin, ordersRouter);
+app.use('/checkout', isLoggedIn, checkoutRouter);
 
 app.use('/', (_req, _res, next) => {
     next(createError(404));
