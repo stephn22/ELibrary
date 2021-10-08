@@ -54,7 +54,7 @@ confirmNewPassword.addEventListener("input", () => {
     }
 });
 
-/************************** VALIDATION METHODS *****************************/
+/************************** VALIDATION *****************************/
 
 /**
  * Validates email address

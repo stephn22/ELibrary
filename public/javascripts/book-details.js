@@ -255,7 +255,7 @@ if (deleteBtn) {
     });
 }
 
-/************************** FETCH API METHODS *****************************/
+/************************** FETCH API *****************************/
 
 /**
  * Using fetch API to add the book(s) to cart
@@ -322,7 +322,7 @@ function deleteBook(bookId) {
         .catch(error => console.error('Error:', error));
 }
 
-/************************** VALIDATION METHODS *****************************/
+/************************** VALIDATION *****************************/
 
 /**
  * Checks if the book title is valid

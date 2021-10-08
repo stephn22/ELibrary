@@ -245,7 +245,7 @@ for (let i = 0; i < deleteBtns.length; i++) {
     });
 }
 
-/************************** FETCH API METHODS *****************************/
+/************************** FETCH API *****************************/
 
 /**
  * Using the fetch API to delete a book by its id
@@ -267,19 +267,7 @@ function deleteBook(bookId) {
         .catch(error => console.error('Error:', error));
 }
 
-/**
- * Using the fetch API to get all books
- * @returns {Book[]} an array of books
- */
-async function getAllBooks() {
-    const response = await fetch('/api/books').js;
-    const json = await response.json();
-
-    const books = JSON.parse(json);
-    return books;
-}
-
-/************************** VALIDATION METHODS *****************************/
+/************************** VALIDATION *****************************/
 
 /**
  * Checks if the book title is valid
@@ -331,7 +319,7 @@ function validateDescription(description) {
  * @param {number} price price of the book
  * @returns true if price is valid, false otherwise
  */
-function validatePrice(price) {
+function validatePrice(price) { // FIXME:
     return /^\d{0,8}(\.\d{1,4})?$/.test(price);
 }
 
@@ -367,6 +355,8 @@ function enableBtn(btn) {
 function disableBtn(btn) {
     btn.setAttribute("disabled", "disabled");
 }
+
+/************************** ANIMATIONS *****************************/
 
 /**
  * Animates an element with fade in transition (0.3s)

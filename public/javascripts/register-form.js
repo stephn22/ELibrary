@@ -123,7 +123,7 @@ signupBtn.addEventListener("click", (e) => {
     }
 });
 
-/************************** VALIDATION METHODS *****************************/
+/************************** VALIDATION *****************************/
 
 /**
  * Validates a person name
@@ -204,7 +204,7 @@ function disableBtn(btn) {
     btn.setAttribute("disabled", "true");
 }
 
-/************************** GEOLOCATION METHODS *****************************/
+/************************** GEOLOCATION *****************************/
 
 /**
  * Get the address position of user by reverse geocoding request (lng, lat) to MapBox
