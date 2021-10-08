@@ -27,6 +27,15 @@ h2 {
     margin-bottom: 1rem;
 }
 
+tr {
+    transition: 0.3s ease-in-out;
+}
+
+footer {
+    margin-bottom: 1rem;
+    position: absolute;
+}
+
 #empty-cart-img {
     margin-left: 40%;
     margin-bottom: 1rem;
@@ -59,6 +68,10 @@ h2 {
     height: 50px;
     width: 50px;
     border-radius: 10px;
+}
+
+.fade-effect {
+    opacity: 0;
 }
 
 .social-link {

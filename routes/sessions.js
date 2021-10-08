@@ -58,19 +58,22 @@ router.get('/sessions/cart', function (req, res, _next) {
         res.render('cart', {
             user: req.user,
             cart: undefined,
-            styles: ['/stylesheets/cart.css']
+            styles: ['/stylesheets/cart.css'],
+            scripts: ['/javascripts/cart.js']
         });
     } else {
         res.render('cart', {
             user: req.user,
             cart: req.session.cart,
-            styles: ['/stylesheets/cart.css']
+            styles: ['/stylesheets/cart.css'],
+            scripts: ['/javascripts/cart.js']
         });
     }
 });
 
 // add to cart
-router.put('/sessions/cart/:id/:qty', async function (req, res, _next) {
+// FIXME: weird behaviour when adding the same book multiple times
+router.post('/sessions/cart/:id/:qty', async function (req, res, _next) {
     const bookId = parseInt(req.params.id);
     const quantity = parseInt(req.params.qty);
 
@@ -88,6 +91,32 @@ router.put('/sessions/cart/:id/:qty', async function (req, res, _next) {
     } else {
         cart = new Cart(book, quantity);
         logger.logInfo("Book added to cart successfully (created a new cart)");
+    }
+
+    req.session.cart = cart;
+    res.send(cart);
+});
+
+// edit cart
+// FIXME: weird behaviour when editing quantity
+router.put('/sessions/cart/:id/:qty', async function (req, res, _next) {
+    const bookId = parseInt(req.params.id);
+    const quantity = parseInt(req.params.qty);
+
+    /**
+     * @type {Cart}
+     */
+    const cart = req.session.cart ? req.session.cart : undefined;
+
+    if (cart !== undefined) {
+        cart.items.forEach(element => {
+            if (element.book.id === bookId) {
+                element.quantity = quantity;
+            }
+        });
+
+        cart.price = getTotalPrice(cart);
+        logger.logInfo("Book quantity updated successfully");
     }
 
     req.session.cart = cart;
@@ -112,10 +141,10 @@ router.delete('/sessions/cart/:id/:qty?', async function (req, res, _next) {
     }
 
     req.session.cart = cart;
-    res.redirect('/');
+    res.send(cart);
 });
 
-/************************** CART FUNCTIONS *****************************/
+/************************** CART *****************************/
 
 /**
  * Calculates the total price of the cart
@@ -141,7 +170,6 @@ function getTotalPrice(cart) {
 function addItem(cart, item, quantity) {
     cart.items.forEach(element => {
         if (element.book.id === item.id) {
-            logger.logDebug('same');
             element.quantity += quantity;
         } else {
             logger.logDebug('different');
@@ -153,6 +181,7 @@ function addItem(cart, item, quantity) {
     });
 
     cart.price = getTotalPrice(cart);
+    cart.total += quantity;
 }
 
 /**
@@ -163,20 +192,32 @@ function addItem(cart, item, quantity) {
  */
 function removeItem(cart, item, quantity = 0) {
     if (quantity === 0) {
-        const i = cart.items.indexOf(item);
+        let i = -1;
+        let qty = 0;
+
+        cart.items.forEach(element => {
+            if (element.book.id === item.id) {
+                i = cart.items.indexOf(element);
+                qty = element.quantity;
+            }
+        });
 
         if (i > -1) {
-            cart.items.splice(i, 1);
+            cart.items.splice(i, 1); // remove item
+            cart.total -= qty; // update total quantity
+            cart.price = getTotalPrice(cart); // update total price
         }
     } else {
         cart.items.forEach(element => {
             if (element.book.id === item.id) {
                 element.quantity -= quantity;
+                total -= quantity;
             }
         });
     }
 
-    cart.price = getTotalPrice(cart);
+    cart.total -= quantity; // update total quantity
+    cart.price = getTotalPrice(cart); // update total price
 }
 
 module.exports = router;

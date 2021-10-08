@@ -264,7 +264,7 @@ if (deleteBtn) {
  */
 function addToCart(bookId, quantity) {
     fetch(`/sessions/cart/${bookId}/${quantity}`, {
-        method: 'PUT',
+        method: 'POST',
         body: {},
     }).then(window.location.reload())
         .catch(err => console.log(err));
