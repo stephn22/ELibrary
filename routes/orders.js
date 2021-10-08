@@ -48,7 +48,7 @@ router.post('/', async function (req, res, next) {
             logger.logInfo(`Added order with id: ${id}`);
             const cart = req.session.cart;
             const orders = await orderDao.findAllOrders();
-            // TODO: render to customer orders
+            // TODO: send orders to the user
         })
         .catch(async (err) => {
             logger.logError(err);

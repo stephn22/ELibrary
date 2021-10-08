@@ -12,11 +12,9 @@ router.get("/", (req, res, _next) => {
 
     // TODO: favourites
     const orders = orderDao.findOrdersByCustomerId(req.user.id);
-    const cart = req.session.cart;
 
     res.render("profile", {
         user: req.user,
-        cart: cart,
         orders: orders,
         styles: ['/stylesheets/profile.css'],
         scripts: ['/javascripts/profile.js']
@@ -31,7 +29,6 @@ router.post("/update-email", [
     if (errors.isEmpty()) {
         const orders = orderDao.findOrdersByCustomerId(req.user.id);
         const user = await userDao.findUserByEmail(req.user.email);
-        const cart = req.session.cart;
 
         user.email = req.body['new-email'];
 
@@ -40,7 +37,6 @@ router.post("/update-email", [
 
         res.render("profile", {
             user: user,
-            cart: cart,
             orders: orders,
             styles: ['/stylesheets/profile.css'],
             scripts: ['/javascripts/profile.js'],
@@ -48,12 +44,10 @@ router.post("/update-email", [
         });
     } else {
         logger.logError(JSON.stringify(errors));
-        const cart = req.session.cart;
         const orders = orderDao.findOrdersByCustomerId(req.user.id);
 
         res.render("profile", {
             user: req.user,
-            cart: cart,
             orders: orders,
             styles: ['/stylesheets/profile.css'],
             scripts: ['/javascripts/profile.js'],
@@ -69,7 +63,6 @@ router.post("/update-password", [
 
     if (errors.isEmpty()) {
         const orders = orderDao.findOrdersByCustomerId(req.user.id);
-        const cart = req.session.cart;
         const user = await userDao.findUserById(req.user.id);
         const oldPassword = user.password;
 
@@ -88,7 +81,6 @@ router.post("/update-password", [
 
         res.render("profile", {
             user: user,
-            cart, cart,
             orders: orders,
             styles: ['/stylesheets/profile.css'],
             scripts: ['/javascripts/profile.js'],
@@ -96,12 +88,10 @@ router.post("/update-password", [
         });
     } else {
         logger.logError(JSON.stringify(errors));
-        const cart = req.session.cart;
         const orders = orderDao.findOrdersByCustomerId(req.user.id);
 
         res.render("profile", {
             user: req.user,
-            cart: cart,
             orders: orders,
             styles: ['/stylesheets/profile.css'],
             scripts: ['/javascripts/profile.js'],
