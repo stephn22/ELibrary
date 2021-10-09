@@ -69,4 +69,9 @@ router.post('/reserve', async function (req, res, _next) {
 
 });
 
+router.post('/', async function(req, res, _next) {
+    const customerId = parseInt(req.body.userId);
+    // TODO:
+});
+
 module.exports = router;

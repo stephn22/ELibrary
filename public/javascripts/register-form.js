@@ -4,15 +4,6 @@
 
 const signupBtn = document.getElementById("signup-btn");
 
-// modal
-const addressInputMsg = "Click the button below to insert your location";
-const addressBtn = document.getElementById("address-search");
-const addressInput = document.getElementById("address-input");
-const modalText = document.getElementById("modal-text");
-const saveModalBtn = document.getElementById("address-save-btn");
-const closeModalBtn = document.getElementById("close-modal-btn");
-const closeModal = document.getElementById("close-modal");
-
 const fname = document.getElementById("fname");
 const fnameValidation = document.getElementById("fname-validation");
 const lname = document.getElementById("lname");
@@ -95,26 +86,6 @@ confirmPwd.addEventListener("input", () => {
         enableBtn(signupBtn);
         valid = true;
     }
-});
-
-// on click of address button
-addressBtn.addEventListener("click", () => {
-    if (navigator.geolocation) {
-        // get the user's current position (lng, lat)
-        navigator.geolocation.getCurrentPosition(reverseGeocode, geolocationError);
-    }
-});
-
-// on click of close modal button
-closeModalBtn.addEventListener("click", () => {
-    // reset input value
-    addressInput.value = addressInputMsg;
-});
-
-// on click of close modal icon (button)
-closeModal.addEventListener("click", () => {
-    // reset input value
-    addressInput.value = addressInputMsg;
 });
 
 signupBtn.addEventListener("click", (e) => {
@@ -202,64 +173,4 @@ function enableBtn(btn) {
  */
 function disableBtn(btn) {
     btn.setAttribute("disabled", "true");
-}
-
-/************************** GEOLOCATION *****************************/
-
-/**
- * Get the address position of user by reverse geocoding request (lng, lat) to MapBox
- * @link https://docs.mapbox.com/api/search/geocoding/
- * @param {GeolocationPosition} position position of the user
- */
-async function reverseGeocode(position) {
-    const mapboxAccessToken = "pk.eyJ1Ijoic3RlY3JvdHRpMSIsImEiOiJja3Bna2kzbHYyaThoMm9ueHl1dzlnaTc1In0.EpALSOaDOmuM8XGS_IQzvA";
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${position.coords.longitude},${position.coords.latitude}.json?access_token=${mapboxAccessToken}`;
-
-    await updateAddressModal(url);
-}
-
-/**
- * Show errors of geolocation
- * @param {GeolocationPositionError} error geolocation error object
- */
-function geolocationError(error) {
-    switch (error.code) {
-        case error.PERMISSION_DENIED:
-            window.alert("User denied the request for Geolocation.");
-            break;
-
-        case error.POSITION_UNAVAILABLE:
-            window.alert("Location information is unavailable.");
-            break;
-
-        case error.TIMEOUT:
-            window.alert("The request to get user location timed out.");
-            break;
-
-        case error.UNKNOWN_ERROR:
-            window.alert("An unknown error occurred.");
-            break;
-    }
-}
-
-/**
- * Make a http request to the given url and then update the address modal with the result
- * @param {string} url url to make request
- */
-async function updateAddressModal(url) {
-    await fetch(url, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json; charset=UTF-8"
-        },
-    }).then(response => {
-        return response.json();
-    }).then(data => {
-        // update address modal and the address input field
-        modalText.innerHTML = data.features[0].place_name;
-        addressInput.value = data.features[0].place_name;
-
-    }).catch(error => {
-        console.log(error);
-    });
 }

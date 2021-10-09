@@ -73,48 +73,6 @@
             <span class="text-danger" id="confirm-password-validation"></span>
         </div>
 
-        <div class="form-floating">
-            <input type="text" class="form-control shadow-lg" id="address-input" name="address"
-                   value="Click the button below to insert your location"
-                   placeholder="Street, Number, City, Postal Code..." disabled>
-            <label for="address-input">Address</label>
-            <span class="input-group-append">
-        </div>
-        <br/>
-        <button class="btn btn-outline-dark shadow-lg" type="button" id="address-search" data-bs-toggle="modal"
-                data-bs-target="#address-modal">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                 class="bi bi-geo-alt" viewBox="0 0 16 16">
-                <path
-                        d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
-                <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-            </svg>
-        </button>
-
-        <div class="modal fade" aria-labelledby="address-modal-label" aria-hidden="true" id="address-modal">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="address-modal-label">Address</h5>
-                        <button type="button" id="close-modal" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close">
-                    </div>
-                    <div class="modal-body">
-                        <p id="modal-text"></p>
-                        <small class="small text-muted">You can change it later in your profile</small>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary shadow-lg" data-bs-dismiss="modal"
-                                id="close-modal-btn">Close
-                        </button>
-                        <button type="button" class="btn btn-primary shadow-lg" data-bs-dismiss="modal"
-                                id="address-save-btn">Save
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <button class="w-100 btn btn-lg btn-secondary shadow-lg" id="signup-btn" type="submit">Submit</button>
     </form>
 </main>

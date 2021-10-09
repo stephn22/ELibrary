@@ -30,7 +30,6 @@ router.post("/", [
             }
         }),
     body("password").matches(/^.*(?=.{8,})(?=.*[\d])(?=.*[\W]).*$/).escape().withMessage("Password must be at least 8 characters long and contain at least one number and one non-alphanumeric character"),
-    body("address").trim().isLength(0, 50).escape().withMessage("Please enter a valid address"),
 ], async function (req, res) {
     const errors = validationResult(req);
 
@@ -48,7 +47,6 @@ router.post("/", [
             req.body.lname,
             req.body.email,
             req.body.password,
-            req.body.address, // FIXME: address always empty ""
             Type.CUSTOMER
         );
 
@@ -59,8 +57,7 @@ router.post("/", [
         res.render("login", {
             title: "Login",
             message: "Successfully registered",
-            styles: ['/stylesheets/forms.css'],
-            scripts: ['/javascripts/login-form.js']
+            styles: ['/stylesheets/forms.css']
         });
     } else {
         logger.logError(JSON.stringify(errors));
