@@ -10,7 +10,6 @@ const bcrypt = require('bcrypt');
 
 router.get("/", (req, res, _next) => {
 
-    // TODO: favourites
     const orders = orderDao.findOrdersByCustomerId(req.user.id);
 
     res.render("profile", {

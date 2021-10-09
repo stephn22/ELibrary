@@ -10,12 +10,10 @@ const logger = require("../util/logger");
 
 router.get('/', async (req, res, _next) => {
     const orders = await orderDao.findAllOrders();
-    const cart = req.session.cart;
 
     if (orders.hasOwnProperty("error")) {
         res.render('orders', {
             user: req.user,
-            cart: cart,
             message: "No orders found"
         });
     } else {
@@ -25,7 +23,7 @@ router.get('/', async (req, res, _next) => {
     }
 });
 
-router.post('/', async function (req, res, next) {
+router.post('/reserve', async function (req, res, _next) {
     const customerId = parseInt(req.body.userId);
     const bookId = parseInt(req.body.bookId);
     const type = req.body.type;
@@ -36,29 +34,32 @@ router.post('/', async function (req, res, next) {
         undefined,
         customerId,
         new Date(),
-        bookId,
         price,
         address,
         orderStatus.NEW,
         type
     );
 
-    orderDao.addOrder(order)
+    orderDao.addOrder(order, bookId, 0)
         .then(async (id) => {
             logger.logInfo(`Added order with id: ${id}`);
-            const cart = req.session.cart;
-            const orders = await orderDao.findAllOrders();
-            // TODO: send orders to the user
+
+            const orders = await orderDao.findOrdersByCustomerId(customerId);
+            
+            res.render('books', {
+                user: req.user,
+                orders: orders,
+                message: "Order added successfully",
+                styles: ['/stylesheets/books.css'],
+                scripts: ['/javascripts/books.js']
+            });
         })
         .catch(async (err) => {
             logger.logError(err);
 
             const books = await bookDao.findAllBooks();
-            const cart = req.session.cart;
-
             res.render('books', {
                 user: req.user,
-                cart: cart,
                 errors: [err],
                 books: books,
                 styles: ['/stylesheets/books.css'],

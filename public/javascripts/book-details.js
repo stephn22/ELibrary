@@ -232,12 +232,9 @@ if (addToCartBtn) {
 }
 
 if (reserveBook) {
-
     reserveBook.addEventListener('click', () => {
         const bookId = parseInt(reserveBook.getAttribute('data-id'));
         const userId = parseInt(reserveBook.getAttribute('data-user'));
-
-        // TODO:
 
         if (bookId && userId) {
             createOrder(bookId, userId, "Reservation");
@@ -287,7 +284,7 @@ function createOrder(bookId, userId, type, price = 0.00, address = "") {
         address: address
     }
 
-    fetch("/orders", {
+    fetch("/orders/reserve", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

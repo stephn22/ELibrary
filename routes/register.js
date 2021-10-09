@@ -6,7 +6,7 @@ const router = express.Router();
 const User = require('../entities/user');
 const userDao = require('../models/user-dao');
 const Type = require('../entities/constants/user-type');
-const { urlencoded } = require('body-parser'); // TODO: ?
+const { urlencoded } = require('body-parser');
 const logger = require('../util/logger');
 
 router.get("/", (_req, res, _next) => {
