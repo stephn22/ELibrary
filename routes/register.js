@@ -6,7 +6,6 @@ const router = express.Router();
 const User = require('../entities/user');
 const userDao = require('../models/user-dao');
 const Type = require('../entities/constants/user-type');
-const { urlencoded } = require('body-parser');
 const logger = require('../util/logger');
 
 router.get("/", (_req, res, _next) => {
@@ -38,8 +37,6 @@ router.post("/", [
         if (req.body['confirm-password'] !== req.body.password) {
             throw new Error("Passwords do not match");
         }
-
-        logger.logDebug(JSON.stringify(req.body));
 
         const user = new User(
             undefined,

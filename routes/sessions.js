@@ -7,6 +7,7 @@ const logger = require('../util/logger');
 const Book = require('../entities/book');
 const Cart = require('../entities/cart');
 const bookDao = require('../models/book-dao');
+const featuresDao = require('../models/features-dao');
 
 router.get("/login", (_req, res, _next) => {
     res.render("login", {
@@ -30,14 +31,20 @@ router.post("/sessions", (req, res, next) => {
         }
 
         // success
-        req.login(user, (err) => {
+        req.login(user, async (err) => {
             if (err) {
                 logger.logError(err);
                 return next(err);
             }
+            const features = await featuresDao.findAllFeatures();
+            const books = await bookDao.findAllBooks();
+
             res.render("index", {
                 user: user,
-                styles: ['/stylesheets/index.css']
+                features: features,
+                books: books,
+                styles: ['/stylesheets/index.css'],
+                scripts: ['/javascripts/index.js']
             });
 
             logger.logInfo("User logged in successfully");
