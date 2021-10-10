@@ -2,31 +2,55 @@
 
 /************************** CONSTANTS *****************************/
 
+/**
+ * @type {HTMLInputElement}
+ */
 const newEmail = document.getElementById("new-email");
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const newEmailValidation = document.getElementById("new-email-validation");
 
+/**
+ * @type {HTMLInputElement}
+ */
 const newPassword = document.getElementById("new-password");
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const newPasswordValidation = document.getElementById("new-password-validation");
 
+/**
+ * @type {HTMLInputElement}
+ */
 const confirmNewPassword = document.getElementById("confirm-new-password");
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const confirmNewPasswordValidation = document.getElementById("confirm-new-password-validation");
 
+/**
+ * @type {HTMLButtonElement}
+ */
 const newEmailConfirmBtn = document.getElementById("save-new-email");
+
+/**
+ * @type {HTMLButtonElement}
+ */
 const newPasswordConfirmBtn = document.getElementById("save-new-password");
 
 /************************** EVENT LISTENERS *****************************/
-
-let valid = true;
 
 newEmail.addEventListener("input", () => {
     if (!validateEmail(newEmail.value)) {
         setValidationMessage(newEmailValidation, "Please enter a valid email address");
         disableBtn(newEmailConfirmBtn);
-        valid = false;
     } else {
         clearValidationMsg(newEmailValidation);
         enableBtn(newEmailConfirmBtn);
-        valid = true;
     }
 });
 
@@ -34,11 +58,9 @@ newPassword.addEventListener("input", () => {
     if (!validatePassword(newPassword.value)) {
         setValidationMessage(newPasswordValidation, "Password must be at least 8 characters long and contain at least one digit and one special character");
         disableBtn(newPasswordConfirmBtn);
-        valid = false;
     } else {
         clearValidationMsg(newPasswordValidation);
         enableBtn(newPasswordConfirmBtn);
-        valid = true;
     }
 });
 
@@ -46,11 +68,9 @@ confirmNewPassword.addEventListener("input", () => {
     if (!validatePasswordAndConfirm(newPassword.value, confirmNewPassword.value)) {
         setValidationMessage(confirmNewPasswordValidation, "Passwords do not match");
         disableBtn(newPasswordConfirmBtn);
-        valid = false;
     } else {
         clearValidationMsg(confirmNewPasswordValidation);
         enableBtn(newPasswordConfirmBtn);
-        valid = true;
     }
 });
 
@@ -91,7 +111,7 @@ function validatePasswordAndConfirm(password, confirmPwd) {
 
 /**
  * Sets the validation message for the given element
- * @param {HTMLElement} element 
+ * @param {HTMLSpanElement} element 
  * @param {string} message 
  */
 function setValidationMessage(element, message) {
@@ -100,7 +120,7 @@ function setValidationMessage(element, message) {
 
 /**
  * Clear validation message of the given HTML element
- * @param {HTMLElement} validationElement HTML element to clear validation message
+ * @param {HTMLSpanElement} validationElement HTML element to clear validation message
  */
 function clearValidationMsg(validationElement) {
     validationElement.innerHTML = "";
@@ -108,7 +128,7 @@ function clearValidationMsg(validationElement) {
 
 /**
  * Enables a button
- * @param {HTMLElement} btn button to be enabled
+ * @param {HTMLButtonElement} btn button to be enabled
  */
 function enableBtn(btn) {
     btn.removeAttribute("disabled");
@@ -116,7 +136,7 @@ function enableBtn(btn) {
 
 /**
  * Disables a button
- * @param {HTMLElement} btn button to be disabled
+ * @param {HTMLButtonElement} btn button to be disabled
  */
 function disableBtn(btn) {
     btn.setAttribute("disabled", "true");

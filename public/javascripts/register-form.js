@@ -2,24 +2,64 @@
 
 /************************** CONSTANTS *****************************/
 
+/**
+ * @type {HTMLButtonElement}
+ */
 const signupBtn = document.getElementById("signup-btn");
 
+/**
+ * @type {HTMLInputElement}
+ */
 const fname = document.getElementById("fname");
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const fnameValidation = document.getElementById("fname-validation");
+
+/**
+ * @type {HTMLInputElement}
+ */
 const lname = document.getElementById("lname");
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const lnameValidation = document.getElementById("lname-validation");
 
+/**
+ * @type {HTMLInputElement}
+ */
 const signupEmail = document.getElementById("signup-email");
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const signupEmailValidation = document.getElementById("signup-email-validation");
 
+/**
+ * @type {HTMLInputElement}
+ */
 const signupPwd = document.getElementById("signup-password");
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const signupPwdValidation = document.getElementById("signup-password-validation");
+
+/**
+ * @type {HTMLInputElement}
+ */
 const confirmPwd = document.getElementById("confirm-password");
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const confirmPwdValidation = document.getElementById("confirm-password-validation");
 
 /************************** EVENT LISTENERS *****************************/
 
-let valid = true;
+let isValid = true;
 
 // Check first name as input changes
 fname.addEventListener("input", () => {
@@ -144,7 +184,7 @@ function validatePasswordAndConfirm(password, confirmPwd) {
 
 /**
  * Sets the validation message for the given element
- * @param {HTMLElement} element 
+ * @param {HTMLSpanElement} element 
  * @param {string} message 
  */
 function setValidationMessage(element, message) {
@@ -153,7 +193,7 @@ function setValidationMessage(element, message) {
 
 /**
  * Clear validation message of the given HTML element
- * @param {HTMLElement} validationElement HTML element to clear validation message
+ * @param {HTMLSpanElement} validationElement HTML element to clear validation message
  */
 function clearValidationMsg(validationElement) {
     validationElement.innerHTML = "";
@@ -161,7 +201,7 @@ function clearValidationMsg(validationElement) {
 
 /**
  * Enables a button
- * @param {HTMLElement} btn button to be enabled
+ * @param {HTMLButtonElement} btn button to be enabled
  */
 function enableBtn(btn) {
     btn.removeAttribute("disabled");
@@ -169,7 +209,7 @@ function enableBtn(btn) {
 
 /**
  * Disables a button
- * @param {HTMLElement} btn button to be disabled
+ * @param {HTMLButtonElement} btn button to be disabled
  */
 function disableBtn(btn) {
     btn.setAttribute("disabled", "true");

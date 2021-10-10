@@ -2,9 +2,24 @@
 
 /************************** CONSTANTS *****************************/
 
+/**
+ * @type {NodeListOf<HTMLButtonElement>}
+ */
 const removeBtns = document.querySelectorAll('.remove');
+
+/**
+ * @type {NodeListOf<HTMLButtonElement>}
+ */
 const editBtns = document.querySelectorAll('.edit');
+
+/**
+ * @type {NodeListOf<HTMLInputElement>}
+ */
 const quantityRanges = document.querySelectorAll('.quantity-range');
+
+/**
+ * @type {NodeListOf<HTMLLabelElement>}
+ */
 const quantityRangesLabels = document.querySelectorAll('.quantity-range-label');
 
 
@@ -20,10 +35,13 @@ for (let i = 0; i < editBtns.length; i++) {
     editBtns[i].addEventListener('click', () => {
         const bookId = parseInt(editBtns[i].getAttribute('data-id'));
 
+        /**
+         * @type {HTMLInputElement}
+         */
         const quantityRange = document.getElementById(`quantity-range-${bookId}`);
 
         if (quantityRange != null) {
-            editBookInCart(bookId, quantityRange.value);
+            editBookInCart(bookId, parseInt(quantityRange.value));
 
             const quantity = parseInt(quantityRange.value);
 
@@ -54,7 +72,6 @@ for (let i = 0; i < removeBtns.length; i++) {
 function editBookInCart(bookId, quantity) {
     fetch(`/sessions/cart/${bookId}/${quantity}`, {
         method: 'PUT',
-        body: {}
     }).then((_res) => window.location.reload())
         .catch(err => console.log(err));
 }

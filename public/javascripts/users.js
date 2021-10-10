@@ -2,6 +2,9 @@
 
 /************************** CONSTANTS *****************************/
 
+/**
+ * @type {NodeListOf<HTMLButtonElement>}
+ */
 const deleteBtns = document.querySelectorAll('.delete');
 
 /************************** EVENT LISTENERS *****************************/

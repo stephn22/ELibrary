@@ -97,7 +97,7 @@ function showItem(item) {
 
 /**
  * Enables a button
- * @param {HTMLElement} btn button to be enabled
+ * @param {HTMLButtonElement} btn button to be enabled
  */
 function enableBtn(btn) {
     btn.removeAttribute("disabled");
@@ -105,7 +105,7 @@ function enableBtn(btn) {
 
 /**
  * Disables a button
- * @param {HTMLElement} btn button to be disabled
+ * @param {HTMLButtonElement} btn button to be disabled
  */
 function disableBtn(btn) {
     btn.setAttribute("disabled", "disabled");

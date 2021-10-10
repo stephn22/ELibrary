@@ -2,45 +2,139 @@
 
 /************************** CONSTANTS *****************************/
 
+/**
+ * @type {HTMLInputElement}
+ */
 const bookImage = document.getElementById('book-image');
+
+/**
+ * @type {HTMLImageElement}
+ */
 const imgUploaded = document.getElementById('img-uploaded');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const search = document.getElementById('search-book');
+
+/**
+ * @type {HTMLInputElement}
+ */
 const ebookFilter = document.getElementById('ebook-filter');
+
+/**
+ * @type {HTMLInputElement}
+ */
 const paperFilter = document.getElementById('paper-filter');
 
+/**
+ * @type {HTMLButtonElement}
+ */
 const clear = document.getElementById('clear');
 
+/**
+ * @type {HTMLCollectionOf<HTMLButtonElement>}
+ */
 const deleteBtns = document.getElementsByClassName('delete-button');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const title = document.getElementById('title');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const titleValidation = document.getElementById('title-validation');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const author = document.getElementById('author');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const authorValidation = document.getElementById('author-validation');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const isbn = document.getElementById('isbn');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const isbnValidation = document.getElementById('isbn-validation');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const publisher = document.getElementById('publisher');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const publisherValidation = document.getElementById('publisher-validation');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const stockRange = document.getElementById('stock-range');
+
+/**
+ * @type {HTMLLabelElement}
+ */
 const stockRangeLabel = document.getElementById('stock-range-label');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const pagesRange = document.getElementById('pages-range');
+
+/**
+ * @type {HTMLLabelElement}
+ */
 const pagesRangeLabel = document.getElementById('pages-range-label');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const datePublished = document.getElementById('date-published');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const datePublishedValidation = document.getElementById('date-published-validation');
 
+/**
+ * @type {HTMLTextAreaElement}
+ */
 const description = document.getElementById('description');
+
+/**
+ * @type {HTMLParagraphElement}
+ */
 const descriptionInfo = document.getElementById('description-info');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const descriptionValidation = document.getElementById('description-validation');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const price = document.getElementById('price');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const priceValidation = document.getElementById('price-validation');
 
+/**
+ * @type {HTMLButtonElement}
+ */
 const saveBtn = document.getElementById('save');
 
 /************************** EVENT LISTENERS *****************************/
@@ -163,7 +257,6 @@ if (bookImage && title && author && isbn && paper && ebook && publisher && stock
     });
 }
 
-// TODO: improve filtering
 search.addEventListener('keyup', () => {
     const searchValue = search.value.toLowerCase();
     const books = document.querySelectorAll('.book');
@@ -325,7 +418,7 @@ function validatePrice(price) { // FIXME:
 
 /**
  * Sets the validation message for the given element
- * @param {HTMLElement} element 
+ * @param {HTMLSpanElement} element 
  * @param {string} message 
  */
 function setValidationMessage(element, message) {
@@ -334,7 +427,7 @@ function setValidationMessage(element, message) {
 
 /**
  * Clear validation message of the given HTML element
- * @param {HTMLElement} validationElement HTML element to clear validation message
+ * @param {HTMLSpanElement} validationElement HTML element to clear validation message
  */
 function clearValidationMsg(validationElement) {
     validationElement.innerHTML = "";
@@ -342,7 +435,7 @@ function clearValidationMsg(validationElement) {
 
 /**
  * Enables a button
- * @param {HTMLElement} btn button to be enabled
+ * @param {HTMLButtonElement} btn button to be enabled
  */
 function enableBtn(btn) {
     btn.removeAttribute("disabled");
@@ -350,7 +443,7 @@ function enableBtn(btn) {
 
 /**
  * Disables a button
- * @param {HTMLElement} btn button to be disabled
+ * @param {HTMLButtonElement} btn button to be disabled
  */
 function disableBtn(btn) {
     btn.setAttribute("disabled", "disabled");
