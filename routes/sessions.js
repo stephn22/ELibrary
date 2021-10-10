@@ -131,6 +131,7 @@ router.put('/sessions/cart/:id/:qty', async function (req, res, _next) {
             }
         });
 
+        cart.total = getTotalElements(cart);
         cart.price = getTotalPrice(cart);
         logger.logInfo("Book quantity updated successfully");
     }
@@ -188,7 +189,6 @@ function addItem(cart, item, quantity) {
         if (element.book.id === item.id) {
             element.quantity += quantity;
         } else {
-            logger.logDebug('different');
             cart.items.push({
                 book: item,
                 quantity: quantity
@@ -197,7 +197,7 @@ function addItem(cart, item, quantity) {
     });
 
     cart.price = getTotalPrice(cart);
-    cart.total += quantity;
+    cart.total = getTotalElements(cart);
 }
 
 /**
@@ -232,8 +232,23 @@ function removeItem(cart, item, quantity = 0) {
         });
     }
 
-    cart.total -= quantity; // update total quantity
+    cart.total = getTotalElements(cart); // update total quantity
     cart.price = getTotalPrice(cart); // update total price
+}
+
+/**
+ * Get number of elements contained in cart
+ * @param {Cart} cart cart to check
+ * @returns {number} number of elements contained in cart
+ */
+function getTotalElements(cart) {
+    let total = 0;
+
+    cart.items.forEach(element => {
+        total += element.quantity;
+    });
+
+    return total;
 }
 
 module.exports = router;
