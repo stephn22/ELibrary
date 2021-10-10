@@ -197,4 +197,40 @@ function findUserByEmailAndPassword(email, password) {
     });
 }
 
-module.exports = { addUser, updateUser, deleteUser, findUserById, findUserByEmail, findUserByEmailAndPassword };
+/**
+ * Get all users.
+ * @returns {Promise<User[]>} users
+ */
+function findAllUsers() {
+    return new Promise((resolve, reject) => {
+        const query = "SELECT * FROM users";
+
+        db.all(query, function (err, rows) {
+            if (err) {
+                logger.logError(err);
+                reject(err);
+            } else if (rows === undefined) {
+                logger.logWarn("No users found");
+                resolve([]);
+            } else {
+                const users = [];
+
+                rows.forEach(function (row) {
+                    const user = new User(
+                        row.id,
+                        row.fname,
+                        row.lname,
+                        row.email,
+                        row.password,
+                        row.type);
+
+                    users.push(user);
+                });
+
+                resolve(users);
+            }
+        });
+    });
+}
+
+module.exports = { addUser, updateUser, deleteUser, findUserById, findUserByEmail, findUserByEmailAndPassword, findAllUsers };
