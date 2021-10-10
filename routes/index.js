@@ -14,7 +14,7 @@ router.get('/', async (req, res, _next) => {
     // fill feature properties
     features.forEach(feature => {
         books.forEach(book => {
-            if (book.id === feature.book_id) {
+            if (book.id === feature.bookId) {
                 feature.book = book;
             }
         });
@@ -56,7 +56,7 @@ router.post('/features', async function (req, res, _next) {
     // fill feature properties
     features.forEach(feature => {
         books.forEach(book => {
-            if (book.id === feature.book_id) {
+            if (book.id === feature.bookId) {
                 feature.book = book;
             }
         });

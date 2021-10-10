@@ -139,7 +139,19 @@ const saveBtn = document.getElementById('save');
 
 /************************** EVENT LISTENERS *****************************/
 
-if (bookImage && title && author && isbn && paper && ebook && publisher && stockRange && pagesRange && datePublished && description && price && saveBtn) {
+if (bookImage
+    && title
+    && author
+    && isbn
+    && paper
+    && ebook
+    && publisher
+    && stockRange
+    && pagesRange
+    && datePublished
+    && description
+    && price
+    && saveBtn) {
     let valid = true;
 
     bookImage.addEventListener('change', (input) => {

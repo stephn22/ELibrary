@@ -20,7 +20,7 @@ function addOrder(order, bookId, quantity) {
         const query = "INSERT INTO orders (customer_id, date, price, address, status, type) VALUES (?, ?, ?, ?, ?, ?)";
 
         db.run(query, [
-            order.customer_id,
+            order.customerId,
             new Date(order.date).getTime(),
             order.price,
             order.address,
@@ -62,7 +62,7 @@ function updateOrder(order) {
         const query = "UPDATE orders SET customer_id = ?, date = ?, price = ?, address = ?, status = ?, type = ?, WHERE id = ?";
 
         db.run(query, [
-            order.customer_id,
+            order.customerId,
             new Date(order.date).getTime(),
             order.price,
             order.address,

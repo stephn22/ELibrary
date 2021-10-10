@@ -168,7 +168,17 @@ const formData = new FormData();
 
 let valid = true;
 
-if (title && author && isbn && paper && language && publisher && stockRange && pagesRange && datePublished && description && price) {
+if (title
+    && author
+    && isbn
+    && paper
+    && language
+    && publisher
+    && stockRange
+    && pagesRange
+    && datePublished
+    && description
+    && price) {
     descriptionInfo.innerHTML = `Remaining: ${250 - description.value.length}`;
     disableBtn(saveBtn);
 
@@ -388,7 +398,7 @@ function createOrder(bookId, userId, type, price = 0.00, address = "") {
         price: price,
         type: type,
         address: address
-    }
+    };
 
     fetch("/orders/reserve", {
         method: 'POST',

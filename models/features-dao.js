@@ -14,7 +14,7 @@ function addFeature(feature) {
     return new Promise((resolve, reject) => {
         const query = "INSERT INTO features (book_id) VALUES (?)";
 
-        db.run(query, [feature.book_id], function (err) {
+        db.run(query, [feature.bookId], function (err) {
             if (err) {
                 logger.error(err);
                 reject(err);
@@ -34,7 +34,7 @@ function updateFeature(feature) {
     return new Promise((resolve, reject) => {
         const query = "UPDATE features SET book_id = ? WHERE id = ?";
 
-        db.run(query, [feature.book_id, feature.id], (err) => {
+        db.run(query, [feature.bookId, feature.id], (err) => {
             if (err) {
                 logger.error(err);
                 reject(err);
@@ -104,7 +104,7 @@ function findFeatureById(id) {
                 const feature = new Feature(row.id, row.book_id);
 
                 // set properties
-                const book = await bookDao.findBookById(feature.book_id);
+                const book = await bookDao.findBookById(feature.bookId);
                 feature.book = book;
 
                 resolve(feature);

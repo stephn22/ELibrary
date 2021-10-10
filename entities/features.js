@@ -10,11 +10,11 @@ class Features extends BaseEntity {
     /**
      * Creates a new Features entity.
      * @param {number} id id of the feature.
-     * @param {number} book_id id of the book.
+     * @param {number} bookId id of the book.
      */
-    constructor(id, book_id) {
+    constructor(id, bookId) {
         super(id);
-        this.book_id = book_id;
+        this.bookId = bookId;
 
         /**
          * @type {Book}

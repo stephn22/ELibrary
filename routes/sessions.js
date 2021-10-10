@@ -42,7 +42,7 @@ router.post("/sessions", (req, res, next) => {
             // fill feature properties
             features.forEach(feature => {
                 books.forEach(book => {
-                    if (book.id === feature.book_id) {
+                    if (book.id === feature.bookId) {
                         feature.book = book;
                     }
                 });
