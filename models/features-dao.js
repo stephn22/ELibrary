@@ -97,7 +97,7 @@ function findFeatureById(id) {
             if (err) {
                 logger.error(err);
                 reject(err);
-            } else if(row === undefined) {
+            } else if (row === undefined) {
                 logger.logWarn("No such feature");
                 resolve([]);
             } else {
@@ -117,11 +117,11 @@ function findFeatureById(id) {
  * Find all features in the database.
  * @returns {Promise<Feature[]>} all features in the database.
  */
-function findAllFeatures() { // FIXME: not finding all features
+function findAllFeatures() {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM features";
 
-        db.all(query, async function (err, rows) {
+        db.all(query, (err, rows) => {
             if (err) {
                 logger.error(err);
                 reject(err);
@@ -130,12 +130,9 @@ function findAllFeatures() { // FIXME: not finding all features
                 resolve([]);
             } else {
                 const features = [];
-                rows.forEach(async function (row) {
-                    const feature = new Feature(row.id, row.book_id);
 
-                    let book = await bookDao.findBookById(feature.book_id);
-                    feature.book = book;
-
+                rows.forEach(function (row) {
+                    let feature = new Feature(row.id, row.book_id);
                     features.push(feature);
                 });
                 resolve(features);

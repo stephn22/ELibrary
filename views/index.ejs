@@ -2,7 +2,7 @@
 
 <main>
 
-    <!-- Carousel -->
+    <%# Carousel #%>
 
     <div class="carousel slide" data-bs-ride="carousel" id="myCarousel">
         <div class="carousel-indicators">
@@ -116,7 +116,7 @@
                                 src="data:image/bmp;base64,<%= feature.book.imgUrl.toString('base64')%>">
                             <h2><%= feature.book.title %></h2>
                             <p class="home-text"><%= feature.book.description %></p>
-                            <p><a class="btn btn-outline-dark shadow-lg rounded" href="/book-details/<%= book.id %>">More &raquo;</a></p>    
+                            <p><a class="btn btn-outline-dark shadow-lg rounded" href="/book-details/<%= feature.book.id %>">More &raquo;</a></p>    
                         </div>
                     <% }); %>
                 <% } %>

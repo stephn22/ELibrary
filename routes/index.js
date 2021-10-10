@@ -11,6 +11,15 @@ router.get('/', async (req, res, _next) => {
     const features = await featuresDao.findAllFeatures();
     const books = await bookDao.findAllBooks();
 
+    // fill feature properties
+    features.forEach(feature => {
+        books.forEach(book => {
+            if (book.id === feature.book_id) {
+                feature.book = book;
+            }
+        });
+    });
+
     res.render('index', {
         user: req.user,
         features: features,
@@ -44,6 +53,15 @@ router.post('/features', async function (req, res, _next) {
     const books = await bookDao.findAllBooks();
     const features = await featuresDao.findAllFeatures();
 
+    // fill feature properties
+    features.forEach(feature => {
+        books.forEach(book => {
+            if (book.id === feature.book_id) {
+                feature.book = book;
+            }
+        });
+    });
+
     res.render('index', {
         user: req.user,
         features: features,
@@ -52,6 +70,5 @@ router.post('/features', async function (req, res, _next) {
         scripts: ['/javascripts/index.js']
     });
 });
-
 
 module.exports = router;

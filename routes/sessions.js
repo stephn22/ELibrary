@@ -39,6 +39,15 @@ router.post("/sessions", (req, res, next) => {
             const features = await featuresDao.findAllFeatures();
             const books = await bookDao.findAllBooks();
 
+            // fill feature properties
+            features.forEach(feature => {
+                books.forEach(book => {
+                    if (book.id === feature.book_id) {
+                        feature.book = book;
+                    }
+                });
+            });
+
             res.render("index", {
                 user: user,
                 features: features,
