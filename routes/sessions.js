@@ -110,7 +110,7 @@ router.post('/sessions/cart/:id/:qty', async function (req, res, _next) {
     }
 
     req.session.cart = cart;
-    res.redirect(`/book-details/${bookId}`);
+    res.send(cart);
 });
 
 // edit cart

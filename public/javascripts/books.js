@@ -389,7 +389,7 @@ function validateTitle(title) {
  * @returns true if name is valid, false otherwise
  */
 function validateName(name) {
-    return /^[a-zA-Z ]{1,100}$/.test(name);
+    return /^[a-z ,.'-]+$/i.test(name);
 }
 
 /**
