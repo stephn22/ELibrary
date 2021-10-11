@@ -375,11 +375,14 @@ if (deleteBtn) {
  * @param {number} bookId id of the book
  * @param {number} quantity quantity chosen by the user
  */
-function addToCart(bookId, quantity = 1) {
+function addToCart(bookId, quantity = 1) { // TODO: make a body
     fetch(`/sessions/cart/${bookId}/${quantity}`, {
         method: 'POST',
-    }).then(window.location.reload())
-        .catch(err => console.log(err));
+    }).then(res => {
+        if (res.status === 200) {
+            window.location.href = res.url;
+        }
+    }).catch(err => console.log(err));
 }
 
 /**
@@ -402,7 +405,11 @@ function createOrder(bookId, userId) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
-    }).then(window.location.reload())
+    }).then(res => {
+        if (res.status === 200) {
+            window.location.href = res.url;
+        }
+    })
         .catch(err => console.log(err));
 }
 
@@ -415,8 +422,11 @@ function updateBook(bookId, formData) {
     fetch(`/book-details/${bookId}`, {
         method: 'PUT',
         body: formData
-    }).then(window.location.reload())
-        .catch(error => console.error(error));
+    }).then(res => {
+        if (res.status === 200) {
+            window.location.href = res.url;
+        }
+    }).catch(error => console.error(error));
 }
 
 /**
@@ -425,10 +435,11 @@ function updateBook(bookId, formData) {
  */
 function deleteBook(bookId) {
     fetch(`/books/${bookId}`, { method: "DELETE" })
-        .then((_res) => {
-            window.location.href = "/books";
-        })
-        .catch(error => console.error('Error:', error));
+        .then(res => {
+            if (res.status === 200) {
+                window.location.href = res.url;
+            }
+        }).catch(error => console.error('Error:', error));
 }
 
 /************************** VALIDATION *****************************/

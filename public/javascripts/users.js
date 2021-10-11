@@ -29,6 +29,10 @@ function deleteUser(id) {
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then((_res) => window.location.reload())
+    }).then(res => {
+        if (res.status === 200) {
+            window.location.href = res.url;
+        }
+    })
         .catch(err => console.log(err));
 }

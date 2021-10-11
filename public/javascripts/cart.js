@@ -27,7 +27,7 @@ const quantityRangesLabels = document.querySelectorAll('.quantity-range-label');
 
 for (let i = 0; i < quantityRanges.length; i++) {
     quantityRanges[i].addEventListener('input', () => {
-        quantityRangesLabels[i].innerHTML = `Quantity: ${quantityRanges[i].value}`
+        quantityRangesLabels[i].innerHTML = `Quantity: ${quantityRanges[i].value}`;
     });
 }
 
@@ -72,8 +72,11 @@ for (let i = 0; i < removeBtns.length; i++) {
 function editBookInCart(bookId, quantity) {
     fetch(`/sessions/cart/${bookId}/${quantity}`, {
         method: 'PUT',
-    }).then((_res) => window.location.reload())
-        .catch(err => console.log(err));
+    }).then(res => {
+        if (res.status === 200) {
+            window.location.href = res.url;
+        }
+    }).catch(err => console.log(err));
 }
 
 /**
@@ -83,8 +86,11 @@ function editBookInCart(bookId, quantity) {
 function removeFromCart(bookId) {
     fetch(`/sessions/cart/${bookId}`, {
         method: 'DELETE',
-    }).then((_res) => window.location.reload())
-        .catch(err => console.log(err));
+    }).then(res => {
+        if (res.status === 200) {
+            window.location.href = res.url;
+        }
+    }).catch(err => console.log(err));
 }
 
 /************************** ANIMATIONS *****************************/

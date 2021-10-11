@@ -89,6 +89,7 @@ router.get('/sessions/cart', function (req, res, _next) {
 
 // add to cart
 // FIXME: weird behaviour when adding the same book multiple times
+// FIXME: HTTP error 500
 router.post('/sessions/cart/:id/:qty', async function (req, res, _next) {
     const bookId = parseInt(req.params.id);
     const quantity = parseInt(req.params.qty);
@@ -110,7 +111,12 @@ router.post('/sessions/cart/:id/:qty', async function (req, res, _next) {
     }
 
     req.session.cart = cart;
-    res.send(cart);
+    res.render('book-details', {
+        user: req.user,
+        book: book,
+        styles: ['/stylesheets/book-details.css'],
+        scripts: ['/javascripts/book-details.js']
+    });
 });
 
 // edit cart
@@ -137,7 +143,11 @@ router.put('/sessions/cart/:id/:qty', async function (req, res, _next) {
     }
 
     req.session.cart = cart;
-    res.send(cart);
+    res.render('cart', {
+        user: req.user,
+        styles: ['/stylesheets/cart.css'],
+        scripts: ['/javascripts/cart.js']
+    });
 });
 
 router.delete('/sessions/cart/:id/:qty?', async function (req, res, _next) {
