@@ -1,0 +1,60 @@
+<%- include('partials/header.ejs', { title: "Your Orders", active: "orders" }) %>
+
+<main>
+    
+    <h5>Your orders</h5>
+
+    <hr />
+
+    <table class="table text-center">
+        <thead>
+            <tr class="table-primary">
+                <th>
+                    Id
+                </th>
+                <th>
+                    Customer
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Book
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Address
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Type
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% orders.forEach((order) => { %>
+                <tr>
+                    <td><%= order.id %></td>
+                    <td><%= order.customer.email %></td>
+                    <td><%= order.date %></td>
+                    <td><%= order.book.isbn %></td>
+                    <td><%= order.price %></td>
+                    <td><%= order.address %></td>
+                    <td><%= order.status %></td>
+                    <td><%= order.type %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+        </tbody>
+    </table>
+
+
+</main>
+</body>
+</html>

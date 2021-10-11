@@ -353,7 +353,7 @@ if (reserveBook) {
         const userId = parseInt(reserveBook.getAttribute('data-user'));
 
         if (bookId && userId) {
-            createOrder(bookId, userId, "Reservation");
+            createOrder(bookId, userId);
         }
     });
 }
@@ -378,7 +378,6 @@ if (deleteBtn) {
 function addToCart(bookId, quantity = 1) {
     fetch(`/sessions/cart/${bookId}/${quantity}`, {
         method: 'POST',
-        body: {},
     }).then(window.location.reload())
         .catch(err => console.log(err));
 }
@@ -388,15 +387,12 @@ function addToCart(bookId, quantity = 1) {
  * @param {number} bookId id of the book
  * @param {number} userId id of the user
  * @param {string} type type of the order
- * @param {number} price price of the book (only if buying)
- * @param {string} address address of the user (only if buying)
  */
-function createOrder(bookId, userId, type, price = 0.00, address = "") {
+function createOrder(bookId, userId) {
     const body = {
         bookId: bookId,
         userId: userId,
         price: price,
-        type: type,
         address: address
     };
 

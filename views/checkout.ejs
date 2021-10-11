@@ -1,7 +1,7 @@
 <%- include('partials/header', { title: "Checkout" }); %>
 
 <main>
-    <% if (typeof cart !== "undefined") { %>
+    <% if (typeof cart !== "undefined" && typeof user !== "undefined") { %>
         <div class="row my-3">
             <div class="col-md-5 col-lg-4 order-md-last">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -34,7 +34,8 @@
 
         <h4>Payment method</h4>
 
-        <form method="post">
+        <form method="post" action="/orders/customer-orders">
+            <input type="hidden" value="<%= user.id %>" name="userId" id="userId">
             <div class="my-3">
                 <div class="form-check">
                     <input id="credit-card" name="payment-method" type="radio" class="form-check-input" checked required>
@@ -61,13 +62,14 @@
                                 <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z"/>
                             </svg>
                         </span>
-                        <input class="form-control" type="text" id="full-name" required>
+                        <input class="form-control" value="<%= user.firstname %> <%= user.lastname %>" type="text" id="full-name" required>
                     </div>
                     <small class="text-muted">Full name as displayed on card</small>
                     <span class="text-danger" id="full-name-validation"></span>
                 </div>
     
                 <div class="form-group col-md-4">
+                    <div class="form-group"></div>
                     <label for="card" class="form-label">Card Number</label>
                     <div class="input-group">
                         <span class="input-group-text">
@@ -77,8 +79,8 @@
                             </svg>
                         </span>
                         <input class="form-control" id="card" type="number" required>
-                        <span class="text-danger" id="card-validation"></span>
                     </div>
+                    <span class="text-danger" id="card-validation"></span>
                 </div>
         
                 <div class="col-md-3">
@@ -94,7 +96,7 @@
                             </span>
                             <input id="expiration" class="form-control" type="month" required>
                         </div>
-                        <span class="text-danger" id="expiraton-validation"></span>
+                        <span class="text-danger" id="expiration-validation"></span>
                     </div>
                 </div>
         
@@ -116,7 +118,7 @@
     
             <hr class="my-4">
     
-            <button type="submit" id="pay-btn" class="btn btn btn-outline-primary">
+            <button type="submit" id="pay-btn" class="btn btn btn-primary">
                 Pay
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
                     <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>

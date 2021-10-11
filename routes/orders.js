@@ -7,27 +7,58 @@ const Order = require("../entities/order");
 const orderDao = require("../models/order-dao");
 const bookDao = require("../models/book-dao");
 const logger = require("../util/logger");
+const Cart = require("../entities/cart");
+const orderType = require("../entities/constants/order-type");
 
 router.get('/', async (req, res, _next) => {
     const orders = await orderDao.findAllOrders();
 
-    if (orders.hasOwnProperty("error")) {
-        res.render('orders', {
+    res.render('orders', {
+        user: req.user,
+        orders: orders
+    });
+});
+
+router.get('/customer-orders', async (req, res, _next) => {
+    const id = parseInt(req.user.id);
+    const orders = await orderDao.findOrdersByCustomerId(id);
+
+    res.render('customer-orders', {
+        user: req.user,
+        orders: orders
+    });
+});
+
+router.get('/:id', (req, res, _next) => {
+    const id = parseInt(req.params.id);
+
+    orderDao.findOrderById(id).then(order => {
+        if (order.hasOwnProperty("error")) {
+            logger.logWarn(JSON.stringify(order));
+
+            res.render('order-details', {
+                user: req.user,
+                message: "No such order",
+
+            });
+        } else {
+            res.render('order', {
+                user: req.user,
+                order: order
+            });
+        }
+    }).catch(err => {
+        logger.logError(err);
+        res.render('order-details', {
             user: req.user,
-            message: "No orders found"
+            errors: [err]
         });
-    } else {
-        res.render('orders', {
-            user: req.user, orders: orders
-        });
-    }
+    });
 });
 
 router.post('/reserve', async function (req, res, _next) {
     const customerId = parseInt(req.body.userId);
     const bookId = parseInt(req.body.bookId);
-    const type = req.body.type;
-    const address = req.body.address;
     const price = parseFloat(req.body.price);
 
     const order = new Order(
@@ -35,9 +66,8 @@ router.post('/reserve', async function (req, res, _next) {
         customerId,
         new Date(),
         price,
-        address,
         orderStatus.NEW,
-        type
+        orderType.RESERVATION,
     );
 
     orderDao.addOrder(order, bookId, 0)
@@ -45,7 +75,7 @@ router.post('/reserve', async function (req, res, _next) {
             logger.logInfo(`Added order with id: ${id}`);
 
             const orders = await orderDao.findOrdersByCustomerId(customerId);
-            
+
             res.render('books', {
                 user: req.user,
                 orders: orders,
@@ -69,9 +99,59 @@ router.post('/reserve', async function (req, res, _next) {
 
 });
 
-router.post('/', async function(req, res, _next) {
+router.get('/customer-orders', async (req, res, _next) => {
+    const id = req.user.id;
+
+    const orders = await orderDao.findOrdersByCustomerId(id);
+
+    res.render('customer-orders', {
+        user: req.user,
+        orders: orders,
+        styles: ['/stylesheets/orders.css']
+    });
+});
+
+router.post('/customer-orders', async function (req, res, _next) {
     const customerId = parseInt(req.body.userId);
-    // TODO:
+
+    /**
+     * @type {Cart}
+     */
+    let cart = req.session.cart;
+
+    if (cart !== undefined) {
+        const order = new Order(
+            undefined,
+            customerId,
+            new Date().toDateString(),
+            cart.price,
+            orderStatus.NEW,
+            orderType.BUY);
+
+        orderDao.addOrder(order, cart.items)
+            .then(async (id) => {
+                logger.logInfo(`Added order with id: ${id}`);
+                const orders = await orderDao.findOrdersByCustomerId(customerId);
+
+                res.render('customer-orders', {
+                    user: req.user,
+                    message: "Order added successfully",
+                    orders: orders,
+                    styles: ['/stylesheets/orders.css']
+                });
+
+            }).catch((err) => {
+                logger.logError(err);
+
+                res.render('checkout', {
+                    user: req.user,
+                    errors: [err],
+                    cart: cart,
+                    styles: ['/stylesheets/checkout.css'],
+                    scripts: ['/javascripts/checkout.js'],
+                });
+            });
+    }
 });
 
 module.exports = router;

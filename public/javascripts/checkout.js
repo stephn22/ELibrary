@@ -74,7 +74,7 @@ fullName.addEventListener("input", () => {
 });
 
 cardNumber.addEventListener("input", () => {
-    if(!validateCardNumber(cardNumber.value)) {
+    if (!validateCardNumber(cardNumber.value)) {
         setValidationMessage(cardNumberValidation, "Please enter a valid credit card number");
         disableBtn(payBtn);
         valid = false;
@@ -113,7 +113,7 @@ payBtn.addEventListener("submit", (e) => {
     if (!valid) {
         e.preventDefault();
     }
-})
+});
 
 /************************** VALIDATION *****************************/
 
@@ -122,7 +122,7 @@ payBtn.addEventListener("submit", (e) => {
  * @param {string} text the text to be checked
  * @returns true if text is a valid person name, false otherwise
  */
- function validatePersonName(text) {
+function validatePersonName(text) {
     return /^[a-zA-Z ]{1,50}$/.test(text);
 }
 
@@ -141,7 +141,15 @@ function validateCardNumber(cardNumber) {
  * @returns true if date is a valid card expiration date, false otherwise
  */
 function validateExpirationDate(date) {
-    return /^\d{4}-\d{2}-\d{2}$/.test(date) && Date.now() <= new Date(date).getTime();
+    const now = new Date();
+    const month = now.getMonth() + 1;
+    const year = now.getFullYear();
+
+    const exDate = new Date(date);
+    const exMonth = exDate.getMonth() + 1;
+    const exYear = exDate.getFullYear();
+
+    return /^\d{4}-\d{2}$/.test(date) && (exYear > year || (exYear === year && exMonth >= month));
 }
 
 /**
@@ -150,7 +158,7 @@ function validateExpirationDate(date) {
  * @returns true if cvv is a valid cvv, false otherwise
  */
 function validateCVV(cvv) {
-    return /^[0-9]{3, 4}$/.test(cvv);
+    return /^[0-9]{3,4}$/.test(cvv);
 }
 
 /**
@@ -158,7 +166,7 @@ function validateCVV(cvv) {
  * @param {HTMLSpanElement} element 
  * @param {string} message 
  */
- function setValidationMessage(element, message) {
+function setValidationMessage(element, message) {
     element.innerHTML = message;
 }
 

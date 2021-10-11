@@ -15,17 +15,15 @@ class Order extends baseEntity {
      * @param {number} customerId id of the customer
      * @param {Date} date date of the order
      * @param {number} price price of the order
-     * @param {Address} address address entity
      * @param {string} status status of the order
      * @param {string} type type of the order (buy, reservation)
      */
-    constructor (id, customerId, date, price, address, status, type) {
+    constructor (id, customerId, date, price, status, type) {
         super(id);
         this.customerId = customerId;
         this.customer = undefined;
         this.date = date;
         this.price = price;
-        this.address = address;
         this.status = status;
         this.type = type;
         this.items = [{

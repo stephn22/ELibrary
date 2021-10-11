@@ -6,24 +6,20 @@ const bookDao = require('../models/book-dao');
 const Order = require('../entities/order');
 const logger = require('../util/logger');
 
-// TODO: customer can order more than one book?
-
 /**
  * Inserts a new order into the database.
  * @param {Order} order order to be inserted into database.
- * @param {number} bookId id of book to be inserted into database.
- * @param {number} quantity quantity of book to be inserted into database (0 if reservation).
+ * @param {*[]} items array of items to be inserted into database.
  * @returns {Promise<number>} id of order that was inserted.
  */
-function addOrder(order, bookId, quantity) {
+function addOrder(order, items) {
     return new Promise(async function (resolve, reject) {
-        const query = "INSERT INTO orders (customer_id, date, price, address, status, type) VALUES (?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO orders (customer_id, date, price, status, type) VALUES (?, ?, ?, ?, ?)";
 
         db.run(query, [
             order.customerId,
             new Date(order.date).getTime(),
             order.price,
-            order.address,
             order.status,
             order.type], function (err) {
                 if (err) {
@@ -32,19 +28,21 @@ function addOrder(order, bookId, quantity) {
                 } else {
                     const id = this.lastID;
 
-                    const query = "INSERT INTO order_items (order_id, book_id, quantity) VALUES (?, ?, ?)";
+                    items.forEach((item) => {
+                        const query = "INSERT INTO order_items (order_id, book_id, quantity) VALUES (?, ?, ?)";
 
-                    db.run(query, [
-                        id,
-                        bookId,
-                        quantity], function (err) {
-                            if (err) {
-                                logger.logError(err);
-                                reject(err);
-                            } else {
-                                logger.logInfo(`Inserted order item with id ${this.lastID}`);
-                            }
-                        });
+                        db.run(query, [
+                            id,
+                            item.book.id,
+                            item.quantity], function (err) {
+                                if (err) {
+                                    logger.logError(err);
+                                    reject(err);
+                                } else {
+                                    logger.logInfo(`Inserted order item with id ${this.lastID}`);
+                                }
+                            });
+                    });
 
                     resolve(id);
                 }
@@ -59,13 +57,12 @@ function addOrder(order, bookId, quantity) {
  */
 function updateOrder(order) {
     return new Promise((resolve, reject) => {
-        const query = "UPDATE orders SET customer_id = ?, date = ?, price = ?, address = ?, status = ?, type = ?, WHERE id = ?";
+        const query = "UPDATE orders SET customer_id = ?, date = ?, price = ?, status = ?, type = ?, WHERE id = ?";
 
         db.run(query, [
             order.customerId,
             new Date(order.date).getTime(),
             order.price,
-            order.address,
             order.status,
             order.type,
             order.id
@@ -122,7 +119,6 @@ function findOrderById(id) {
                     row.customer_id,
                     new Date(row.date).toDateString(),
                     row.price,
-                    row.address,
                     row.status,
                     row.type);
 
@@ -169,7 +165,7 @@ function findOrdersByCustomerId(customerId) {
                 reject(err);
             } else if (rows === undefined) {
                 logger.logWarn(`No orders for customer with id: ${customerId}`);
-                resolve({ error: "No orders found" });
+                resolve([]);
             } else {
                 const orders = [];
 
@@ -179,7 +175,6 @@ function findOrdersByCustomerId(customerId) {
                         row.customer_id,
                         new Date(row.date).toDateString(),
                         row.price,
-                        row.address,
                         row.status);
 
                     // fill properties with relative objects
@@ -228,7 +223,7 @@ function findAllOrders() {
                 reject(err);
             } else if (rows === undefined) {
                 logger.logWarn("No orders found");
-                resolve({ error: "No orders found" });
+                resolve([]);
             }
             else {
                 const orders = [];
@@ -239,7 +234,6 @@ function findAllOrders() {
                         row.customer_id,
                         new Date(row.date).toDateString(),
                         row.price,
-                        row.address,
                         row.status);
 
                     // fill properties with relative objects
