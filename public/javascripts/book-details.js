@@ -341,8 +341,8 @@ if (addToCartBtn) {
         const bookId = parseInt(addToCartBtn.getAttribute('data-id'));
         const quantity = parseInt(bookQty.value);
 
-        if (bookId && quantity) {
-            addToCart(bookId, quantity);
+        if (bookId) {
+            addToCart(bookId, quantity ? quantity : 1);
         }
     });
 }
@@ -375,7 +375,7 @@ if (deleteBtn) {
  * @param {number} bookId id of the book
  * @param {number} quantity quantity chosen by the user
  */
-function addToCart(bookId, quantity) {
+function addToCart(bookId, quantity = 1) {
     fetch(`/sessions/cart/${bookId}/${quantity}`, {
         method: 'POST',
         body: {},

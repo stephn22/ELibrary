@@ -220,11 +220,15 @@
                                 </div>
                                 <div class="modal-body">
                                     <% if(book.stock > 0) { %>
-                                        <select id="book-quantity" class="form-select shadow" aria-label="Select quantity" title="Select quantity">
-                                            <% for (let i = 1; i <= book.stock; i++) { %>
-                                                <option value="<%= i %>"><%= i %></option>
+                                            <% if (book.type === "Paper") { %>
+                                                <select id="book-quantity" class="form-select shadow" aria-label="Select quantity" title="Select quantity">
+                                                    <% for (let i = 1; i <= book.stock; i++) { %>
+                                                        <option value="<%= i %>"><%= i %></option>
+                                                    <% } %>
+                                                </select>
+                                            <% } else { %>
+                                                <p>Are you sure you want to add the book to cart?</p>
                                             <% } %>
-                                        </select>
                                         <% } else { %>
                                             <p>Book is not available</p>
                                         <% } %>
