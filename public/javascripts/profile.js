@@ -79,7 +79,6 @@ confirmNewPassword.addEventListener("input", () => {
 /**
  * Validates email address
  * @link https://html.spec.whatwg.org/multipage/forms.html#valid-e-mail-address
- * @constraint email must be a valid email address
  * @param {string} email email to be checked
  * @returns true if email is valid, false otherwise
  */
@@ -89,9 +88,6 @@ function validateEmail(email) {
 
 /**
  * Checks if password is valid
- * @constraint password must be at least 8 characters long
- * @constraint password must contain at least one digit
- * @constraint password must contain at least one special character
  * @param {string} password password to be checked
  * @returns true if password is valid, false otherwise
  */
