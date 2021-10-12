@@ -14,7 +14,7 @@ const logger = require('../util/logger');
  */
 function addOrder(order, items) {
     return new Promise(async function (resolve, reject) {
-        const query = "INSERT INTO orders (customer_id, date, price, status, type) VALUES (?, ?, ?, ?, ?)";
+        const query = "INSERT INTO orders (customer_id, date, price, type) VALUES (?, ?, ?, ?)";
 
         db.run(query, [
             order.customerId,
@@ -57,7 +57,7 @@ function addOrder(order, items) {
  */
 function updateOrder(order) {
     return new Promise((resolve, reject) => {
-        const query = "UPDATE orders SET customer_id = ?, date = ?, price = ?, status = ?, type = ?, WHERE id = ?";
+        const query = "UPDATE orders SET customer_id = ?, date = ?, price = ?, type = ?, WHERE id = ?";
 
         db.run(query, [
             order.customerId,
@@ -119,7 +119,6 @@ function findOrderById(id) {
                     row.customer_id,
                     new Date(row.date).toDateString(),
                     row.price,
-                    row.status,
                     row.type);
 
                 // fill properties with relative objects
@@ -133,6 +132,7 @@ function findOrderById(id) {
                         reject(err);
                     } else {
                         order.customer = user;
+                        order.items = [];
 
                         for (const row of rows) {
                             const book = await bookDao.findBookById(row.book_id);
@@ -157,9 +157,9 @@ function findOrderById(id) {
  */
 function findOrdersByCustomerId(customerId) {
     return new Promise((resolve, reject) => {
-        const query = "SELECT * FROM orders WHERE customer_id = ?"; // FIXME: no orders found for customer
+        const query = "SELECT * FROM orders WHERE customer_id = ? ORDER BY id"; // FIXME: no orders found for customer
 
-        db.run(query, [customerId], function (err, rows) {
+        db.all(query, [customerId], function (err, rows) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -175,7 +175,7 @@ function findOrdersByCustomerId(customerId) {
                         row.customer_id,
                         new Date(row.date).toDateString(),
                         row.price,
-                        row.status);
+                        row.type);
 
                     // fill properties with relative objects
                     let user = await userDao.findUserById(row.customer_id);
@@ -188,6 +188,7 @@ function findOrdersByCustomerId(customerId) {
                             reject(err);
                         } else {
                             order.customer = user;
+                            order.items = [];
 
                             for (const r of rows) {
                                 const book = await bookDao.findBookById(r.book_id);
@@ -195,15 +196,13 @@ function findOrdersByCustomerId(customerId) {
                                     book: book,
                                     quantity: r.quantity
                                 });
-                            }
 
-                            order.customer = user;
-                            orders.push(order);
+                                orders.push(order);
+                            }
+                            resolve(orders);
                         }
                     });
                 });
-
-                resolve(orders);
             }
         });
     });
@@ -215,7 +214,7 @@ function findOrdersByCustomerId(customerId) {
  */
 function findAllOrders() {
     return new Promise((resolve, reject) => {
-        const query = "SELECT * FROM orders";
+        const query = "SELECT * FROM orders ORDER BY id";
 
         db.all(query, function (err, rows) {
             if (err) {
@@ -234,7 +233,7 @@ function findAllOrders() {
                         row.customer_id,
                         new Date(row.date).toDateString(),
                         row.price,
-                        row.status);
+                        row.type);
 
                     // fill properties with relative objects
                     let user = await userDao.findUserById(row.customer_id);
@@ -247,22 +246,21 @@ function findAllOrders() {
                             reject(err);
                         } else {
                             order.customer = user;
+                            order.items = [];
 
                             for (const w of r) {
-                                const book = await bookDao.findBookById(r.book_id);
+                                const book = await bookDao.findBookById(w.book_id);
                                 order.items.push({
                                     book: book,
                                     quantity: w.quantity
                                 });
-                            }
 
-                            order.customer = user;
-                            orders.push(order);
+                                orders.push(order);
+                            }
+                            resolve(orders);
                         }
                     });
                 });
-
-                resolve(orders);
             }
         });
     });

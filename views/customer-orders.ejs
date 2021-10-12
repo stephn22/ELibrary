@@ -1,8 +1,9 @@
 <%- include('partials/header', { title: "Your Orders", active: "orders" }) %>
 
 <main>
-    
-    <h5>Your orders</h5>
+    <% if (typeof orders !== "undefined" && orders.length > 0) { %>
+
+        <h5>Your orders</h5>
 
     <hr />
 
@@ -13,22 +14,10 @@
                     Id
                 </th>
                 <th>
-                    Customer
-                </th>
-                <th>
                     Date
                 </th>
                 <th>
-                    Book
-                </th>
-                <th>
                     Price
-                </th>
-                <th>
-                    Address
-                </th>
-                <th>
-                    Status
                 </th>
                 <th>
                     Type
@@ -40,13 +29,10 @@
             <% orders.forEach((order) => { %>
                 <tr>
                     <td><%= order.id %></td>
-                    <td><%= order.customer.email %></td>
                     <td><%= order.date %></td>
-                    <td><%= order.book.isbn %></td>
                     <td><%= order.price %></td>
-                    <td><%= order.address %></td>
-                    <td><%= order.status %></td>
                     <td><%= order.type %></td>
+                    <td><a href="/orders/order-details/<%= order.id %>">Details</a></td>
                 </tr>
             <% }); %>
         </tbody>
@@ -54,7 +40,14 @@
         </tbody>
     </table>
 
+    <% } else { %>
 
+        <div class="alert alert-secondary" role="alert">
+            You have no orders yet.
+        </div>
+
+    <% } %>
+    
 </main>
 </body>
 </html>

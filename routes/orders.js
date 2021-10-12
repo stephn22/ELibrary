@@ -2,7 +2,6 @@
 
 const express = require("express");
 const { body, validationResult } = require('express-validator');
-const orderStatus = require("../entities/constants/order-status");
 const router = express.Router();
 const Order = require("../entities/order");
 const orderDao = require("../models/order-dao");
@@ -11,13 +10,41 @@ const logger = require("../util/logger");
 const Cart = require("../entities/cart");
 const orderType = require("../entities/constants/order-type");
 
-router.get('/', async (req, res, _next) => {
-    const orders = await orderDao.findAllOrders();
+router.get('/', (req, res, _next) => {
+    orderDao.findAllOrders()
+        .then((orders) => {
+            res.render('orders', {
+                user: req.user,
+                orders: orders,
+                styles: ['/stylesheets/orders.css'],
+            });
+        }).catch(err => {
+            logger.logError(err);
 
-    res.render('orders', {
-        user: req.user,
-        orders: orders
-    });
+            res.render('orders', {
+                user: req.user,
+                errors: [err],
+                styles: ['/stylesheets/orders.css'],
+            });
+        });
+});
+
+router.get('/order-details/:id', async (req, res, _next) => {
+    const id = parseInt(req.params.id);
+
+    orderDao.findOrderById(id)
+        .then(order => {
+            res.render('order-details', {
+                user: req.user,
+                order: order,
+                styles: ['/stylesheets/order-details.css'],
+            });
+        })
+        .catch(err => {
+            logger.logError(err);
+
+            res.sendStatus(404);
+        });
 });
 
 router.get('/customer-orders', async (req, res, _next) => {
@@ -68,7 +95,6 @@ router.post('/reserve', async function (req, res, _next) {
         customerId,
         new Date(),
         price,
-        orderStatus.NEW,
         orderType.RESERVATION,
     );
 
@@ -146,7 +172,6 @@ router.post('/customer-orders', [
                 customerId,
                 new Date().toDateString(),
                 cart.price,
-                orderStatus.NEW,
                 orderType.BUY);
 
             orderDao.addOrder(order, cart.items)
