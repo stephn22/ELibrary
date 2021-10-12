@@ -358,18 +358,19 @@ for (let i = 0; i < deleteBtns.length; i++) {
  */
 function deleteBook(bookId) {
     fetch(`/books/${bookId}`, { method: "DELETE" })
-        .then((_res) => {
-            const books = document.querySelectorAll('.book');
+        .then((res) => {
+            if (res.status === 200) {
+                const books = document.querySelectorAll('.book');
 
-            books.forEach(book => {
-                let id = parseInt(book.getAttribute('data-id'));
+                books.forEach(book => {
+                    let id = parseInt(book.getAttribute('data-id'));
 
-                if (id === bookId) {
-                    fadeOut(book);
-                }
-            });
-        })
-        .catch(error => console.error('Error:', error));
+                    if (id === bookId) {
+                        fadeOut(book);
+                    }
+                });
+            }
+        }).catch(error => console.error('Error:', error));
 }
 
 /************************** VALIDATION *****************************/

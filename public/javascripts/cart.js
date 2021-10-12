@@ -3,6 +3,11 @@
 /************************** CONSTANTS *****************************/
 
 /**
+ * @type {HTMLHeadingElement}
+ */
+const cartTitle = document.getElementById('title');
+
+/**
  * @type {NodeListOf<HTMLButtonElement>}
  */
 const removeBtns = document.querySelectorAll('.remove');
@@ -70,8 +75,15 @@ for (let i = 0; i < removeBtns.length; i++) {
  * @param {number} quantity new quantity of the book
  */
 function editBookInCart(bookId, quantity) {
-    fetch(`/sessions/cart/${bookId}/${quantity}`, {
+    fetch(`/sessions/cart`, {
         method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            bookId: bookId,
+            quantity: quantity,
+        })
     }).then(res => {
         if (res.status === 200) {
             window.location.href = res.url;
@@ -88,7 +100,13 @@ function removeFromCart(bookId) {
         method: 'DELETE',
     }).then(res => {
         if (res.status === 200) {
-            window.location.href = res.url;
+            const book = document.getElementById(`book-${bookId}`);
+            fadeOut(book);
+            const cartPrice = cartTitle.getAttribute('data-price');
+            const bookPrice = book.getAttribute('data-price');
+            const quantity = book.getAttribute('data-quantity');
+
+            cartTitle.innerHTML = `Cart: ${cartPrice - (bookPrice * quantity)} €`;
         }
     }).catch(err => console.log(err));
 }

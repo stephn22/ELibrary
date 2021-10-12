@@ -376,8 +376,15 @@ if (deleteBtn) {
  * @param {number} quantity quantity chosen by the user
  */
 function addToCart(bookId, quantity = 1) { // TODO: make a body
-    fetch(`/sessions/cart/${bookId}/${quantity}`, {
-        method: 'POST',
+    fetch(`/sessions/cart`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            bookId: bookId,
+            quantity: quantity
+        })
     }).then(res => {
         if (res.status === 200) {
             window.location.href = res.url;
@@ -409,8 +416,7 @@ function createOrder(bookId, userId) {
         if (res.status === 200) {
             window.location.href = res.url;
         }
-    })
-        .catch(err => console.log(err));
+    }).catch(err => console.log(err));
 }
 
 /**

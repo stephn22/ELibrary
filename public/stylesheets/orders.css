@@ -20,3 +20,7 @@ body::-webkit-scrollbar {
 main {
     margin-bottom: 2rem;
 }
+
+#profile-dropdown {
+    margin-left: 0.5rem;
+}
