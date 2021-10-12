@@ -244,7 +244,7 @@ if (bookImage
 
     price.addEventListener('input', () => {
         if (!validatePrice(price.value)) {
-            setValidationMessage(priceValidation, "Please enter a valid price, must be between 0.01 and 100.00");
+            setValidationMessage(priceValidation, "Please enter a valid price");
             disableBtn(saveBtn);
             valid = false;
         } else {
@@ -425,8 +425,8 @@ function validateDescription(description) {
  * @param {number} price price of the book
  * @returns true if price is valid, false otherwise
  */
-function validatePrice(price) { // FIXME:
-    return /^\d{0,8}(\.\d{1,4})?$/.test(price);
+function validatePrice(price) {
+    return /^\d{0,8}(\.\d{1,2})?$/.test(price);
 }
 
 /**

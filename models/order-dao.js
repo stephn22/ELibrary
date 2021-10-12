@@ -157,7 +157,7 @@ function findOrderById(id) {
  */
 function findOrdersByCustomerId(customerId) {
     return new Promise((resolve, reject) => {
-        const query = "SELECT * FROM orders WHERE customer_id = ? ORDER BY id"; // FIXME: no orders found for customer
+        const query = "SELECT * FROM orders WHERE customer_id = ? ORDER BY id";
 
         db.all(query, [customerId], function (err, rows) {
             if (err) {

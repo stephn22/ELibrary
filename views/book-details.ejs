@@ -36,7 +36,7 @@
 
                 <div class="container book-form">
 
-                    <form id="edit-book-form" data-id="<%= book.id %>">
+                    <form id="edit-book-form" data-id="<%= book.id %>" enctype="multipart/form-data">
     
                         <div class="form-row square">
                             <img src="data:image/jpeg;base64,<%= book.imgUrl.toString('base64')%>" id="book-image" class="square img-rounded shadow-lg" alt="<%= book.title %>">
@@ -183,7 +183,7 @@
 
                         <div class="form-group">
                             <div class="form-floating col-6 shadow">
-                                <input type="number" class="form-control" id="price"
+                                <input type="text" class="form-control" id="price"
                                        name="price" value="<%= book.price %>" placeholder="Book Price" required>
                                 <label for="price">Price €</label>
                             </div>

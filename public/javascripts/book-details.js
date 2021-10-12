@@ -289,7 +289,7 @@ if (title
 
     price.addEventListener('input', () => {
         if (!validatePrice(price.value)) {
-            setValidationMessage(priceValidation, "Please enter a valid price, must be between 0.01 and 100.00");
+            setValidationMessage(priceValidation, "Please enter a valid price");
             disableBtn(saveBtn);
             valid = false;
         } else {
@@ -427,7 +427,10 @@ function createOrder(bookId, userId) {
 function updateBook(bookId, formData) {
     fetch(`/book-details/${bookId}`, {
         method: 'PUT',
-        body: formData
+        body: formData,
+        contentType: {
+            'Content-Type': 'multipart/form-data'
+        },
     }).then(res => {
         if (res.status === 200) {
             window.location.href = res.url;
@@ -501,7 +504,7 @@ function validateDescription(description) {
  * @returns true if price is valid, false otherwise
  */
 function validatePrice(price) {
-    return /^\d{0,8}(\.\d{1,4})?$/.test(price);
+    return /^\d{0,8}(\.\d{1,2})?$/.test(price);
 }
 
 /**

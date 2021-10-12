@@ -80,13 +80,15 @@ router.put('/:bookId', upload.single('new-img'), async function (req, res) {
             .then(async (id) => {
                 logger.logInfo(`Updated book with id: ${id}`);
 
-                res.render('book-details', {
-                    user: req.user,
-                    message: "Book updated successfully",
-                    book: book,
-                    styles: ['/stylesheets/book-details.css'],
-                    scripts: ['/javascripts/book-details.js']
-                });
+                res.redirect(`/book-details/${id}`);
+
+                // res.render('book-details', {
+                //     user: req.user,
+                //     message: "Book updated successfully",
+                //     book: book,
+                //     styles: ['/stylesheets/book-details.css'],
+                //     scripts: ['/javascripts/book-details.js']
+                // });
             })
             .catch(async (err) => {
                 logger.logError(err);
