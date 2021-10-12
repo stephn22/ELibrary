@@ -1,6 +1,28 @@
 <%- include('partials/header', { title: "Checkout" }); %>
 
 <main>
+    <% if (message.length > 0) { %>
+        <div class="alert alert-primary" role="alert">
+            <p>
+                <%= message %>
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+
+    <% if (errors.length > 0) { %>
+        <div class="alert alert-danger" role="alert">
+            <% if (Array.isArray(errors)) { %>
+                <% errors.forEach((error) => { %>
+                    <p> <%= error.msg %> </p>
+                <% }); %>
+            <% } else { %>
+                <p> <%= errors %> </p>
+            <% } %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+    
     <% if (typeof cart !== "undefined" && typeof user !== "undefined") { %>
         <div class="row my-3">
             <div class="col-md-5 col-lg-4 order-md-last">
@@ -38,14 +60,14 @@
             <input type="hidden" value="<%= user.id %>" name="userId" id="userId">
             <div class="my-3">
                 <div class="form-check">
-                    <input id="credit-card" name="payment-method" type="radio" class="form-check-input" checked required>
+                    <input id="credit-card" name="payment-method" type="radio" value="credit-card" class="form-check-input" checked required>
                     <label class="form-check-label" for="credit-card">
                         Credit Card
                     </label>
                 </div>
         
                 <div class="debit-card" name="payment-method">
-                    <input id="debit-card" name="payment-method" type="radio" class="form-check-input" required>
+                    <input id="debit-card" name="payment-method" type="radio" value="debit-card" class="form-check-input" required>
                     <label class="form-check-label" for="debit-card">
                         Debit Cart
                     </label>
@@ -62,7 +84,7 @@
                                 <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z"/>
                             </svg>
                         </span>
-                        <input class="form-control" value="<%= user.firstname %> <%= user.lastname %>" type="text" id="full-name" required>
+                        <input class="form-control" value="<%= user.firstname %> <%= user.lastname %>" type="text" id="full-name" name="full-name" required>
                     </div>
                     <small class="text-muted">Full name as displayed on card</small>
                     <span class="text-danger" id="full-name-validation"></span>
@@ -78,7 +100,7 @@
                                 <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z"/>
                             </svg>
                         </span>
-                        <input class="form-control" id="card" type="number" required>
+                        <input class="form-control" name="card-number" id="card" type="number" required>
                     </div>
                     <span class="text-danger" id="card-validation"></span>
                 </div>
@@ -94,7 +116,7 @@
                                     <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z"/>
                                 </svg>
                             </span>
-                            <input id="expiration" class="form-control" type="month" required>
+                            <input id="expiration" name="expiration-date" class="form-control" type="month" required>
                         </div>
                         <span class="text-danger" id="expiration-validation"></span>
                     </div>
@@ -109,7 +131,7 @@
                                 <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2zm13 2v5H1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zm-1 9H2a1 1 0 0 1-1-1v-1h14v1a1 1 0 0 1-1 1z"/>
                             </svg>
                         </span>
-                        <input id="cvv" type="number" class="form-control" required>
+                        <input id="cvv" name="cvv" type="number" class="form-control" required>
                     </div>
                     <span id="cvv-validation" class="text-danger"></span>
                 </div>

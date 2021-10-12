@@ -79,7 +79,7 @@
                 </thead>
                 <tbody>
                     <% cart.items.forEach(item => { %>
-                        <tr id="book-<%= item.book.id %>" data-bprice="<%= item.book.price %>">
+                        <tr id="book-<%= item.book.id %>" data-price="<%= item.book.price %>" data-quantity="<%= item.quantity %>">
                             <td>
                                 <%= item.book.title %>
                             </td>
