@@ -1,6 +1,7 @@
 "use strict";
 
 const express = require("express");
+const { body, validationResult } = require('express-validator');
 const orderStatus = require("../entities/constants/order-status");
 const router = express.Router();
 const Order = require("../entities/order");
@@ -25,7 +26,8 @@ router.get('/customer-orders', async (req, res, _next) => {
 
     res.render('customer-orders', {
         user: req.user,
-        orders: orders
+        orders: orders,
+        styles: ['/stylesheets/orders.css']
     });
 });
 
@@ -111,46 +113,76 @@ router.get('/customer-orders', async (req, res, _next) => {
     });
 });
 
-router.post('/customer-orders', async function (req, res, _next) {
-    const customerId = parseInt(req.body.userId);
+router.post('/customer-orders', [
+    body('payment-method').isIn(['credit-card', 'debit-card']).withMessage('Invalid payment method'),
+    body('full-name').isString().withMessage('Invalid person name'),
+    body('card-number').isCreditCard().withMessage('Invalid card number'),
+    body('expiration-date').custom((date) => {
+        const now = new Date();
+        const month = now.getMonth() + 1;
+        const year = now.getFullYear();
 
-    /**
-     * @type {Cart}
-     */
-    let cart = req.session.cart;
+        const exDate = new Date(date);
+        const exMonth = exDate.getMonth() + 1;
+        const exYear = exDate.getFullYear();
 
-    if (cart !== undefined) {
-        const order = new Order(
-            undefined,
-            customerId,
-            new Date().toDateString(),
-            cart.price,
-            orderStatus.NEW,
-            orderType.BUY);
+        return /^\d{4}-\d{2}$/.test(date) && (exYear > year || (exYear === year && exMonth >= month));
+    }).withMessage('Invalid expiration date'),
+    body('cvv').isInt().isLength({ min: 3, max: 4 }).withMessage('Invalid CVV')
+], async function (req, res, _next) {
+    const errors = validationResult(req);
 
-        orderDao.addOrder(order, cart.items)
-            .then(async (id) => {
-                logger.logInfo(`Added order with id: ${id}`);
-                const orders = await orderDao.findOrdersByCustomerId(customerId);
+    if (errors.isEmpty()) {
+        const customerId = parseInt(req.body.userId);
 
-                res.render('customer-orders', {
-                    user: req.user,
-                    message: "Order added successfully",
-                    orders: orders,
-                    styles: ['/stylesheets/orders.css']
+        /**
+         * @type {Cart}
+         */
+        let cart = req.session.cart;
+
+        if (cart !== undefined) {
+            const order = new Order(
+                undefined,
+                customerId,
+                new Date().toDateString(),
+                cart.price,
+                orderStatus.NEW,
+                orderType.BUY);
+
+            orderDao.addOrder(order, cart.items)
+                .then(async (id) => {
+                    logger.logInfo(`Added order with id: ${id}`);
+                    const orders = await orderDao.findOrdersByCustomerId(customerId);
+
+                    res.render('customer-orders', {
+                        user: req.user,
+                        message: "Order added successfully",
+                        orders: orders,
+                        styles: ['/stylesheets/orders.css']
+                    });
+
+                }).catch((err) => {
+                    logger.logError(err);
+
+                    res.render('checkout', {
+                        user: req.user,
+                        errors: [err],
+                        cart: cart,
+                        styles: ['/stylesheets/checkout.css'],
+                        scripts: ['/javascripts/checkout.js'],
+                    });
                 });
+        }
+    } else {
+        logger.logError(JSON.stringify(errors));
 
-            }).catch((err) => {
-                logger.logError(err);
-
-                res.render('checkout', {
-                    user: req.user,
-                    errors: [err],
-                    cart: cart,
-                    styles: ['/stylesheets/checkout.css'],
-                    scripts: ['/javascripts/checkout.js'],
-                });
-            });
+        res.render('checkout', {
+            user: req.user,
+            errors: errors.array(),
+            cart: req.session.cart,
+            styles: ['/stylesheets/checkout.css'],
+            scripts: ['/javascripts/checkout.js']
+        });
     }
 });
 

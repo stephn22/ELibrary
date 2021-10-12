@@ -118,7 +118,7 @@ router.delete('/:id', async function (req, res) {
         })
         .catch(async function (err) {
             logger.logError(`Error deleting book: ${err}`);
-
+            const books = await bookDao.findAllBooks();
 
             res.render('books', {
                 user: req.user,

@@ -59,7 +59,7 @@ router.post("/sessions", (req, res, next) => {
             logger.logInfo("User logged in successfully");
         });
     })(req, res, next);
-})
+});
 
 router.delete("/sessions/current", (req, res, _next) => {
     logger.logInfo("User logged out successfully");
@@ -88,42 +88,35 @@ router.get('/sessions/cart', function (req, res, _next) {
 });
 
 // add to cart
-// FIXME: weird behaviour when adding the same book multiple times
-// FIXME: HTTP error 500
-router.post('/sessions/cart/:id/:qty', async function (req, res, _next) {
-    const bookId = parseInt(req.params.id);
-    const quantity = parseInt(req.params.qty);
+router.post('/sessions/cart', function (req, res, _next) {
+    const bookId = parseInt(req.body.bookId);
+    const quantity = parseInt(req.body.quantity);
 
-    const book = await bookDao.findBookById(bookId);
+    bookDao.findBookById(bookId)
+        .then(function (book) {
+            /**
+         * @type {Cart}
+         */
+            let cart = req.session.cart ? req.session.cart : undefined;
 
-    /**
-     * @type {Cart}
-     */
-    let cart = req.session.cart ? req.session.cart : undefined;
+            if (cart !== undefined) {
+                addItem(cart, book, quantity);
 
-    if (cart !== undefined) {
-        addItem(cart, book, quantity);
+                logger.logInfo("Book added to cart successfully");
+            } else {
+                cart = new Cart(book, quantity);
+                logger.logInfo("Book added to cart successfully (created a new cart)");
+            }
 
-        logger.logInfo("Book added to cart successfully");
-    } else {
-        cart = new Cart(book, quantity);
-        logger.logInfo("Book added to cart successfully (created a new cart)");
-    }
-
-    req.session.cart = cart;
-    res.render('book-details', {
-        user: req.user,
-        book: book,
-        styles: ['/stylesheets/book-details.css'],
-        scripts: ['/javascripts/book-details.js']
-    });
+            req.session.cart = cart;
+            res.redirect(`/book-details/${bookId}`);
+        });
 });
 
 // edit cart
-// FIXME: weird behaviour when editing quantity
-router.put('/sessions/cart/:id/:qty', async function (req, res, _next) {
-    const bookId = parseInt(req.params.id);
-    const quantity = parseInt(req.params.qty);
+router.put('/sessions/cart', async function (req, res, _next) {
+    const bookId = parseInt(req.body.bookId);
+    const quantity = parseInt(req.body.quantity);
 
     /**
      * @type {Cart}
