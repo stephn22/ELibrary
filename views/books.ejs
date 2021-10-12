@@ -1,4 +1,4 @@
-<%- include('partials/header', { title: "Books" , active: "books" }); %>
+<%- include('partials/header', { title: "Books", active: "books" }); %>
 
 <main>
 
@@ -86,7 +86,7 @@
 
     <div class="container">
 
-        <hr class="divider">
+        <hr />
 
         <% if (typeof books !== 'undefined') { %>
             <% if (books.length === 0) { %>
@@ -251,10 +251,9 @@
 
                                     <br/>
 
-                                    <%# TODO: currency %>
                                     <div class="form-group">
                                         <div class="form-floating shadow">
-                                            <input type="number" class="form-control" id="price"
+                                            <input type="text" class="form-control" id="price"
                                                    name="price" placeholder="Book Price" required>
                                             <label for="price">Price €</label>
                                         </div>
@@ -346,9 +345,10 @@
             <% } %>
 
         </div>
-        <hr class="divider">
+        <hr />
     </div>
 </main>
 
 
-<%- include('partials/footer'); -%>
+</body>
+</html>

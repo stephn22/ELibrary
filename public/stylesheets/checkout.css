@@ -1,0 +1,56 @@
+body {
+    padding-top: 3rem;
+    padding-bottom: 1rem;
+    margin-top: 2rem;
+    margin-left: 5rem;
+    margin-right: 5rem;
+    color: #5a5a5a;
+    /* Microsoft Edge */
+    -ms-overflow-style: none;
+    /* Firefox */
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+}
+
+/* Chrome, Safari, Opera */
+body::-webkit-scrollbar {
+    width: 0 !important;
+}
+
+main {
+    margin-bottom: 2rem;
+}
+
+.divider {
+    margin-left: 2rem 0;
+    margin-right: 2rem 0;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.social {
+    width: 25px;
+    height: 25px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.square {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+}
+
+.social-link {
+    text-decoration: none;
+}
+
+#footer-text {
+    font-family: 'Roboto Light', sans-serif;
+}
+
+#profile-dropdown {
+    margin-left: 0.5rem;
+}

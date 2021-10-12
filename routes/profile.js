@@ -3,13 +3,13 @@
 const express = require('express');
 const router = express.Router();
 const userDao = require('../models/user-dao');
-const orderDao = require('../models/order-dao');
 const { body, validationResult } = require('express-validator');
 const logger = require('../util/logger');
 const bcrypt = require('bcrypt');
 
 router.get("/", (req, res, _next) => {
 
+<<<<<<< HEAD
     // TODO: favourites
     const orders = orderDao.findOrdersByCustomerId(req.user.id);
     const cart = req.session.cart;
@@ -18,6 +18,10 @@ router.get("/", (req, res, _next) => {
         user: req.user,
         cart: cart,
         orders: orders,
+=======
+    res.render("profile", {
+        user: req.user,
+>>>>>>> dev
         styles: ['/stylesheets/profile.css'],
         scripts: ['/javascripts/profile.js']
     });
@@ -29,7 +33,6 @@ router.post("/update-email", [
     const errors = validationResult(req);
     
     if (errors.isEmpty()) {
-        const orders = orderDao.findOrdersByCustomerId(req.user.id);
         const user = await userDao.findUserByEmail(req.user.email);
         const cart = req.session.cart;
 
@@ -40,8 +43,11 @@ router.post("/update-email", [
 
         res.render("profile", {
             user: user,
+<<<<<<< HEAD
             cart: cart,
             orders: orders,
+=======
+>>>>>>> dev
             styles: ['/stylesheets/profile.css'],
             scripts: ['/javascripts/profile.js'],
             message: "Email updated successfully"
@@ -53,8 +59,11 @@ router.post("/update-email", [
 
         res.render("profile", {
             user: req.user,
+<<<<<<< HEAD
             cart: cart,
             orders: orders,
+=======
+>>>>>>> dev
             styles: ['/stylesheets/profile.css'],
             scripts: ['/javascripts/profile.js'],
             errors: errors.array()
@@ -68,8 +77,11 @@ router.post("/update-password", [
     const errors = validationResult(req);
 
     if (errors.isEmpty()) {
+<<<<<<< HEAD
         const orders = orderDao.findOrdersByCustomerId(req.user.id);
         const cart = req.session.cart;
+=======
+>>>>>>> dev
         const user = await userDao.findUserById(req.user.id);
         const oldPassword = user.password;
 
@@ -88,8 +100,11 @@ router.post("/update-password", [
 
         res.render("profile", {
             user: user,
+<<<<<<< HEAD
             cart, cart,
             orders: orders,
+=======
+>>>>>>> dev
             styles: ['/stylesheets/profile.css'],
             scripts: ['/javascripts/profile.js'],
             message: "Password updated successfully"
@@ -101,8 +116,11 @@ router.post("/update-password", [
 
         res.render("profile", {
             user: req.user,
+<<<<<<< HEAD
             cart: cart,
             orders: orders,
+=======
+>>>>>>> dev
             styles: ['/stylesheets/profile.css'],
             scripts: ['/javascripts/profile.js'],
             errors: errors.array()

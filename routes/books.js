@@ -95,8 +95,11 @@ router.post('/', upload.single('book-image'), async function (req, res, _next) {
         logger.logError(`Book not added: ${JSON.stringify(errors)}`);
 
         const books = await bookDao.findAllBooks();
+<<<<<<< HEAD
         const cart = req.session.cart;
 
+=======
+>>>>>>> dev
         res.render('books', {
             user: req.user,
             cart: cart,
@@ -129,7 +132,6 @@ router.delete('/:id', async function (req, res) {
         })
         .catch(async function (err) {
             logger.logError(`Error deleting book: ${err}`);
-
             const books = await bookDao.findAllBooks();
             const cart = req.session.cart;
 

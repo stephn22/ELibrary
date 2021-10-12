@@ -2,54 +2,164 @@
 
 /************************** CONSTANTS *****************************/
 
+/**
+ * @type {HTMLImageElement}
+ */
 const bookImage = document.getElementById('book-image');
 
+/**
+ * @type {HTMLFormElement}
+ */
 const form = document.getElementById('edit-book-form');
 
+/**
+ * @type {HTMLButtonElement}
+ */
 const uploadNewImg = document.getElementById('upload-new-img');
+
+/**
+ * @type {HTMLInputElement}
+ */
 const newImgInput = document.getElementById('new-img-input');
 
+/**
+ * @type {HTMLButtonElement}
+ */
 const addToCartBtn = document.getElementById('add-to-cart-confirm');
 
-const bookQty = document.getElementById('book-quantity');
-
-const deleteBtn = document.getElementById('delete-book');
+/**
+ * @type {HTMLButtonElement}
+ */
 const reserveBook = document.getElementById('reserve-book-confirm');
 
+/**
+ * @type {HTMLSelectElement}
+ */
+const bookQty = document.getElementById('book-quantity');
+
+/**
+ * @type {HTMLButtonElement}
+ */
+const deleteBtn = document.getElementById('delete-book');
+
+/**
+ * @type {HTMLInputElement}
+ */
 const title = document.getElementById('title');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const titleValidation = document.getElementById('title-validation');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const author = document.getElementById('author');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const authorValidation = document.getElementById('author-validation');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const isbn = document.getElementById('isbn');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const isbnValidation = document.getElementById('isbn-validation');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const paper = document.getElementById('paper');
+
+/**
+ * @type {HTMLInputElement}
+ */
 const ebook = document.getElementById('ebook');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const language = document.getElementById('languages-select');
+
+/**
+ * @type {HTMLParagraphElement}
+ */
 const languageInfo = document.getElementById('language-info');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const publisher = document.getElementById('publisher');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const publisherValidation = document.getElementById('publisher-validation');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const stockRange = document.getElementById('stock-range');
+
+/**
+ * @type {HTMLLabelElement}
+ */
 const stockRangeLabel = document.getElementById('stock-range-label');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const pagesRange = document.getElementById('pages-range');
+
+/**
+ * @type {HTMLLabelElement}
+ */
 const pagesRangeLabel = document.getElementById('pages-range-label');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const datePublished = document.getElementById('date-published');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const datePublishedValidation = document.getElementById('date-published-validation');
 
+/**
+ * @type {HTMLTextAreaElement}
+ */
 const description = document.getElementById('description');
+
+/**
+ * @type {HTMLParagraphElement}
+ */
 const descriptionInfo = document.getElementById('description-info');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const descriptionValidation = document.getElementById('description-validation');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const price = document.getElementById('price');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const priceValidation = document.getElementById('price-validation');
 
+/**
+ * @type {HTMLButtonElement}
+ */
 const saveBtn = document.getElementById('save-btn');
 
 const formData = new FormData();
@@ -58,7 +168,17 @@ const formData = new FormData();
 
 let valid = true;
 
-if (title && author && isbn && paper && language && publisher && stockRange && pagesRange && datePublished && description && price) {
+if (title
+    && author
+    && isbn
+    && paper
+    && language
+    && publisher
+    && stockRange
+    && pagesRange
+    && datePublished
+    && description
+    && price) {
     descriptionInfo.innerHTML = `Remaining: ${250 - description.value.length}`;
     disableBtn(saveBtn);
 
@@ -169,7 +289,7 @@ if (title && author && isbn && paper && language && publisher && stockRange && p
 
     price.addEventListener('input', () => {
         if (!validatePrice(price.value)) {
-            setValidationMessage(priceValidation, "Please enter a valid price, must be between 0.01 and 100.00");
+            setValidationMessage(priceValidation, "Please enter a valid price");
             disableBtn(saveBtn);
             valid = false;
         } else {
@@ -216,22 +336,24 @@ if (title && author && isbn && paper && language && publisher && stockRange && p
     });
 }
 
-if (reserveBook && addToCartBtn) {
+if (addToCartBtn) {
     addToCartBtn.addEventListener('click', () => {
         const bookId = parseInt(addToCartBtn.getAttribute('data-id'));
         const quantity = parseInt(bookQty.value);
 
-        if (bookId && quantity) {
-            addToCart(bookId, quantity);
+        if (bookId) {
+            addToCart(bookId, quantity ? quantity : 1);
         }
     });
+}
 
+if (reserveBook) {
     reserveBook.addEventListener('click', () => {
         const bookId = parseInt(reserveBook.getAttribute('data-id'));
         const userId = parseInt(reserveBook.getAttribute('data-user'));
 
         if (bookId && userId) {
-            createOrder(bookId, userId, "Reservation");
+            createOrder(bookId, userId);
         }
     });
 }
@@ -246,7 +368,29 @@ if (deleteBtn) {
     });
 }
 
-/************************** FETCH API METHODS *****************************/
+/************************** FETCH API *****************************/
+
+/**
+ * Using fetch API to add the book(s) to cart
+ * @param {number} bookId id of the book
+ * @param {number} quantity quantity chosen by the user
+ */
+function addToCart(bookId, quantity = 1) {
+    fetch(`/sessions/cart`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            bookId: bookId,
+            quantity: quantity
+        })
+    }).then(res => {
+        if (res.status === 200) {
+            window.location.href = res.url;
+        }
+    }).catch(err => console.log(err));
+}
 
 /**
  * Using fetch API to add the book(s) to cart
@@ -266,26 +410,26 @@ function addToCart(bookId, quantity) {
  * @param {number} bookId id of the book
  * @param {number} userId id of the user
  * @param {string} type type of the order
- * @param {number} price price of the book (only if buying)
- * @param {string} address address of the user (only if buying)
  */
-function createOrder(bookId, userId, type, price = 0.00, address = "") {
+function createOrder(bookId, userId) {
     const body = {
         bookId: bookId,
         userId: userId,
         price: price,
-        type: type,
         address: address
-    }
+    };
 
-    fetch("/orders", {
+    fetch("/orders/reserve", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
-    }).then(window.location.reload())
-        .catch(err => console.log(err));
+    }).then(res => {
+        if (res.status === 200) {
+            window.location.href = res.url;
+        }
+    }).catch(err => console.log(err));
 }
 
 /**
@@ -296,9 +440,15 @@ function createOrder(bookId, userId, type, price = 0.00, address = "") {
 function updateBook(bookId, formData) {
     fetch(`/book-details/${bookId}`, {
         method: 'PUT',
-        body: formData
-    }).then(window.location.reload())
-        .catch(error => console.error(error));
+        body: formData,
+        contentType: {
+            'Content-Type': 'multipart/form-data'
+        },
+    }).then(res => {
+        if (res.status === 200) {
+            window.location.href = res.url;
+        }
+    }).catch(error => console.error(error));
 }
 
 /**
@@ -307,13 +457,14 @@ function updateBook(bookId, formData) {
  */
 function deleteBook(bookId) {
     fetch(`/books/${bookId}`, { method: "DELETE" })
-        .then((_res) => {
-            window.location.href = "/books";
-        })
-        .catch(error => console.error('Error:', error));
+        .then(res => {
+            if (res.status === 200) {
+                window.location.href = res.url;
+            }
+        }).catch(error => console.error('Error:', error));
 }
 
-/************************** VALIDATION METHODS *****************************/
+/************************** VALIDATION *****************************/
 
 /**
  * Checks if the book title is valid
@@ -330,7 +481,7 @@ function validateTitle(title) {
  * @returns true if name is valid, false otherwise
  */
 function validateName(name) {
-    return /^[a-zA-Z ]{1,100}$/.test(name);
+    return /^[a-z ,.'-]+$/i.test(name);
 }
 
 /**
@@ -366,12 +517,12 @@ function validateDescription(description) {
  * @returns true if price is valid, false otherwise
  */
 function validatePrice(price) {
-    return /^\d{0,8}(\.\d{1,4})?$/.test(price);
+    return /^\d{0,8}(\.\d{1,2})?$/.test(price);
 }
 
 /**
  * Sets the validation message for the given element
- * @param {HTMLElement} element 
+ * @param {HTMLSpanElement} element 
  * @param {string} message 
  */
 function setValidationMessage(element, message) {
@@ -380,7 +531,7 @@ function setValidationMessage(element, message) {
 
 /**
  * Clear validation message of the given HTML element
- * @param {HTMLElement} validationElement HTML element to clear validation message
+ * @param {HTMLSpanElement} validationElement HTML element to clear validation message
  */
 function clearValidationMsg(validationElement) {
     validationElement.innerHTML = "";
@@ -388,7 +539,7 @@ function clearValidationMsg(validationElement) {
 
 /**
  * Enables a button
- * @param {HTMLElement} btn button to be enabled
+ * @param {HTMLButtonElement} btn button to be enabled
  */
 function enableBtn(btn) {
     btn.removeAttribute("disabled");
@@ -396,7 +547,7 @@ function enableBtn(btn) {
 
 /**
  * Disables a button
- * @param {HTMLElement} btn button to be disabled
+ * @param {HTMLButtonElement} btn button to be disabled
  */
 function disableBtn(btn) {
     btn.setAttribute("disabled", "disabled");

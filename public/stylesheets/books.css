@@ -2,8 +2,8 @@ body {
     padding-top: 3rem;
     padding-bottom: 1rem;
     margin-top: 2rem;
-    margin-left: 5rem;
-    margin-right: 5rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
     color: #5a5a5a;
     /* Microsoft Edge */
     -ms-overflow-style: none;
@@ -41,8 +41,8 @@ h1 {
 }
 
 .divider {
-    margin-left: 5rem 0;
-    margin-right: 5rem 0;
+    margin-left: 2rem 0;
+    margin-right: 2rem 0;
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
@@ -60,6 +60,10 @@ h1 {
 
 #footer-text {
     font-family: 'Roboto Light', sans-serif;
+}
+
+#add-book {
+    margin-bottom: 0.5rem;
 }
 
 .input-group {

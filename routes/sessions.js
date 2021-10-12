@@ -7,6 +7,7 @@ const logger = require('../util/logger');
 const Book = require('../entities/book');
 const Cart = require('../entities/cart');
 const bookDao = require('../models/book-dao');
+const featuresDao = require('../models/features-dao');
 
 router.get("/login", (_req, res, _next) => {
     res.render("login", {
@@ -30,20 +31,35 @@ router.post("/sessions", (req, res, next) => {
         }
 
         // success
-        req.login(user, (err) => {
+        req.login(user, async (err) => {
             if (err) {
                 logger.logError(err);
                 return next(err);
             }
+            const features = await featuresDao.findAllFeatures();
+            const books = await bookDao.findAllBooks();
+
+            // fill feature properties
+            features.forEach(feature => {
+                books.forEach(book => {
+                    if (book.id === feature.bookId) {
+                        feature.book = book;
+                    }
+                });
+            });
+
             res.render("index", {
                 user: user,
-                styles: ['/stylesheets/index.css']
+                features: features,
+                books: books,
+                styles: ['/stylesheets/index.css'],
+                scripts: ['/javascripts/index.js']
             });
 
             logger.logInfo("User logged in successfully");
         });
     })(req, res, next);
-})
+});
 
 router.delete("/sessions/current", (req, res, _next) => {
     logger.logInfo("User logged out successfully");
@@ -58,23 +74,57 @@ router.get('/sessions/cart', function (req, res, _next) {
         res.render('cart', {
             user: req.user,
             cart: undefined,
+<<<<<<< HEAD
             styles: ['/stylesheets/cart.css']
+=======
+            styles: ['/stylesheets/cart.css'],
+            scripts: ['/javascripts/cart.js']
+>>>>>>> dev
         });
     } else {
         res.render('cart', {
             user: req.user,
             cart: req.session.cart,
+<<<<<<< HEAD
             styles: ['/stylesheets/cart.css']
+=======
+            styles: ['/stylesheets/cart.css'],
+            scripts: ['/javascripts/cart.js']
+>>>>>>> dev
         });
     }
 });
 
 // add to cart
-router.put('/sessions/cart/:id/:qty', async function (req, res, _next) {
-    const bookId = parseInt(req.params.id);
-    const quantity = parseInt(req.params.qty);
+router.post('/sessions/cart', function (req, res, _next) {
+    const bookId = parseInt(req.body.bookId);
+    const quantity = parseInt(req.body.quantity);
 
-    const book = await bookDao.findBookById(bookId);
+    bookDao.findBookById(bookId)
+        .then(function (book) {
+            /**
+         * @type {Cart}
+         */
+            let cart = req.session.cart ? req.session.cart : undefined;
+
+            if (cart !== undefined) {
+                addItem(cart, book, quantity);
+
+                logger.logInfo("Book added to cart successfully");
+            } else {
+                cart = new Cart(book, quantity);
+                logger.logInfo("Book added to cart successfully (created a new cart)");
+            }
+
+            req.session.cart = cart;
+            res.redirect(`/book-details/${bookId}`);
+        });
+});
+
+// edit cart
+router.put('/sessions/cart', async function (req, res, _next) {
+    const bookId = parseInt(req.body.bookId);
+    const quantity = parseInt(req.body.quantity);
 
     /**
      * @type {Cart}
@@ -82,6 +132,7 @@ router.put('/sessions/cart/:id/:qty', async function (req, res, _next) {
     let cart = req.session.cart ? req.session.cart : undefined;
 
     if (cart !== undefined) {
+<<<<<<< HEAD
         addItem(cart, book, quantity);
 
         logger.logInfo("Book added to cart successfully");
@@ -92,6 +143,25 @@ router.put('/sessions/cart/:id/:qty', async function (req, res, _next) {
 
     req.session.cart = cart;
     res.send(cart);
+=======
+        cart.items.forEach(element => {
+            if (element.book.id === bookId) {
+                element.quantity = quantity;
+            }
+        });
+
+        cart.total = getTotalElements(cart);
+        cart.price = getTotalPrice(cart);
+        logger.logInfo("Book quantity updated successfully");
+    }
+
+    req.session.cart = cart;
+    res.render('cart', {
+        user: req.user,
+        styles: ['/stylesheets/cart.css'],
+        scripts: ['/javascripts/cart.js']
+    });
+>>>>>>> dev
 });
 
 router.delete('/sessions/cart/:id/:qty?', async function (req, res, _next) {
@@ -112,10 +182,14 @@ router.delete('/sessions/cart/:id/:qty?', async function (req, res, _next) {
     }
 
     req.session.cart = cart;
-    res.redirect('/');
+    res.send(cart);
 });
 
+<<<<<<< HEAD
 /************************** CART FUNCTIONS *****************************/
+=======
+/************************** CART *****************************/
+>>>>>>> dev
 
 /**
  * Calculates the total price of the cart
@@ -141,10 +215,15 @@ function getTotalPrice(cart) {
 function addItem(cart, item, quantity) {
     cart.items.forEach(element => {
         if (element.book.id === item.id) {
+<<<<<<< HEAD
             logger.logDebug('same');
             element.quantity += quantity;
         } else {
             logger.logDebug('different');
+=======
+            element.quantity += quantity;
+        } else {
+>>>>>>> dev
             cart.items.push({
                 book: item,
                 quantity: quantity
@@ -153,6 +232,10 @@ function addItem(cart, item, quantity) {
     });
 
     cart.price = getTotalPrice(cart);
+<<<<<<< HEAD
+=======
+    cart.total = getTotalElements(cart);
+>>>>>>> dev
 }
 
 /**
@@ -163,20 +246,61 @@ function addItem(cart, item, quantity) {
  */
 function removeItem(cart, item, quantity = 0) {
     if (quantity === 0) {
+<<<<<<< HEAD
         const i = cart.items.indexOf(item);
 
         if (i > -1) {
             cart.items.splice(i, 1);
+=======
+        let i = -1;
+        let qty = 0;
+
+        cart.items.forEach(element => {
+            if (element.book.id === item.id) {
+                i = cart.items.indexOf(element);
+                qty = element.quantity;
+            }
+        });
+
+        if (i > -1) {
+            cart.items.splice(i, 1); // remove item
+            cart.total -= qty; // update total quantity
+            cart.price = getTotalPrice(cart); // update total price
+>>>>>>> dev
         }
     } else {
         cart.items.forEach(element => {
             if (element.book.id === item.id) {
                 element.quantity -= quantity;
+<<<<<<< HEAD
+=======
+                total -= quantity;
+>>>>>>> dev
             }
         });
     }
 
+<<<<<<< HEAD
     cart.price = getTotalPrice(cart);
+=======
+    cart.total = getTotalElements(cart); // update total quantity
+    cart.price = getTotalPrice(cart); // update total price
+}
+
+/**
+ * Get number of elements contained in cart
+ * @param {Cart} cart cart to check
+ * @returns {number} number of elements contained in cart
+ */
+function getTotalElements(cart) {
+    let total = 0;
+
+    cart.items.forEach(element => {
+        total += element.quantity;
+    });
+
+    return total;
+>>>>>>> dev
 }
 
 module.exports = router;

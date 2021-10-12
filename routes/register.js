@@ -6,7 +6,6 @@ const router = express.Router();
 const User = require('../entities/user');
 const userDao = require('../models/user-dao');
 const Type = require('../entities/constants/user-type');
-const { urlencoded } = require('body-parser'); // TODO: ?
 const logger = require('../util/logger');
 
 router.get("/", (_req, res, _next) => {
@@ -30,7 +29,6 @@ router.post("/", [
             }
         }),
     body("password").matches(/^.*(?=.{8,})(?=.*[\d])(?=.*[\W]).*$/).escape().withMessage("Password must be at least 8 characters long and contain at least one number and one non-alphanumeric character"),
-    body("address").trim().isLength(0, 50).escape().withMessage("Please enter a valid address"),
 ], async function (req, res) {
     const errors = validationResult(req);
 
@@ -40,15 +38,12 @@ router.post("/", [
             throw new Error("Passwords do not match");
         }
 
-        logger.logDebug(JSON.stringify(req.body));
-
         const user = new User(
             undefined,
             req.body.fname,
             req.body.lname,
             req.body.email,
             req.body.password,
-            req.body.address, // FIXME: address always empty ""
             Type.CUSTOMER
         );
 
@@ -59,8 +54,7 @@ router.post("/", [
         res.render("login", {
             title: "Login",
             message: "Successfully registered",
-            styles: ['/stylesheets/forms.css'],
-            scripts: ['/javascripts/login-form.js']
+            styles: ['/stylesheets/forms.css']
         });
     } else {
         logger.logError(JSON.stringify(errors));

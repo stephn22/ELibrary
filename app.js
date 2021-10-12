@@ -27,6 +27,8 @@ const booksRouter = require('./routes/books.js');
 const bookDetailsRouter = require('./routes/book-details.js');
 const apiRouter = require('./routes/api.js');
 const ordersRouter = require('./routes/orders.js');
+const checkoutRouter = require('./routes/checkout.js');
+const usersRouter = require('./routes/users.js');
 
 /************** SETUP *************/
 
@@ -106,14 +108,6 @@ const isLoggedIn = (req, res, next) => {
     }
 };
 
-const isAdmin = (req, res, next) => {
-    if (req.user.type === userType.ADMIN && req.isAuthenticated()) {
-        return next();
-    } else {
-        res.redirect("/"); // TODO:
-    }
-};
-
 /************** ROUTES *************/
 
 app.use('/', sessionsRouter);
@@ -123,7 +117,9 @@ app.use('/profile', isLoggedIn, profileRouter);
 app.use('/books', booksRouter);
 app.use('/book-details', bookDetailsRouter);
 app.use('/api', apiRouter);
-app.use('/orders', isAdmin, ordersRouter);
+app.use('/orders', ordersRouter);
+app.use('/checkout', isLoggedIn, checkoutRouter);
+app.use('/users', isLoggedIn, usersRouter);
 
 app.use('/', (_req, _res, next) => {
     next(createError(404));

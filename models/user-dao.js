@@ -12,7 +12,7 @@ const logger = require('../util/logger');
  */
 function addUser(user) {
     return new Promise(async (resolve, reject) => {
-        const query = "INSERT INTO users (fname, lname, email, password, address, type) VALUES (?, ?, ?, ?, ?, ?)";
+        const query = "INSERT INTO users (fname, lname, email, password, type) VALUES (?, ?, ?, ?, ?)";
 
         user.password = await crypt.hash(user.password, 10);
 
@@ -21,7 +21,6 @@ function addUser(user) {
             user.lastname,
             user.email,
             user.password,
-            user.address,
             user.type], function (err) {
                 if (err) {
                     logger.logError(err);
@@ -44,14 +43,13 @@ function updateUser(user, newPassword = null) {
         if (newPassword !== null) {
             user.password = await crypt.hash(newPassword, 10);
 
-            const query = "UPDATE users SET fname = ?, lname = ?, email = ?, password = ?, address = ?, type = ? WHERE id = ?"
+            const query = "UPDATE users SET fname = ?, lname = ?, email = ?, password = ?, type = ? WHERE id = ?"
 
             db.run(query, [
                 user.firstname,
                 user.lastname,
                 user.email,
                 user.password,
-                user.address,
                 user.type,
                 user.id], (err) => {
                     if (err) {
@@ -62,13 +60,12 @@ function updateUser(user, newPassword = null) {
                     }
                 });
         } else {
-            const query = "UPDATE users SET fname = ?, lname = ?, email = ?, address = ?, type = ? WHERE id = ?";
+            const query = "UPDATE users SET fname = ?, lname = ?, email = ?, type = ? WHERE id = ?";
 
             db.run(query, [
                 user.firstname,
                 user.lastname,
                 user.email,
-                user.address,
                 user.type,
                 user.id], (err) => {
                     if (err) {
@@ -127,7 +124,6 @@ function findUserById(id) {
                     row.lname,
                     row.email,
                     row.password,
-                    row.address,
                     row.type);
 
                 resolve(user);
@@ -159,7 +155,6 @@ function findUserByEmail(email) {
                     row.lname,
                     row.email,
                     row.password,
-                    row.address,
                     row.type);
 
                 resolve(user);
@@ -192,7 +187,6 @@ function findUserByEmailAndPassword(email, password) {
                     row.lname,
                     row.email,
                     row.password,
-                    row.address,
                     row.type);
 
                 const check = await crypt.compare(password, row.password);
@@ -203,4 +197,40 @@ function findUserByEmailAndPassword(email, password) {
     });
 }
 
-module.exports = { addUser, updateUser, deleteUser, findUserById, findUserByEmail, findUserByEmailAndPassword };
+/**
+ * Get all users.
+ * @returns {Promise<User[]>} users
+ */
+function findAllUsers() {
+    return new Promise((resolve, reject) => {
+        const query = "SELECT * FROM users";
+
+        db.all(query, function (err, rows) {
+            if (err) {
+                logger.logError(err);
+                reject(err);
+            } else if (rows === undefined) {
+                logger.logWarn("No users found");
+                resolve([]);
+            } else {
+                const users = [];
+
+                rows.forEach(function (row) {
+                    const user = new User(
+                        row.id,
+                        row.fname,
+                        row.lname,
+                        row.email,
+                        row.password,
+                        row.type);
+
+                    users.push(user);
+                });
+
+                resolve(users);
+            }
+        });
+    });
+}
+
+module.exports = { addUser, updateUser, deleteUser, findUserById, findUserByEmail, findUserByEmailAndPassword, findAllUsers };

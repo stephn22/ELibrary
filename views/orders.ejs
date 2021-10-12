@@ -1,6 +1,6 @@
-<%# orders sent by all customers %>
+<%# orders sent by all customers (viewed by admin only) %>
 
-<%- include('partials/header.ejs', { title: "Customers Orders" }) %>
+<%- include('partials/header', { title: "Customers Orders", active: "users-orders" }) %>
 
 <main>
     
@@ -21,18 +21,8 @@
                     Date
                 </th>
                 <th>
-                    Book
-                </th>
-                <th>
                     Price
                 </th>
-                <th>
-                    Address
-                </th>
-                <th>
-                    Status
-                </th>
-                <th>
                     Type
                 </th>
                 <th></th>
@@ -44,11 +34,9 @@
                     <td><%= order.id %></td>
                     <td><%= order.customer.email %></td>
                     <td><%= order.date %></td>
-                    <td><%= order.book.isbn %></td>
                     <td><%= order.price %></td>
-                    <td><%= order.address %></td>
-                    <td><%= order.status %></td>
                     <td><%= order.type %></td>
+                    <td><a href="/orders/order-details/<%= order.id %>">Details</a></td>
                 </tr>
             <% }); %>
         </tbody>
@@ -58,3 +46,5 @@
 
 
 </main>
+</body>
+</html>

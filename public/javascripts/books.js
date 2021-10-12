@@ -2,50 +2,156 @@
 
 /************************** CONSTANTS *****************************/
 
+/**
+ * @type {HTMLInputElement}
+ */
 const bookImage = document.getElementById('book-image');
+
+/**
+ * @type {HTMLImageElement}
+ */
 const imgUploaded = document.getElementById('img-uploaded');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const search = document.getElementById('search-book');
+
+/**
+ * @type {HTMLInputElement}
+ */
 const ebookFilter = document.getElementById('ebook-filter');
+
+/**
+ * @type {HTMLInputElement}
+ */
 const paperFilter = document.getElementById('paper-filter');
 
+/**
+ * @type {HTMLButtonElement}
+ */
 const clear = document.getElementById('clear');
 
+/**
+ * @type {HTMLCollectionOf<HTMLButtonElement>}
+ */
 const deleteBtns = document.getElementsByClassName('delete-button');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const title = document.getElementById('title');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const titleValidation = document.getElementById('title-validation');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const author = document.getElementById('author');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const authorValidation = document.getElementById('author-validation');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const isbn = document.getElementById('isbn');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const isbnValidation = document.getElementById('isbn-validation');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const publisher = document.getElementById('publisher');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const publisherValidation = document.getElementById('publisher-validation');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const stockRange = document.getElementById('stock-range');
+
+/**
+ * @type {HTMLLabelElement}
+ */
 const stockRangeLabel = document.getElementById('stock-range-label');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const pagesRange = document.getElementById('pages-range');
+
+/**
+ * @type {HTMLLabelElement}
+ */
 const pagesRangeLabel = document.getElementById('pages-range-label');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const datePublished = document.getElementById('date-published');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const datePublishedValidation = document.getElementById('date-published-validation');
 
+/**
+ * @type {HTMLTextAreaElement}
+ */
 const description = document.getElementById('description');
+
+/**
+ * @type {HTMLParagraphElement}
+ */
 const descriptionInfo = document.getElementById('description-info');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const descriptionValidation = document.getElementById('description-validation');
 
+/**
+ * @type {HTMLInputElement}
+ */
 const price = document.getElementById('price');
+
+/**
+ * @type {HTMLSpanElement}
+ */
 const priceValidation = document.getElementById('price-validation');
 
+/**
+ * @type {HTMLButtonElement}
+ */
 const saveBtn = document.getElementById('save');
 
 /************************** EVENT LISTENERS *****************************/
 
-if (bookImage && title && author && isbn && paper && ebook && publisher && stockRange && pagesRange && datePublished && description && price && saveBtn) {
+if (bookImage
+    && title
+    && author
+    && isbn
+    && paper
+    && ebook
+    && publisher
+    && stockRange
+    && pagesRange
+    && datePublished
+    && description
+    && price
+    && saveBtn) {
     let valid = true;
 
     bookImage.addEventListener('change', (input) => {
@@ -138,7 +244,7 @@ if (bookImage && title && author && isbn && paper && ebook && publisher && stock
 
     price.addEventListener('input', () => {
         if (!validatePrice(price.value)) {
-            setValidationMessage(priceValidation, "Please enter a valid price, must be between 0.01 and 100.00");
+            setValidationMessage(priceValidation, "Please enter a valid price");
             disableBtn(saveBtn);
             valid = false;
         } else {
@@ -163,7 +269,6 @@ if (bookImage && title && author && isbn && paper && ebook && publisher && stock
     });
 }
 
-// TODO: improve filtering
 search.addEventListener('keyup', () => {
     const searchValue = search.value.toLowerCase();
     const books = document.querySelectorAll('.book');
@@ -245,7 +350,7 @@ for (let i = 0; i < deleteBtns.length; i++) {
     });
 }
 
-/************************** FETCH API METHODS *****************************/
+/************************** FETCH API *****************************/
 
 /**
  * Using the fetch API to delete a book by its id
@@ -253,6 +358,7 @@ for (let i = 0; i < deleteBtns.length; i++) {
  */
 function deleteBook(bookId) {
     fetch(`/books/${bookId}`, { method: "DELETE" })
+<<<<<<< HEAD
         .then((_res) => {
             const books = document.querySelectorAll('.book');
 
@@ -265,21 +371,24 @@ function deleteBook(bookId) {
             });
         })
         .catch(error => console.error('Error:', error));
+=======
+        .then((res) => {
+            if (res.status === 200) {
+                const books = document.querySelectorAll('.book');
+
+                books.forEach(book => {
+                    let id = parseInt(book.getAttribute('data-id'));
+
+                    if (id === bookId) {
+                        fadeOut(book);
+                    }
+                });
+            }
+        }).catch(error => console.error('Error:', error));
+>>>>>>> dev
 }
 
-/**
- * Using the fetch API to get all books
- * @returns {Book[]} an array of books
- */
-async function getAllBooks() {
-    const response = await fetch('/api/books').js;
-    const json = await response.json();
-
-    const books = JSON.parse(json);
-    return books;
-}
-
-/************************** VALIDATION METHODS *****************************/
+/************************** VALIDATION *****************************/
 
 /**
  * Checks if the book title is valid
@@ -296,7 +405,7 @@ function validateTitle(title) {
  * @returns true if name is valid, false otherwise
  */
 function validateName(name) {
-    return /^[a-zA-Z ]{1,100}$/.test(name);
+    return /^[a-z ,.'-]+$/i.test(name);
 }
 
 /**
@@ -332,12 +441,12 @@ function validateDescription(description) {
  * @returns true if price is valid, false otherwise
  */
 function validatePrice(price) {
-    return /^\d{0,8}(\.\d{1,4})?$/.test(price);
+    return /^\d{0,8}(\.\d{1,2})?$/.test(price);
 }
 
 /**
  * Sets the validation message for the given element
- * @param {HTMLElement} element 
+ * @param {HTMLSpanElement} element 
  * @param {string} message 
  */
 function setValidationMessage(element, message) {
@@ -346,7 +455,7 @@ function setValidationMessage(element, message) {
 
 /**
  * Clear validation message of the given HTML element
- * @param {HTMLElement} validationElement HTML element to clear validation message
+ * @param {HTMLSpanElement} validationElement HTML element to clear validation message
  */
 function clearValidationMsg(validationElement) {
     validationElement.innerHTML = "";
@@ -354,7 +463,7 @@ function clearValidationMsg(validationElement) {
 
 /**
  * Enables a button
- * @param {HTMLElement} btn button to be enabled
+ * @param {HTMLButtonElement} btn button to be enabled
  */
 function enableBtn(btn) {
     btn.removeAttribute("disabled");
@@ -362,11 +471,13 @@ function enableBtn(btn) {
 
 /**
  * Disables a button
- * @param {HTMLElement} btn button to be disabled
+ * @param {HTMLButtonElement} btn button to be disabled
  */
 function disableBtn(btn) {
     btn.setAttribute("disabled", "disabled");
 }
+
+/************************** ANIMATIONS *****************************/
 
 /**
  * Animates an element with fade in transition (0.3s)
