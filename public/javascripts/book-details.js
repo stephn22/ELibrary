@@ -375,7 +375,7 @@ if (deleteBtn) {
  * @param {number} bookId id of the book
  * @param {number} quantity quantity chosen by the user
  */
-function addToCart(bookId, quantity = 1) { // TODO: make a body
+function addToCart(bookId, quantity = 1) {
     fetch(`/sessions/cart`, {
         method: "POST",
         headers: {

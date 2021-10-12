@@ -39,7 +39,6 @@ router.get('/:bookId', function (req, res) {
         });
 });
 
-// FIXME: error 500
 router.put('/:bookId', upload.single('new-img'), async function (req, res) {
 
     const bookId = parseInt(req.params.bookId);
