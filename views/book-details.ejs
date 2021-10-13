@@ -281,7 +281,7 @@
                                         <% } %>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= book.isReserved ? 'Ok' : 'Cancel' %></button>
                                         <% if (!book.isReserved) { %>
                                             <button id="reserve-book-confirm" type="button" class="btn btn-primary" data-id="<%= book.id %>" data-user="<%= user.id%>">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
@@ -467,7 +467,7 @@
                                         <% } %>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= book.isReserved ? 'Ok' : 'Cancel' %></button>
                                         <% if (!book.isReserved) { %>
                                             <button id="reserve-book-confirm" type="button" class="btn btn-primary" data-id="<%= book.id %>" data-user="<%= user.id%>">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">

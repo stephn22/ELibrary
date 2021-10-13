@@ -80,20 +80,18 @@ router.post('/reserve', async function (req, res, _next) {
         .then(async (id) => {
             logger.logInfo(`Added order with id: ${id}`);
 
-            const orders = await orderDao.findOrdersByCustomerId(customerId);
-
             res.redirect(`/orders/order-details/${id}`);
 
         }).catch(async (err) => {
             logger.logError(err);
 
-            const books = await bookDao.findAllBooks();
-            res.render('books', {
+            const book = await bookDao.findBookById(bookId);
+            res.render('book-details', {
                 user: req.user,
                 errors: [err],
-                books: books,
-                styles: ['/stylesheets/books.css'],
-                scripts: ['/javascripts/books.js']
+                book: book,
+                styles: ['/stylesheets/book-details.css'],
+                scripts: ['/javascripts/book-details.js']
             });
         });
 
