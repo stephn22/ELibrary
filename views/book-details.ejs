@@ -55,7 +55,10 @@
                         <% if (book.type === "Paper") { %>
                             <%# is reserved (only for paper books)%>
 
-                            <p class="text-muted">The book is <%= (book.isReserved) ? "reserved" : "not reserved" %>.</p>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id ="is-reserved" <%= book.isReserved ? 'checked' : '' %>>
+                                <label class="form-check-label" for="is-reserved">Reserved</label>
+                            </div>
         
                             <br/>
                         <% } %>

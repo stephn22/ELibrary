@@ -48,6 +48,11 @@ const deleteBtn = document.getElementById('delete-book');
 const title = document.getElementById('title');
 
 /**
+ * @type {HTMLInputElement}
+ */
+const isReserved = document.getElementById('is-reserved');
+
+/**
  * @type {HTMLSpanElement}
  */
 const titleValidation = document.getElementById('title-validation');
@@ -169,6 +174,7 @@ const formData = new FormData();
 let valid = true;
 
 if (title
+    && isReserved
     && author
     && isbn
     && paper
@@ -198,6 +204,10 @@ if (title
             reader.readAsDataURL(input.target.files[0]);
             enableBtn(saveBtn);
         }
+    });
+
+    isReserved.addEventListener('change', () => {
+        enableBtn(saveBtn);
     });
 
     title.addEventListener('input', () => {
@@ -317,6 +327,7 @@ if (title
             const bookId = parseInt(form.getAttribute('data-id'));
 
             // prepare the form data
+            formData.append('is-reserved', isReserved.checked);
             formData.append('title', title.value);
             formData.append('author', author.value);
             formData.append('isbn', isbn.value);

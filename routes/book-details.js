@@ -43,6 +43,7 @@ router.put('/:bookId', upload.single('new-img'), async function (req, res) {
 
     const bookId = parseInt(req.params.bookId);
 
+    check('is-reserved').isBoolean();
     check('title').isString().isLength({ min: 1, max: 100 }).withMessage('Please enter a valid title');
     check('author').isString().isLength({ min: 1, max: 100 }).withMessage('Please enter a valid author name');
     check('isbn').isISBN().withMessage('Please enter a valid ISBN');
@@ -57,9 +58,7 @@ router.put('/:bookId', upload.single('new-img'), async function (req, res) {
     const errors = validationResult(req);
 
     if (errors.isEmpty()) {
-        const oldBook = await bookDao.findBookById(bookId);
-
-
+        
         const book = new Book(
             bookId,
             req.body.title,
@@ -74,7 +73,7 @@ router.put('/:bookId', upload.single('new-img'), async function (req, res) {
             req.body.description,
             req.file === undefined ? null : req.file.buffer,
             req.body.price,
-            oldBook.isReserved);
+            req.body['is-reserved']);
 
         bookDao.updateBook(book)
             .then(async (id) => {

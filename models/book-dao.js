@@ -149,7 +149,7 @@ function findBookById(id) {
                     row.description,
                     row.imgUrl,
                     row.price,
-                    row.isReserved);
+                    row['is_reserved'] === 1);
 
                 resolve(book);
             }
@@ -190,7 +190,7 @@ function findAllBooks() {
                         row.description,
                         row.imgUrl,
                         row.price,
-                        row.isReserved);
+                        row['is_reserved'] === 1);
 
                     books.push(book);
                 });
