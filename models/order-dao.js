@@ -4,12 +4,14 @@ const db = require('../db.js');
 const userDao = require('../models/user-dao');
 const bookDao = require('../models/book-dao');
 const Order = require('../entities/order');
+const Book = require('../entities/book');
+const orderType = require('../entities/constants/order-type');
 const logger = require('../util/logger');
 
 /**
  * Inserts a new order into the database.
  * @param {Order} order order to be inserted into database.
- * @param {*[]} items array of items to be inserted into database.
+ * @param {[{book: Book, quantity: number}]} items array of items to be inserted into database.
  * @returns {Promise<number>} id of order that was inserted.
  */
 function addOrder(order, items) {
@@ -20,29 +22,35 @@ function addOrder(order, items) {
             order.customerId,
             new Date(order.date).getTime(),
             order.price,
-            order.status,
-            order.type], function (err) {
+            order.type], async function (err) {
                 if (err) {
                     logger.logError(err);
                     reject(err);
                 } else {
                     const id = this.lastID;
 
-                    items.forEach((item) => {
-                        const query = "INSERT INTO order_items (order_id, book_id, quantity) VALUES (?, ?, ?)";
+                    if (order.type === orderType.RESERVATION) {
+                        const book = await bookDao.findBookById(items[0].book.id);
 
-                        db.run(query, [
-                            id,
-                            item.book.id,
-                            item.quantity], function (err) {
-                                if (err) {
-                                    logger.logError(err);
-                                    reject(err);
-                                } else {
-                                    logger.logInfo(`Inserted order item with id ${this.lastID}`);
-                                }
-                            });
-                    });
+                        book.isReserved = true;
+
+                        await bookDao.updateBook(book);
+                    }
+
+                    // user can reserve only 1 book at a time
+                    const query = "INSERT INTO order_items (order_id, book_id, quantity) VALUES (?, ?, ?)";
+
+                    db.run(query, [
+                        id,
+                        items[0].book.id,
+                        items[0].quantity], function (err) {
+                            if (err) {
+                                logger.logError(err);
+                                reject(err);
+                            } else {
+                                logger.logInfo(`Inserted order item with id ${this.lastID}`);
+                            }
+                        });
 
                     resolve(id);
                 }
@@ -63,7 +71,6 @@ function updateOrder(order) {
             order.customerId,
             new Date(order.date).getTime(),
             order.price,
-            order.status,
             order.type,
             order.id
         ], function (err) {

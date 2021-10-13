@@ -43,7 +43,11 @@ router.get('/order-details/:id', async (req, res, _next) => {
         .catch(err => {
             logger.logError(err);
 
-            res.sendStatus(404);
+            res.render('order-details', {
+                user: req.user,
+                errors: [err],
+                styles: ['/stylesheets/order-details.css'],
+            });
         });
 });
 
@@ -58,61 +62,29 @@ router.get('/customer-orders', async (req, res, _next) => {
     });
 });
 
-router.get('/:id', (req, res, _next) => {
-    const id = parseInt(req.params.id);
-
-    orderDao.findOrderById(id).then(order => {
-        if (order.hasOwnProperty("error")) {
-            logger.logWarn(JSON.stringify(order));
-
-            res.render('order-details', {
-                user: req.user,
-                message: "No such order",
-
-            });
-        } else {
-            res.render('order', {
-                user: req.user,
-                order: order
-            });
-        }
-    }).catch(err => {
-        logger.logError(err);
-        res.render('order-details', {
-            user: req.user,
-            errors: [err]
-        });
-    });
-});
-
 router.post('/reserve', async function (req, res, _next) {
     const customerId = parseInt(req.body.userId);
     const bookId = parseInt(req.body.bookId);
-    const price = parseFloat(req.body.price);
 
     const order = new Order(
         undefined,
         customerId,
         new Date(),
-        price,
+        0.00,
         orderType.RESERVATION,
     );
 
-    orderDao.addOrder(order, bookId, 0)
+    const book = await bookDao.findBookById(bookId);
+
+    orderDao.addOrder(order, [{ book: book, quantity: 0 }])
         .then(async (id) => {
             logger.logInfo(`Added order with id: ${id}`);
 
             const orders = await orderDao.findOrdersByCustomerId(customerId);
 
-            res.render('books', {
-                user: req.user,
-                orders: orders,
-                message: "Order added successfully",
-                styles: ['/stylesheets/books.css'],
-                scripts: ['/javascripts/books.js']
-            });
-        })
-        .catch(async (err) => {
+            res.redirect(`/orders/order-details/${id}`);
+
+        }).catch(async (err) => {
             logger.logError(err);
 
             const books = await bookDao.findAllBooks();
@@ -125,18 +97,6 @@ router.post('/reserve', async function (req, res, _next) {
             });
         });
 
-});
-
-router.get('/customer-orders', async (req, res, _next) => {
-    const id = req.user.id;
-
-    const orders = await orderDao.findOrdersByCustomerId(id);
-
-    res.render('customer-orders', {
-        user: req.user,
-        orders: orders,
-        styles: ['/stylesheets/orders.css']
-    });
 });
 
 router.post('/customer-orders', [
@@ -177,6 +137,7 @@ router.post('/customer-orders', [
             orderDao.addOrder(order, cart.items)
                 .then(async (id) => {
                     logger.logInfo(`Added order with id: ${id}`);
+
                     const orders = await orderDao.findOrdersByCustomerId(customerId);
 
                     res.render('customer-orders', {

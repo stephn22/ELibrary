@@ -402,8 +402,6 @@ function createOrder(bookId, userId) {
     const body = {
         bookId: bookId,
         userId: userId,
-        price: price,
-        address: address
     };
 
     fetch("/orders/reserve", {
