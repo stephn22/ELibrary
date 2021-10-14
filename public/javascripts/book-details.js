@@ -407,7 +407,6 @@ function addToCart(bookId, quantity = 1) {
  * Using the fetch API to create a new order (reservation)
  * @param {number} bookId id of the book
  * @param {number} userId id of the user
- * @param {string} type type of the order
  */
 function createOrder(bookId, userId) {
     const body = {

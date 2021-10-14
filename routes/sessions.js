@@ -230,7 +230,7 @@ function removeItem(cart, item, quantity = 0) {
         cart.items.forEach(element => {
             if (element.book.id === item.id) {
                 element.quantity -= quantity;
-                total -= quantity;
+                cart.total -= quantity;
             }
         });
     }
