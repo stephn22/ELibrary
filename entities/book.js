@@ -1,10 +1,10 @@
-const baseEntity = require('./baseEntity');
+const BaseEntity = require('./baseEntity');
 
 /**
  * @class Book represents a book entity.
- * @extends baseEntity extends the base class for all entities
+ * @extends BaseEntity extends the base class for all entities
  */
-class Book extends baseEntity {
+class Book extends BaseEntity {
 
     /**
      * Create a new Book object.

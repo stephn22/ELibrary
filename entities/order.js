@@ -1,13 +1,10 @@
-
-const baseEntity = require('./baseEntity');
-const Book = require('./book');
-const User = require('./user');
+const BaseEntity = require('./baseEntity');
 
 /**
  * @class Order represents an order entity
- * @extends baseEntity extends the base class for all entities
+ * @extends BaseEntity extends the base class for all entities
  */
-class Order extends baseEntity {
+class Order extends BaseEntity {
 
     /**
      * Constructor for Order
