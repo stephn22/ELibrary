@@ -22,3 +22,7 @@ h1 {
     font-family: 'Roboto Light', sans-serif;
     margin-left: 1rem;
 }
+
+table {
+    border-radius: 15px;
+}

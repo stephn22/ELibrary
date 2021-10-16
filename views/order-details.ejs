@@ -32,7 +32,7 @@
 
         <br />
 
-        <table class="table">
+        <table class="table shadow-lg">
             <thead>
                 <tr class="table-secondary">
                     <th>
@@ -57,7 +57,7 @@
                 <% order.items.forEach((item) => { %>
                     <tr>
                         <td>
-                            <img src="data:image/jpeg;base64,<%= item.book.imgUrl.toString('base64')%>" id="book-image" class="square img-rounded shadow-lg" alt="<%= item.book.title %>">
+                            <img src="data:image/jpeg;base64,<%= item.book.imgUrl.toString('base64')%>" id="book-image" class="square img-rounded shadow" alt="<%= item.book.title %>">
                         </td>
                         <td>
                             <%= item.book.title %>

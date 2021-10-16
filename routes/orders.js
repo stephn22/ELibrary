@@ -53,13 +53,24 @@ router.get('/order-details/:id', async (req, res, _next) => {
 
 router.get('/customer-orders', async (req, res, _next) => {
     const id = parseInt(req.user.id);
-    const orders = await orderDao.findOrdersByCustomerId(id);
+    orderDao.findOrdersByCustomerId(id)
+        .then((orders => {
+            logger.logInfo(`Found ${orders.length} orders for customer with id ${id}`);
 
-    res.render('customer-orders', {
-        user: req.user,
-        orders: orders,
-        styles: ['/stylesheets/orders.css']
-    });
+            res.render('customer-orders', {
+                user: req.user,
+                orders: orders,
+                styles: ['/stylesheets/orders.css']
+            });
+        })).catch(err => {
+            logger.logError(err);
+
+            res.render('customer-orders', {
+                user: req.user,
+                errors: [err],
+                styles: ['/stylesheets/orders.css']
+            });
+        });
 });
 
 router.post('/reserve', async function (req, res, _next) {
