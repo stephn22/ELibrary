@@ -209,7 +209,7 @@ function findAllUsers() {
             if (err) {
                 logger.logError(err);
                 reject(err);
-            } else if (rows === undefined) {
+            } else if (rows === undefined || rows.length === 0) {
                 logger.logWarn("No users found");
                 resolve([]);
             } else {

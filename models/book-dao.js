@@ -169,7 +169,7 @@ function findAllBooks() {
             if (err) {
                 logger.logError(err);
                 reject(err);
-            } else if (rows === undefined) {
+            } else if (rows === undefined || rows.length === 0) {
                 logger.logWarn("No books found");
                 resolve({ error: "No books found" });
             } else {
