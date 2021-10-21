@@ -18,12 +18,12 @@ router.get('/', (req, res, _next) => {
             userDao.findAllUsers().then((users) => {
                 orders.forEach((order) => {
                     order.customer = users.find(user => user.id === order.customerId);
+                });
 
-                    res.render('orders', {
-                        user: req.user,
-                        orders: orders,
-                        styles: ['/stylesheets/orders.css'],
-                    });
+                res.render('orders', {
+                    user: req.user,
+                    orders: orders,
+                    styles: ['/stylesheets/orders.css'],
                 });
             }).catch((err) => {
                 logger.logError(err);

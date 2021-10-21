@@ -27,8 +27,9 @@
         <% if (typeof user !== "undefined" && user.type === "admin") { %>
             <h3>Customer: <%= order.customer.email %></h5>
         <% } %>
-        
-        <h3>Total: <%= order.price %> €</h3>
+        <% if (order.type === "Buy") { %>
+            <h3>Total: <%= order.price %> €</h3>
+        <% } %>
 
         <br />
 
@@ -44,12 +45,17 @@
                     <th>
                         ISBN
                     </th>
-                    <th>
-                        Price
-                    </th>
-                    <th>
-                        Quantity
-                    </th>
+                    <% if (order.type === "Buy") { %>
+                        <th>
+                            Price
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                    <% } else { %>
+                        <th>Type</th>
+                        <th></th>
+                    <% } %>
                     <th></th>
                 </tr>
             </thead>
@@ -65,12 +71,18 @@
                         <td>
                             <%= item.book.isbn %>
                         </td>
-                        <td>
-                            <%= item.book.price %> €
-                        </td>
-                        <td>
-                            <%= item.quantity %>
-                        </td>
+                        <% if (order.type === "Buy") { %>
+                            <td>
+                                <%= item.book.price %> €
+                            </td>
+                            <td>
+                                <%= item.quantity %>
+                            </td>
+                        <% } else { %>
+                            <td>
+                                <%= order.type %>
+                            </td>
+                        <% } %>
                         <td>
                             <a href="/book-details/<%= item.book.id %>">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
