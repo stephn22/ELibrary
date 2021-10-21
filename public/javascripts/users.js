@@ -31,7 +31,7 @@ function deleteUser(id) {
         }
     }).then(res => {
         if (res.status === 200) {
-            window.location.href = res.url;
+            window.location.href = '/users';
         }
     })
         .catch(err => console.log(err));
