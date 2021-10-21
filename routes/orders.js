@@ -4,7 +4,6 @@ const express = require("express");
 const { body, validationResult } = require('express-validator');
 const router = express.Router();
 const Order = require("../entities/order");
-const User = require("../entities/user");
 const userDao = require("../models/user-dao");
 const orderDao = require("../models/order-dao");
 const bookDao = require("../models/book-dao");
