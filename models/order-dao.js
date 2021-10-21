@@ -1,7 +1,6 @@
 "use strict";
 
 const db = require('../db.js');
-const userDao = require('../models/user-dao');
 const bookDao = require('../models/book-dao');
 const Order = require('../entities/order');
 const Book = require('../entities/book');
@@ -194,9 +193,7 @@ function findAllOrders() {
                         parseFloat(row.price.toFixed(2)),
                         row.type);
 
-                    // fill properties with relative objects
-                    let user = await userDao.findUserById(row.customer_id);
-                    order.customer = user;
+                    orders.push(order);
                 });
 
                 resolve(orders);
@@ -222,7 +219,7 @@ function findOrderItems(orderId) {
                 logger.logWarn(`No order items for order with id: ${orderId}`);
                 resolve([]);
             } else {
-                // FIXME:
+
                 /**
                  * @type {{bookId: number, quantity: number}[]}
                  */

@@ -178,7 +178,8 @@ function getTotalPrice(cart) {
         totalPrice += (element.book.price * element.quantity);
     });
 
-    return totalPrice;
+
+    return parseFloat(totalPrice.toFixed(2));
 }
 
 /**

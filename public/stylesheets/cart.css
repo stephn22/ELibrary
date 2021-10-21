@@ -27,6 +27,10 @@ h2 {
     margin-bottom: 1rem;
 }
 
+table {
+    border-radius: 15px;
+}
+
 tr {
     transition: 0.3s ease-in-out;
 }

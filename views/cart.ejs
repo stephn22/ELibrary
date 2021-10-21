@@ -33,7 +33,7 @@
 
     <% } else { %>
         <% if (cart.total > 0) { %>
-            <h2 class="text-start" id="title" data-price="<%= cart.price %>">Cart: <%= cart.price %> €</h2>
+            <h2 class="text-start" id="title" data-price="<%= cart.price %>">Cart: <%= cart.price.toFixed(2) %> €</h2>
             <br/>
             <a class="btn btn-primary shadow-lg" href="/checkout">
                 Checkout
@@ -43,7 +43,7 @@
                 </svg>
             </a>
             <hr />
-            <table class="table shadow rounded">
+            <table class="table shadow">
                 <thead>
                     <tr class="table-primary">
                         <th>
