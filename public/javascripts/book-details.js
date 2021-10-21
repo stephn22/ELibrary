@@ -1,4 +1,3 @@
-"use strict";
 
 /************************** CONSTANTS *****************************/
 
@@ -167,8 +166,6 @@ const priceValidation = document.getElementById('price-validation');
  */
 const saveBtn = document.getElementById('save-btn');
 
-const formData = new FormData();
-
 /************************** EVENT LISTENERS *****************************/
 
 let valid = true;
@@ -322,27 +319,6 @@ if (title
     saveBtn.addEventListener('click', (e) => {
         if (!valid) {
             e.preventDefault();
-        } else {
-            // get book id
-            const bookId = parseInt(form.getAttribute('data-id'));
-
-            // prepare the form data
-            formData.append('is-reserved', isReserved.checked);
-            formData.append('title', title.value);
-            formData.append('author', author.value);
-            formData.append('isbn', isbn.value);
-            formData.append('publisher', publisher.value);
-            formData.append('stock', stockRange.value);
-            formData.append('language', language.value === '--' ? languageInfo.getAttribute('data-language') : language.value);
-            formData.append('pages', pagesRange.value);
-            formData.append('price', price.value);
-            formData.append('type', paper.checked ? 'Paper' : 'Ebook');
-            formData.append('date-published', datePublished.value);
-            formData.append('description', description.value);
-            formData.append('new-img', newImgInput.files[0]);
-
-            // send the form data
-            updateBook(bookId, formData);
         }
     });
 }
@@ -425,25 +401,6 @@ function createOrder(bookId, userId) {
             window.location.href = res.url;
         }
     }).catch(err => console.log(err));
-}
-
-/**
- * Using fetch API to update the book
- * @param {number} bookId id of the book to be updated
- * @param {FormData} formData form data to be sent to the server
- */
-function updateBook(bookId, formData) {
-    fetch(`/book-details/${bookId}`, {
-        method: 'PUT',
-        body: formData,
-        contentType: {
-            'Content-Type': 'multipart/form-data'
-        },
-    }).then(res => {
-        if (res.status === 200) {
-            window.location.href = res.url;
-        }
-    }).catch(error => console.error(error));
 }
 
 /**

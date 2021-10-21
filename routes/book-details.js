@@ -39,7 +39,7 @@ router.get('/:bookId', function (req, res) {
         });
 });
 
-router.put('/:bookId', upload.single('new-img'), async function (req, res) {
+router.post('/:bookId', upload.single('new-img'), async function (req, res) {
 
     const bookId = parseInt(req.params.bookId);
 
@@ -58,7 +58,7 @@ router.put('/:bookId', upload.single('new-img'), async function (req, res) {
     const errors = validationResult(req);
 
     if (errors.isEmpty()) {
-        
+
         const book = new Book(
             bookId,
             req.body.title,
@@ -76,18 +76,10 @@ router.put('/:bookId', upload.single('new-img'), async function (req, res) {
             req.body['is-reserved']);
 
         bookDao.updateBook(book)
-            .then(async (id) => {
+            .then((id) => {
                 logger.logInfo(`Updated book with id: ${id}`);
 
                 res.redirect(`/book-details/${id}`);
-
-                // res.render('book-details', {
-                //     user: req.user,
-                //     message: "Book updated successfully",
-                //     book: book,
-                //     styles: ['/stylesheets/book-details.css'],
-                //     scripts: ['/javascripts/book-details.js']
-                // });
             })
             .catch(async (err) => {
                 logger.logError(err);
