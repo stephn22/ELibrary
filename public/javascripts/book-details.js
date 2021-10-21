@@ -411,7 +411,7 @@ function deleteBook(bookId) {
     fetch(`/books/${bookId}`, { method: "DELETE" })
         .then(res => {
             if (res.status === 200) {
-                window.location.href = res.url;
+                window.location.href = '/books';
             }
         }).catch(error => console.error('Error:', error));
 }
