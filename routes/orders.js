@@ -68,16 +68,7 @@ router.get('/order-details/:id', async (req, res, _next) => {
                             order: order,
                             styles: ['/stylesheets/order-details.css'],
                         });
-                    }).catch((err) => {
-                        logger.logError(err);
-
-                        res.render('order-details', {
-                            user: req.user,
-                            order: order,
-                            errors: [err],
-                            styles: ['/stylesheets/orders.css'],
-                        });
-                    });
+                    })
                 }).catch(err => {
                     logger.logError(err);
 
