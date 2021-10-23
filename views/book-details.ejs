@@ -56,7 +56,7 @@
                             <%# is reserved (only for paper books)%>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id ="is-reserved" <%= book.isReserved ? 'checked' : '' %>>
+                                <input class="form-check-input" type="checkbox" id ="is-reserved" name="reserved" <%= book.isReserved ? 'checked' : '' %>>
                                 <label class="form-check-label" for="is-reserved">Reserved</label>
                             </div>
         
@@ -124,7 +124,6 @@
                             <label for="stock-range" class="form-label" id="stock-range-label">In stock: <%= book.stock %></label>
                             <input type="range" name="stock" class="form-range" min="1" max="300" step="1"
                                    value="<%= book.stock %>" id="stock-range" required>
-                            <small class="small text-muted">Leave 1 if EBook</small>
                         </div>
     
                         <br/>

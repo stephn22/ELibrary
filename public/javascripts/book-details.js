@@ -172,7 +172,7 @@ let valid = true;
 
 if (descriptionInfo) {
     descriptionInfo.innerHTML = `Remaining: ${250 - description.value.length}`;
-    disableBtn(saveBtn);
+    disableElement(saveBtn);
 }
 
 if (uploadNewImg) {
@@ -192,14 +192,14 @@ if (newImgInput) {
             };
 
             reader.readAsDataURL(input.target.files[0]);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
         }
     });
 }
 
 if (isReserved) {
     isReserved.addEventListener('change', () => {
-        enableBtn(saveBtn);
+        enableElement(saveBtn);
     });
 }
 
@@ -207,11 +207,11 @@ if (title) {
     title.addEventListener('input', () => {
         if (!validateTitle(title.value)) {
             setValidationMessage(titleValidation, "Please enter a valid title name, must be between 1 and 100 characters");
-            disableBtn(saveBtn);
+            disableElement(saveBtn);
             valid = false;
         } else {
             clearValidationMsg(titleValidation);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
             valid = true;
         }
     });
@@ -221,11 +221,11 @@ if (author) {
     author.addEventListener('input', () => {
         if (!validateName(author.value)) {
             setValidationMessage(authorValidation, "Please enter a valid author name, must be between 1 and 100 characters");
-            disableBtn(saveBtn);
+            disableElement(saveBtn);
             valid = false;
         } else {
             clearValidationMsg(authorValidation);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
             valid = true;
         }
     });
@@ -235,11 +235,11 @@ if (isbn) {
     isbn.addEventListener('input', () => {
         if (!validateISBN(isbn.value)) {
             setValidationMessage(isbnValidation, "Please enter a valid ISBN");
-            disableBtn(saveBtn);
+            disableElement(saveBtn);
             valid = false;
         } else {
             clearValidationMsg(isbnValidation);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
             valid = true;
         }
     });
@@ -247,19 +247,39 @@ if (isbn) {
 
 if (language) {
     language.addEventListener('change', () => {
-        enableBtn(saveBtn);
+        enableElement(saveBtn);
     });
 }
 
 if (paper) {
     paper.addEventListener('click', () => {
-        enableBtn(saveBtn);
+        enableElement(saveBtn);
+
+        if (stockRange) {
+            enableElement(stockRange);
+            stockRange.value = 1;
+            setLabel(stockRangeLabel, `In stock: ${stockRange.value}`);
+        }
     });
 }
 
 if (ebook) {
+    if (ebook.checked) {
+        if (stockRange) {
+            disableElement(stockRange);
+            stockRange.value = 1;
+            setLabel(stockRangeLabel, `In stock: ${stockRange.value}`);
+        }
+    }
+
     ebook.addEventListener('click', () => {
-        enableBtn(saveBtn);
+        enableElement(saveBtn);
+
+        if (stockRange) {
+            disableElement(stockRange);
+            stockRange.value = 1;
+            setLabel(stockRangeLabel, `In stock: ${stockRange.value}`);
+        }
     });
 }
 
@@ -267,11 +287,11 @@ if (publisher) {
     publisher.addEventListener('input', () => {
         if (!validateName(publisher.value)) {
             setValidationMessage(publisherValidation, "Please enter a valid publisher name, must be between 1 and 100 characters");
-            disableBtn(saveBtn);
+            disableElement(saveBtn);
             valid = false;
         } else {
             clearValidationMsg(publisherValidation);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
             valid = true;
         }
     });
@@ -281,11 +301,11 @@ if (datePublished) {
     datePublished.addEventListener('input', () => {
         if (!validateDate(datePublished.value)) {
             setValidationMessage(datePublishedValidation, "Please enter a valid date, must be in the past");
-            disableBtn(saveBtn);
+            disableElement(saveBtn);
             valid = false;
         } else {
             clearValidationMsg(datePublishedValidation);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
             valid = true;
         }
     });
@@ -298,11 +318,11 @@ if (description) {
 
         if (!validateDescription(description.value)) {
             setValidationMessage(descriptionValidation, "Please enter a valid description, must be between 1 and 250 characters");
-            disableBtn(saveBtn);
+            disableElement(saveBtn);
             valid = false;
         } else {
             clearValidationMsg(descriptionValidation);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
             valid = true;
         }
     });
@@ -312,11 +332,11 @@ if (price) {
     price.addEventListener('input', () => {
         if (!validatePrice(price.value)) {
             setValidationMessage(priceValidation, "Please enter a valid price");
-            disableBtn(saveBtn);
+            disableElement(saveBtn);
             valid = false;
         } else {
             clearValidationMsg(priceValidation);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
             valid = true;
         }
     });
@@ -324,15 +344,15 @@ if (price) {
 
 if (stockRange) {
     stockRange.addEventListener('input', () => {
-        enableBtn(saveBtn);
-        stockRangeLabel.innerHTML = `In stock: ${stockRange.value}`;
+        enableElement(saveBtn);
+        setLabel(stockRangeLabel, `In stock: ${stockRange.value}`);
     });
 }
 
 if (pagesRange) {
     pagesRange.addEventListener('input', () => {
-        enableBtn(saveBtn);
-        pagesRangeLabel.innerHTML = `Pages: ${pagesRange.value}`;
+        enableElement(saveBtn);
+        setLabel(pagesRangeLabel, `Pages: ${pagesRange.value}`);
     });
 }
 
@@ -511,17 +531,26 @@ function clearValidationMsg(validationElement) {
 }
 
 /**
- * Enables a button
- * @param {HTMLButtonElement} btn button to be enabled
+ * Sets the label of the given element
+ * @param {HTMLLabelElement} label label to be set
+ * @param {string} message message to be set
  */
-function enableBtn(btn) {
-    btn.removeAttribute("disabled");
+function setLabel(label, message) {
+    label.innerHTML = message;
+}
+
+/**
+ * Enables a button
+ * @param {HTMLElement} element element to be enabled
+ */
+function enableElement(element) {
+    element.removeAttribute("disabled");
 }
 
 /**
  * Disables a button
- * @param {HTMLButtonElement} btn button to be disabled
+ * @param {HTMLElement} element element to be disabled
  */
-function disableBtn(btn) {
-    btn.setAttribute("disabled", "disabled");
+function disableElement(element) {
+    element.setAttribute("disabled", "disabled");
 }

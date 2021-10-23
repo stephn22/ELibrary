@@ -43,7 +43,7 @@ router.post('/:bookId', upload.single('new-img'), async function (req, res) {
 
     const bookId = parseInt(req.params.bookId);
 
-    check('is-reserved').isBoolean();
+    check('reserved').isBoolean();
     check('title').isString().isLength({ min: 1, max: 100 }).withMessage('Please enter a valid title');
     check('author').isString().isLength({ min: 1, max: 100 }).withMessage('Please enter a valid author name');
     check('isbn').isISBN().withMessage('Please enter a valid ISBN');
@@ -59,6 +59,8 @@ router.post('/:bookId', upload.single('new-img'), async function (req, res) {
 
     if (errors.isEmpty()) {
 
+        const oldBook = await bookDao.findBookById(bookId);
+
         const book = new Book(
             bookId,
             req.body.title,
@@ -66,14 +68,14 @@ router.post('/:bookId', upload.single('new-img'), async function (req, res) {
             req.body.isbn,
             req.body.type === "Paper" ? bookType.PAPER : bookType.EBOOK,
             req.body.stock,
-            req.body.language,
+            req.body.language === "--" ? oldBook.language : req.body.language,
             req.body.pages,
             req.body.publisher,
             req.body['date-published'],
             req.body.description,
             req.file === undefined ? null : req.file.buffer,
             req.body.price,
-            req.body['is-reserved']);
+            req.body.reserved === "on" ? true : false);
 
         bookDao.updateBook(book)
             .then((id) => {
