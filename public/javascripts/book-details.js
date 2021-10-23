@@ -170,25 +170,18 @@ const saveBtn = document.getElementById('save-btn');
 
 let valid = true;
 
-if (title
-    && isReserved
-    && author
-    && isbn
-    && paper
-    && language
-    && publisher
-    && stockRange
-    && pagesRange
-    && datePublished
-    && description
-    && price) {
+if (descriptionInfo) {
     descriptionInfo.innerHTML = `Remaining: ${250 - description.value.length}`;
     disableBtn(saveBtn);
+}
 
+if (uploadNewImg) {
     uploadNewImg.addEventListener('click', () => {
         newImgInput.click();
     });
+}
 
+if (newImgInput) {
     newImgInput.addEventListener('change', (input) => {
         if (input.target.files && input.target.files[0]) {
             const reader = new FileReader();
@@ -202,11 +195,15 @@ if (title
             enableBtn(saveBtn);
         }
     });
+}
 
+if (isReserved) {
     isReserved.addEventListener('change', () => {
         enableBtn(saveBtn);
     });
+}
 
+if (title) {
     title.addEventListener('input', () => {
         if (!validateTitle(title.value)) {
             setValidationMessage(titleValidation, "Please enter a valid title name, must be between 1 and 100 characters");
@@ -218,7 +215,9 @@ if (title
             valid = true;
         }
     });
+}
 
+if (author) {
     author.addEventListener('input', () => {
         if (!validateName(author.value)) {
             setValidationMessage(authorValidation, "Please enter a valid author name, must be between 1 and 100 characters");
@@ -230,7 +229,9 @@ if (title
             valid = true;
         }
     });
+}
 
+if (isbn) {
     isbn.addEventListener('input', () => {
         if (!validateISBN(isbn.value)) {
             setValidationMessage(isbnValidation, "Please enter a valid ISBN");
@@ -242,19 +243,27 @@ if (title
             valid = true;
         }
     });
+}
 
+if (language) {
     language.addEventListener('change', () => {
         enableBtn(saveBtn);
     });
+}
 
+if (paper) {
     paper.addEventListener('click', () => {
         enableBtn(saveBtn);
     });
+}
 
+if (ebook) {
     ebook.addEventListener('click', () => {
         enableBtn(saveBtn);
     });
+}
 
+if (publisher) {
     publisher.addEventListener('input', () => {
         if (!validateName(publisher.value)) {
             setValidationMessage(publisherValidation, "Please enter a valid publisher name, must be between 1 and 100 characters");
@@ -266,7 +275,9 @@ if (title
             valid = true;
         }
     });
+}
 
+if (datePublished) {
     datePublished.addEventListener('input', () => {
         if (!validateDate(datePublished.value)) {
             setValidationMessage(datePublishedValidation, "Please enter a valid date, must be in the past");
@@ -278,7 +289,9 @@ if (title
             valid = true;
         }
     });
+}
 
+if (description) {
     description.addEventListener('input', () => {
 
         descriptionInfo.innerHTML = `Remaining: ${250 - description.value.length}`;
@@ -293,7 +306,9 @@ if (title
             valid = true;
         }
     });
+}
 
+if (price) {
     price.addEventListener('input', () => {
         if (!validatePrice(price.value)) {
             setValidationMessage(priceValidation, "Please enter a valid price");
@@ -305,17 +320,23 @@ if (title
             valid = true;
         }
     });
+}
 
+if (stockRange) {
     stockRange.addEventListener('input', () => {
         enableBtn(saveBtn);
         stockRangeLabel.innerHTML = `In stock: ${stockRange.value}`;
     });
+}
 
+if (pagesRange) {
     pagesRange.addEventListener('input', () => {
         enableBtn(saveBtn);
         pagesRangeLabel.innerHTML = `Pages: ${pagesRange.value}`;
     });
+}
 
+if (saveBtn) {
     saveBtn.addEventListener('click', (e) => {
         if (!valid) {
             e.preventDefault();

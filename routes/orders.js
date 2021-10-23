@@ -55,6 +55,7 @@ router.get('/order-details/:id', async (req, res, _next) => {
 
             orderDao.findOrderItems(order.id)
                 .then((items) => {
+
                     bookDao.findAllBooks().then((books) => {
                         items.forEach((item) => {
                             let book = books.find(book => book.id === item.bookId);
