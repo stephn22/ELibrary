@@ -33,7 +33,12 @@
             <% orders.forEach((order) => { %>
                 <tr>
                     <td><%= order.id %></td>
-                    <td><%= order.customer.email %></td>
+                    <% if (typeof order.customer !== "undefined") { %>
+                        <td><%= order.customer.email %></td>
+                    <% } else { %>
+                        <td><p class="text-danger">deleted customer</p></td>
+                    <% } %>    
+                        
                     <td><%= order.date %></td>
                     <td><%= order.price === 0 ? '---' : order.price %></td>
                     <td><%= order.type %></td>

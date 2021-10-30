@@ -25,7 +25,13 @@
 
     <% if (typeof order !== "undefined") { %>
         <% if (typeof user !== "undefined" && user.type === "admin") { %>
-            <h3>Customer: <%= order.customer.email %></h5>
+
+            <% if (typeof order.customer.email !== "undefined") { %>
+                <h3>Customer: <%= order.customer.email %></h5>
+            <% } else { %>
+                <h3 class="text-danger">Deleted customer</h3>
+            <% } %>    
+            
         <% } %>
         <% if (order.type === "Buy") { %>
             <h3>Total: <%= order.price %> €</h3>

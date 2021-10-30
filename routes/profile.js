@@ -80,6 +80,7 @@ router.post("/update-password", [
 
         res.render("profile", {
             user: req.user,
+            errors: errors.array(),
             styles: ['/stylesheets/profile.css'],
             scripts: ['/javascripts/profile.js'],
             errors: errors.array()
