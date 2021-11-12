@@ -21,6 +21,10 @@ main {
     margin-bottom: 2rem;
 }
 
+table {
+    border-radius: 15px;
+}
+
 #profile-dropdown {
     margin-left: 0.5rem;
 }

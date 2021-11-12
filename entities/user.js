@@ -1,10 +1,10 @@
-const baseEntity = require('./baseEntity');
+const BaseEntity = require('./baseEntity');
 
 /**
  * @class User represents an user entity
- * @extends baseEntity extends the base class for all entities
+ * @extends BaseEntity extends the base class for all entities
  */
-class User extends baseEntity {
+class User extends BaseEntity {
 
     /**
      * Create a new user

@@ -1,22 +1,22 @@
-const baseEntity = require('./baseEntity');
+const BaseEntity = require('./baseEntity');
 
 /**
  * @class Book represents a book entity.
- * @extends baseEntity extends the base class for all entities
+ * @extends BaseEntity extends the base class for all entities
  */
-class Book extends baseEntity {
+class Book extends BaseEntity {
 
     /**
      * Create a new Book object.
      * @param {number} id id of the book
      * @param {string} title title of the book
-     * @param {Author} author entity of the author that wrote the book
+     * @param {string} author entity of the author that wrote the book
      * @param {string} isbn isbn of the book
      * @param {string} type type of the book (paper, ebook)
      * @param {number} stock stock of the book
      * @param {string} language language of the book
      * @param {number} pages pages of the book
-     * @param {Publisher} publisher entity of the publisher of the book
+     * @param {string} publisher entity of the publisher of the book
      * @param {Date} datePub publication date of the book
      * @param {string} description brief description of the book
      * @param {Blob} imgUrl represent image of the book

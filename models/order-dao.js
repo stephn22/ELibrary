@@ -1,15 +1,16 @@
 "use strict";
 
 const db = require('../db.js');
-const userDao = require('../models/user-dao');
 const bookDao = require('../models/book-dao');
 const Order = require('../entities/order');
+const Book = require('../entities/book');
+const orderType = require('../entities/constants/order-type');
 const logger = require('../util/logger');
 
 /**
  * Inserts a new order into the database.
  * @param {Order} order order to be inserted into database.
- * @param {*[]} items array of items to be inserted into database.
+ * @param {{book: Book, quantity: number}[]} items array of items to be inserted into database.
  * @returns {Promise<number>} id of order that was inserted.
  */
 function addOrder(order, items) {
@@ -20,28 +21,32 @@ function addOrder(order, items) {
             order.customerId,
             new Date(order.date).getTime(),
             order.price,
-            order.status,
-            order.type], function (err) {
+            order.type], async function (err) {
                 if (err) {
                     logger.logError(err);
                     reject(err);
                 } else {
                     const id = this.lastID;
 
-                    items.forEach((item) => {
-                        const query = "INSERT INTO order_items (order_id, book_id, quantity) VALUES (?, ?, ?)";
+                    if (order.type === orderType.RESERVATION) {
+                        const book = await bookDao.findBookById(items[0].book.id);
 
-                        db.run(query, [
-                            id,
-                            item.book.id,
-                            item.quantity], function (err) {
-                                if (err) {
-                                    logger.logError(err);
-                                    reject(err);
-                                } else {
-                                    logger.logInfo(`Inserted order item with id ${this.lastID}`);
-                                }
-                            });
+                        book.isReserved = true;
+
+                        await bookDao.updateBook(book);
+                    }
+
+                    const q = "INSERT INTO order_items (order_id, book_id, quantity) VALUES (?, ?, ?)";
+
+                    items.forEach(item => {
+                        db.run(q, [id, item.book.id, item.quantity], (err) => {
+                            if (err) {
+                                logger.logError(err);
+                                reject(err);
+                            } else {
+                                logger.logInfo(`Added order item with id: ${this.lastID}`);
+                            }
+                        });
                     });
 
                     resolve(id);
@@ -63,7 +68,6 @@ function updateOrder(order) {
             order.customerId,
             new Date(order.date).getTime(),
             order.price,
-            order.status,
             order.type,
             order.id
         ], function (err) {
@@ -100,13 +104,13 @@ function deleteOrder(id) {
 /**
  * Find an order by id.
  * @param {number} id id of order.
- * @returns {Promise<number>} order.
+ * @returns {Promise<Order>} order.
  */
 function findOrderById(id) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * FROM orders WHERE id = ?";
 
-        db.get(query, [id], async function (err, row) {
+        db.get(query, [id], function (err, row) {
             if (err) {
                 logger.logError(err);
                 reject(err);
@@ -118,33 +122,10 @@ function findOrderById(id) {
                     row.id,
                     row.customer_id,
                     new Date(row.date).toDateString(),
-                    row.price,
+                    parseFloat(row.price.toFixed(2)),
                     row.type);
 
-                // fill properties with relative objects
-                const user = await userDao.findUserById(row.customer_id);
-
-                const query = "SELECT * FROM order_items WHERE order_id = ?";
-
-                db.all(query, [id], async function (err, rows) {
-                    if (err) {
-                        logger.logError(err);
-                        reject(err);
-                    } else {
-                        order.customer = user;
-                        order.items = [];
-
-                        for (const row of rows) {
-                            const book = await bookDao.findBookById(row.book_id);
-                            order.items.push({
-                                book: book,
-                                quantity: row.quantity
-                            });
-                        }
-
-                        resolve(order);
-                    }
-                });
+                resolve(order);
             }
         });
     });
@@ -163,46 +144,23 @@ function findOrdersByCustomerId(customerId) {
             if (err) {
                 logger.logError(err);
                 reject(err);
-            } else if (rows === undefined) {
+            } else if (rows === undefined || rows.length === 0) {
                 logger.logWarn(`No orders for customer with id: ${customerId}`);
                 resolve([]);
             } else {
                 const orders = [];
 
-                rows.forEach(async (row) => {
+                rows.forEach(function (row) {
                     const order = new Order(
                         row.id,
                         row.customer_id,
                         new Date(row.date).toDateString(),
-                        row.price,
+                        parseFloat(row.price.toFixed(2)),
                         row.type);
 
-                    // fill properties with relative objects
-                    let user = await userDao.findUserById(row.customer_id);
-
-                    const query = "SELECT * FROM order_items WHERE order_id = ?";
-
-                    db.all(query, [row.id], async function (err, rows) {
-                        if (err) {
-                            logger.logError(err);
-                            reject(err);
-                        } else {
-                            order.customer = user;
-                            order.items = [];
-
-                            for (const r of rows) {
-                                const book = await bookDao.findBookById(r.book_id);
-                                order.items.push({
-                                    book: book,
-                                    quantity: r.quantity
-                                });
-
-                                orders.push(order);
-                            }
-                            resolve(orders);
-                        }
-                    });
+                    orders.push(order);
                 });
+                resolve(orders);
             }
         });
     });
@@ -214,56 +172,67 @@ function findOrdersByCustomerId(customerId) {
  */
 function findAllOrders() {
     return new Promise((resolve, reject) => {
-        const query = "SELECT * FROM orders ORDER BY id";
+        const query = "SELECT * FROM orders ORDER BY date DESC";
 
         db.all(query, function (err, rows) {
             if (err) {
                 logger.logError(err);
                 reject(err);
-            } else if (rows === undefined) {
+            } else if (rows === undefined || rows.length === 0) {
                 logger.logWarn("No orders found");
                 resolve([]);
             }
             else {
                 const orders = [];
 
-                rows.forEach(async (row) => {
-                    const order = new Order(
+                rows.forEach(async function (row) {
+                    let order = new Order(
                         row.id,
                         row.customer_id,
                         new Date(row.date).toDateString(),
-                        row.price,
+                        parseFloat(row.price.toFixed(2)),
                         row.type);
 
-                    // fill properties with relative objects
-                    let user = await userDao.findUserById(row.customer_id);
-
-                    const query = "SELECT * FROM order_items WHERE order_id = ?";
-
-                    db.all(query, [row.id], async function (err, r) {
-                        if (err) {
-                            logger.logError(err);
-                            reject(err);
-                        } else {
-                            order.customer = user;
-                            order.items = [];
-
-                            for (const w of r) {
-                                const book = await bookDao.findBookById(w.book_id);
-                                order.items.push({
-                                    book: book,
-                                    quantity: w.quantity
-                                });
-
-                                orders.push(order);
-                            }
-                            resolve(orders);
-                        }
-                    });
+                    orders.push(order);
                 });
+
+                resolve(orders);
             }
         });
     });
 }
 
-module.exports = { addOrder, updateOrder, deleteOrder, findOrderById, findOrdersByCustomerId, findAllOrders };
+/**
+ * Find order items for an order.
+ * @param {number} orderId id of order.
+ * @returns {Promise<{bookId: number, quantity: number}[]>} array of order items.
+ */
+function findOrderItems(orderId) {
+    return new Promise((resolve, reject) => {
+        const query = "SELECT * FROM order_items WHERE order_id = ? ORDER BY id";
+
+        db.all(query, [orderId], function (err, rows) {
+            if (err) {
+                logger.logError(err);
+                reject(err);
+            } else if (rows === undefined || rows.length === 0) {
+                logger.logWarn(`No order items for order with id: ${orderId}`);
+                resolve([]);
+            } else {
+
+                /**
+                 * @type {{bookId: number, quantity: number}[]}
+                 */
+                const items = [];
+
+                rows.forEach(function (row) {
+                    items.push({ bookId: row.book_id, quantity: row.quantity });
+                });
+
+                resolve(items);
+            }
+        });
+    });
+}
+
+module.exports = { addOrder, updateOrder, deleteOrder, findOrderById, findOrdersByCustomerId, findAllOrders, findOrderItems };

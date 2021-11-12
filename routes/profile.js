@@ -9,19 +9,8 @@ const bcrypt = require('bcrypt');
 
 router.get("/", (req, res, _next) => {
 
-<<<<<<< HEAD
-    // TODO: favourites
-    const orders = orderDao.findOrdersByCustomerId(req.user.id);
-    const cart = req.session.cart;
-
     res.render("profile", {
         user: req.user,
-        cart: cart,
-        orders: orders,
-=======
-    res.render("profile", {
-        user: req.user,
->>>>>>> dev
         styles: ['/stylesheets/profile.css'],
         scripts: ['/javascripts/profile.js']
     });
@@ -34,7 +23,6 @@ router.post("/update-email", [
     
     if (errors.isEmpty()) {
         const user = await userDao.findUserByEmail(req.user.email);
-        const cart = req.session.cart;
 
         user.email = req.body['new-email'];
 
@@ -43,27 +31,15 @@ router.post("/update-email", [
 
         res.render("profile", {
             user: user,
-<<<<<<< HEAD
-            cart: cart,
-            orders: orders,
-=======
->>>>>>> dev
             styles: ['/stylesheets/profile.css'],
             scripts: ['/javascripts/profile.js'],
             message: "Email updated successfully"
         });
     } else {
         logger.logError(JSON.stringify(errors));
-        const cart = req.session.cart;
-        const orders = orderDao.findOrdersByCustomerId(req.user.id);
 
         res.render("profile", {
             user: req.user,
-<<<<<<< HEAD
-            cart: cart,
-            orders: orders,
-=======
->>>>>>> dev
             styles: ['/stylesheets/profile.css'],
             scripts: ['/javascripts/profile.js'],
             errors: errors.array()
@@ -77,11 +53,6 @@ router.post("/update-password", [
     const errors = validationResult(req);
 
     if (errors.isEmpty()) {
-<<<<<<< HEAD
-        const orders = orderDao.findOrdersByCustomerId(req.user.id);
-        const cart = req.session.cart;
-=======
->>>>>>> dev
         const user = await userDao.findUserById(req.user.id);
         const oldPassword = user.password;
 
@@ -100,27 +71,16 @@ router.post("/update-password", [
 
         res.render("profile", {
             user: user,
-<<<<<<< HEAD
-            cart, cart,
-            orders: orders,
-=======
->>>>>>> dev
             styles: ['/stylesheets/profile.css'],
             scripts: ['/javascripts/profile.js'],
             message: "Password updated successfully"
         });
     } else {
         logger.logError(JSON.stringify(errors));
-        const cart = req.session.cart;
-        const orders = orderDao.findOrdersByCustomerId(req.user.id);
 
         res.render("profile", {
             user: req.user,
-<<<<<<< HEAD
-            cart: cart,
-            orders: orders,
-=======
->>>>>>> dev
+            errors: errors.array(),
             styles: ['/stylesheets/profile.css'],
             scripts: ['/javascripts/profile.js'],
             errors: errors.array()

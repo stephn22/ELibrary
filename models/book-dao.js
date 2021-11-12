@@ -149,7 +149,7 @@ function findBookById(id) {
                     row.description,
                     row.imgUrl,
                     row.price,
-                    row.isReserved);
+                    row['is_reserved'] === 1);
 
                 resolve(book);
             }
@@ -169,7 +169,7 @@ function findAllBooks() {
             if (err) {
                 logger.logError(err);
                 reject(err);
-            } else if (rows === undefined) {
+            } else if (rows === undefined || rows.length === 0) {
                 logger.logWarn("No books found");
                 resolve({ error: "No books found" });
             } else {
@@ -190,7 +190,7 @@ function findAllBooks() {
                         row.description,
                         row.imgUrl,
                         row.price,
-                        row.isReserved);
+                        row['is_reserved'] === 1);
 
                     books.push(book);
                 });

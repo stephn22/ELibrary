@@ -18,6 +18,10 @@ main {
   background-color: white;
 }
 
+.alert {
+  margin: 2rem;
+}
+
 .divider {
   margin: 5rem 0;
 }

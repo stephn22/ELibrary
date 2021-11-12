@@ -246,3 +246,4 @@ dist
 *.env
 *.sql
 .gitignore
+Istruzioni.md

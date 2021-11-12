@@ -24,40 +24,44 @@ const save = document.getElementById('save-features');
 
 /************************** EVENT LISTENERS *****************************/
 
-disableBtn(save);
+if (save) {
+    disableBtn(save);
+}
 
-firstSelect.addEventListener("change", () => {
-    hideIfSelected(secondSelect.options, firstSelect.selectedIndex, thirdSelect.selectedIndex);
-    hideIfSelected(thirdSelect.options, firstSelect.selectedIndex, secondSelect.selectedIndex);
+if (firstSelect && secondSelect && thirdSelect) {
+    firstSelect.addEventListener("change", () => {
+        hideIfSelected(secondSelect.options, firstSelect.selectedIndex, thirdSelect.selectedIndex);
+        hideIfSelected(thirdSelect.options, firstSelect.selectedIndex, secondSelect.selectedIndex);
 
-    if (firstSelect.value === "---" || secondSelect.value === "---" || thirdSelect.value === "---") {
-        disableBtn(save);
-    } else {
-        enableBtn(save);
-    }
-});
+        if (firstSelect.value === "---" || secondSelect.value === "---" || thirdSelect.value === "---") {
+            disableBtn(save);
+        } else {
+            enableBtn(save);
+        }
+    });
 
-secondSelect.addEventListener("change", () => {
-    hideIfSelected(firstSelect.options, secondSelect.selectedIndex, thirdSelect.selectedIndex);
-    hideIfSelected(thirdSelect.options, secondSelect.selectedIndex, firstSelect.selectedIndex);
+    secondSelect.addEventListener("change", () => {
+        hideIfSelected(firstSelect.options, secondSelect.selectedIndex, thirdSelect.selectedIndex);
+        hideIfSelected(thirdSelect.options, secondSelect.selectedIndex, firstSelect.selectedIndex);
 
-    if (firstSelect.value === "---" || secondSelect.value === "---" || thirdSelect.value === "---") {
-        disableBtn(save);
-    } else {
-        enableBtn(save);
-    }
-});
+        if (firstSelect.value === "---" || secondSelect.value === "---" || thirdSelect.value === "---") {
+            disableBtn(save);
+        } else {
+            enableBtn(save);
+        }
+    });
 
-thirdSelect.addEventListener("change", () => {
-    hideIfSelected(firstSelect.options, thirdSelect.selectedIndex, secondSelect.selectedIndex);
-    hideIfSelected(secondSelect.options, thirdSelect.selectedIndex, firstSelect.selectedIndex);
+    thirdSelect.addEventListener("change", () => {
+        hideIfSelected(firstSelect.options, thirdSelect.selectedIndex, secondSelect.selectedIndex);
+        hideIfSelected(secondSelect.options, thirdSelect.selectedIndex, firstSelect.selectedIndex);
 
-    if (firstSelect.value === "---" || secondSelect.value === "---" || thirdSelect.value === "---") {
-        disableBtn(save);
-    } else {
-        enableBtn(save);
-    }
-});
+        if (firstSelect.value === "---" || secondSelect.value === "---" || thirdSelect.value === "---") {
+            disableBtn(save);
+        } else {
+            enableBtn(save);
+        }
+    });
+}
 
 /************************** OTHER *****************************/
 

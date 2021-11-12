@@ -1,4 +1,3 @@
-"use strict";
 
 /************************** CONSTANTS *****************************/
 
@@ -46,6 +45,11 @@ const deleteBtn = document.getElementById('delete-book');
  * @type {HTMLInputElement}
  */
 const title = document.getElementById('title');
+
+/**
+ * @type {HTMLInputElement}
+ */
+const isReserved = document.getElementById('is-reserved');
 
 /**
  * @type {HTMLSpanElement}
@@ -162,30 +166,22 @@ const priceValidation = document.getElementById('price-validation');
  */
 const saveBtn = document.getElementById('save-btn');
 
-const formData = new FormData();
-
 /************************** EVENT LISTENERS *****************************/
 
 let valid = true;
 
-if (title
-    && author
-    && isbn
-    && paper
-    && language
-    && publisher
-    && stockRange
-    && pagesRange
-    && datePublished
-    && description
-    && price) {
+if (descriptionInfo) {
     descriptionInfo.innerHTML = `Remaining: ${250 - description.value.length}`;
-    disableBtn(saveBtn);
+    disableElement(saveBtn);
+}
 
+if (uploadNewImg) {
     uploadNewImg.addEventListener('click', () => {
         newImgInput.click();
     });
+}
 
+if (newImgInput) {
     newImgInput.addEventListener('change', (input) => {
         if (input.target.files && input.target.files[0]) {
             const reader = new FileReader();
@@ -196,142 +192,174 @@ if (title
             };
 
             reader.readAsDataURL(input.target.files[0]);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
         }
     });
+}
 
+if (isReserved) {
+    isReserved.addEventListener('change', () => {
+        enableElement(saveBtn);
+    });
+}
+
+if (title) {
     title.addEventListener('input', () => {
         if (!validateTitle(title.value)) {
             setValidationMessage(titleValidation, "Please enter a valid title name, must be between 1 and 100 characters");
-            disableBtn(saveBtn);
+            disableElement(saveBtn);
             valid = false;
         } else {
             clearValidationMsg(titleValidation);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
             valid = true;
         }
     });
+}
 
+if (author) {
     author.addEventListener('input', () => {
         if (!validateName(author.value)) {
             setValidationMessage(authorValidation, "Please enter a valid author name, must be between 1 and 100 characters");
-            disableBtn(saveBtn);
+            disableElement(saveBtn);
             valid = false;
         } else {
             clearValidationMsg(authorValidation);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
             valid = true;
         }
     });
+}
 
+if (isbn) {
     isbn.addEventListener('input', () => {
         if (!validateISBN(isbn.value)) {
             setValidationMessage(isbnValidation, "Please enter a valid ISBN");
-            disableBtn(saveBtn);
+            disableElement(saveBtn);
             valid = false;
         } else {
             clearValidationMsg(isbnValidation);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
             valid = true;
         }
     });
+}
 
+if (language) {
     language.addEventListener('change', () => {
-        enableBtn(saveBtn);
+        enableElement(saveBtn);
     });
+}
 
+if (paper) {
     paper.addEventListener('click', () => {
-        enableBtn(saveBtn);
+        enableElement(saveBtn);
+
+        if (stockRange) {
+            enableElement(stockRange);
+            stockRange.value = 1;
+            setLabel(stockRangeLabel, `In stock: ${stockRange.value}`);
+        }
     });
+}
+
+if (ebook) {
+    if (ebook.checked) {
+        if (stockRange) {
+            disableElement(stockRange);
+            stockRange.value = 1;
+            setLabel(stockRangeLabel, `In stock: ${stockRange.value}`);
+        }
+    }
 
     ebook.addEventListener('click', () => {
-        enableBtn(saveBtn);
-    });
+        enableElement(saveBtn);
 
+        if (stockRange) {
+            disableElement(stockRange);
+            stockRange.value = 1;
+            setLabel(stockRangeLabel, `In stock: ${stockRange.value}`);
+        }
+    });
+}
+
+if (publisher) {
     publisher.addEventListener('input', () => {
         if (!validateName(publisher.value)) {
             setValidationMessage(publisherValidation, "Please enter a valid publisher name, must be between 1 and 100 characters");
-            disableBtn(saveBtn);
+            disableElement(saveBtn);
             valid = false;
         } else {
             clearValidationMsg(publisherValidation);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
             valid = true;
         }
     });
+}
 
+if (datePublished) {
     datePublished.addEventListener('input', () => {
         if (!validateDate(datePublished.value)) {
             setValidationMessage(datePublishedValidation, "Please enter a valid date, must be in the past");
-            disableBtn(saveBtn);
+            disableElement(saveBtn);
             valid = false;
         } else {
             clearValidationMsg(datePublishedValidation);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
             valid = true;
         }
     });
+}
 
+if (description) {
     description.addEventListener('input', () => {
 
         descriptionInfo.innerHTML = `Remaining: ${250 - description.value.length}`;
 
         if (!validateDescription(description.value)) {
             setValidationMessage(descriptionValidation, "Please enter a valid description, must be between 1 and 250 characters");
-            disableBtn(saveBtn);
+            disableElement(saveBtn);
             valid = false;
         } else {
             clearValidationMsg(descriptionValidation);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
             valid = true;
         }
     });
+}
 
+if (price) {
     price.addEventListener('input', () => {
         if (!validatePrice(price.value)) {
             setValidationMessage(priceValidation, "Please enter a valid price");
-            disableBtn(saveBtn);
+            disableElement(saveBtn);
             valid = false;
         } else {
             clearValidationMsg(priceValidation);
-            enableBtn(saveBtn);
+            enableElement(saveBtn);
             valid = true;
         }
     });
+}
 
+if (stockRange) {
     stockRange.addEventListener('input', () => {
-        enableBtn(saveBtn);
-        stockRangeLabel.innerHTML = `In stock: ${stockRange.value}`;
+        enableElement(saveBtn);
+        setLabel(stockRangeLabel, `In stock: ${stockRange.value}`);
     });
+}
 
+if (pagesRange) {
     pagesRange.addEventListener('input', () => {
-        enableBtn(saveBtn);
-        pagesRangeLabel.innerHTML = `Pages: ${pagesRange.value}`;
+        enableElement(saveBtn);
+        setLabel(pagesRangeLabel, `Pages: ${pagesRange.value}`);
     });
+}
 
+if (saveBtn) {
     saveBtn.addEventListener('click', (e) => {
         if (!valid) {
             e.preventDefault();
-        } else {
-            // get book id
-            const bookId = parseInt(form.getAttribute('data-id'));
-
-            // prepare the form data
-            formData.append('title', title.value);
-            formData.append('author', author.value);
-            formData.append('isbn', isbn.value);
-            formData.append('publisher', publisher.value);
-            formData.append('stock', stockRange.value);
-            formData.append('language', language.value === '--' ? languageInfo.getAttribute('data-language') : language.value);
-            formData.append('pages', pagesRange.value);
-            formData.append('price', price.value);
-            formData.append('type', paper.checked ? 'Paper' : 'Ebook');
-            formData.append('date-published', datePublished.value);
-            formData.append('description', description.value);
-            formData.append('new-img', newImgInput.files[0]);
-
-            // send the form data
-            updateBook(bookId, formData);
         }
     });
 }
@@ -393,30 +421,14 @@ function addToCart(bookId, quantity = 1) {
 }
 
 /**
- * Using fetch API to add the book(s) to cart
- * @param {number} bookId id of the book
- * @param {number} quantity quantity chosen by the user
- */
-function addToCart(bookId, quantity) {
-    fetch(`/sessions/cart/${bookId}/${quantity}`, {
-        method: 'PUT',
-        body: {},
-    }).then(window.location.reload())
-        .catch(err => console.log(err));
-}
-
-/**
- * Using the fetch API to create a new order
+ * Using the fetch API to create a new order (reservation)
  * @param {number} bookId id of the book
  * @param {number} userId id of the user
- * @param {string} type type of the order
  */
 function createOrder(bookId, userId) {
     const body = {
         bookId: bookId,
         userId: userId,
-        price: price,
-        address: address
     };
 
     fetch("/orders/reserve", {
@@ -433,25 +445,6 @@ function createOrder(bookId, userId) {
 }
 
 /**
- * Using fetch API to update the book
- * @param {number} bookId id of the book to be updated
- * @param {FormData} formData form data to be sent to the server
- */
-function updateBook(bookId, formData) {
-    fetch(`/book-details/${bookId}`, {
-        method: 'PUT',
-        body: formData,
-        contentType: {
-            'Content-Type': 'multipart/form-data'
-        },
-    }).then(res => {
-        if (res.status === 200) {
-            window.location.href = res.url;
-        }
-    }).catch(error => console.error(error));
-}
-
-/**
  * Using the fetch API to delete a book by its id
  * @param {number} bookId the book id
  */
@@ -459,7 +452,7 @@ function deleteBook(bookId) {
     fetch(`/books/${bookId}`, { method: "DELETE" })
         .then(res => {
             if (res.status === 200) {
-                window.location.href = res.url;
+                window.location.href = '/books';
             }
         }).catch(error => console.error('Error:', error));
 }
@@ -538,17 +531,26 @@ function clearValidationMsg(validationElement) {
 }
 
 /**
- * Enables a button
- * @param {HTMLButtonElement} btn button to be enabled
+ * Sets the label of the given element
+ * @param {HTMLLabelElement} label label to be set
+ * @param {string} message message to be set
  */
-function enableBtn(btn) {
-    btn.removeAttribute("disabled");
+function setLabel(label, message) {
+    label.innerHTML = message;
+}
+
+/**
+ * Enables a button
+ * @param {HTMLElement} element element to be enabled
+ */
+function enableElement(element) {
+    element.removeAttribute("disabled");
 }
 
 /**
  * Disables a button
- * @param {HTMLButtonElement} btn button to be disabled
+ * @param {HTMLElement} element element to be disabled
  */
-function disableBtn(btn) {
-    btn.setAttribute("disabled", "disabled");
+function disableElement(element) {
+    element.setAttribute("disabled", "disabled");
 }

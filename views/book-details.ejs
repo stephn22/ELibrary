@@ -36,7 +36,7 @@
 
                 <div class="container book-form">
 
-                    <form id="edit-book-form" data-id="<%= book.id %>" enctype="multipart/form-data">
+                    <form id="edit-book-form" data-id="<%= book.id %>" action="/book-details/<%= book.id %>" method="POST" enctype="multipart/form-data">
     
                         <div class="form-row square">
                             <img src="data:image/jpeg;base64,<%= book.imgUrl.toString('base64')%>" id="book-image" class="square img-rounded shadow-lg" alt="<%= book.title %>">
@@ -55,7 +55,10 @@
                         <% if (book.type === "Paper") { %>
                             <%# is reserved (only for paper books)%>
 
-                            <p class="text-muted">The book is <%= (book.isReserved) ? "reserved" : "not reserved" %>.</p>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id ="is-reserved" name="reserved" <%= book.isReserved ? 'checked' : '' %>>
+                                <label class="form-check-label" for="is-reserved">Reserved</label>
+                            </div>
         
                             <br/>
                         <% } %>
@@ -121,7 +124,6 @@
                             <label for="stock-range" class="form-label" id="stock-range-label">In stock: <%= book.stock %></label>
                             <input type="range" name="stock" class="form-range" min="1" max="300" step="1"
                                    value="<%= book.stock %>" id="stock-range" required>
-                            <small class="small text-muted">Leave 1 if EBook</small>
                         </div>
     
                         <br/>
@@ -189,8 +191,10 @@
                             </div>
                             <span class="text-danger" id="price-validation"></span>
                         </div>
+
                         <br />
-                        <button class="btn btn-primary shadow" id="save-btn">
+
+                        <button class="btn btn-primary shadow" id="save-btn" type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
                                 <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
                             </svg>
@@ -198,7 +202,9 @@
                         </button>
     
                     </form>
+
                     <hr class="col-6" />
+
                     <button id="add-to-cart-btn" class="btn btn-outline-dark shadow-lg rounded" data-bs-toggle="modal" data-bs-target="#cart-modal">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
                             <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/>
@@ -324,7 +330,7 @@
                                         <% } %>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= book.isReserved ? 'Ok' : 'Cancel' %></button>
                                         <% if (!book.isReserved) { %>
                                             <button id="reserve-book-confirm" type="button" class="btn btn-primary" data-id="<%= book.id %>" data-user="<%= user.id%>">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
@@ -425,6 +431,11 @@
                 <div class="row">
                     <p>
                         Language: <%= book.language %>
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        Pages: <%= book.pages %>
                     </p>
                 </div>
                 <div class="row">
@@ -543,7 +554,7 @@
                                         <% } %>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= book.isReserved ? 'Ok' : 'Cancel' %></button>
                                         <% if (!book.isReserved) { %>
                                             <button id="reserve-book-confirm" type="button" class="btn btn-primary" data-id="<%= book.id %>" data-user="<%= user.id%>">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">

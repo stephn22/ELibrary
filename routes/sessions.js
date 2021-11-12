@@ -74,23 +74,15 @@ router.get('/sessions/cart', function (req, res, _next) {
         res.render('cart', {
             user: req.user,
             cart: undefined,
-<<<<<<< HEAD
-            styles: ['/stylesheets/cart.css']
-=======
             styles: ['/stylesheets/cart.css'],
             scripts: ['/javascripts/cart.js']
->>>>>>> dev
         });
     } else {
         res.render('cart', {
             user: req.user,
             cart: req.session.cart,
-<<<<<<< HEAD
-            styles: ['/stylesheets/cart.css']
-=======
             styles: ['/stylesheets/cart.css'],
             scripts: ['/javascripts/cart.js']
->>>>>>> dev
         });
     }
 });
@@ -129,21 +121,9 @@ router.put('/sessions/cart', async function (req, res, _next) {
     /**
      * @type {Cart}
      */
-    let cart = req.session.cart ? req.session.cart : undefined;
+    const cart = req.session.cart ? req.session.cart : undefined;
 
     if (cart !== undefined) {
-<<<<<<< HEAD
-        addItem(cart, book, quantity);
-
-        logger.logInfo("Book added to cart successfully");
-    } else {
-        cart = new Cart(book, quantity);
-        logger.logInfo("Book added to cart successfully (created a new cart)");
-    }
-
-    req.session.cart = cart;
-    res.send(cart);
-=======
         cart.items.forEach(element => {
             if (element.book.id === bookId) {
                 element.quantity = quantity;
@@ -161,7 +141,6 @@ router.put('/sessions/cart', async function (req, res, _next) {
         styles: ['/stylesheets/cart.css'],
         scripts: ['/javascripts/cart.js']
     });
->>>>>>> dev
 });
 
 router.delete('/sessions/cart/:id/:qty?', async function (req, res, _next) {
@@ -185,11 +164,7 @@ router.delete('/sessions/cart/:id/:qty?', async function (req, res, _next) {
     res.send(cart);
 });
 
-<<<<<<< HEAD
-/************************** CART FUNCTIONS *****************************/
-=======
 /************************** CART *****************************/
->>>>>>> dev
 
 /**
  * Calculates the total price of the cart
@@ -203,7 +178,7 @@ function getTotalPrice(cart) {
         totalPrice += (element.book.price * element.quantity);
     });
 
-    return totalPrice;
+    return parseFloat(totalPrice.toFixed(2));
 }
 
 /**
@@ -215,15 +190,8 @@ function getTotalPrice(cart) {
 function addItem(cart, item, quantity) {
     cart.items.forEach(element => {
         if (element.book.id === item.id) {
-<<<<<<< HEAD
-            logger.logDebug('same');
             element.quantity += quantity;
         } else {
-            logger.logDebug('different');
-=======
-            element.quantity += quantity;
-        } else {
->>>>>>> dev
             cart.items.push({
                 book: item,
                 quantity: quantity
@@ -232,10 +200,7 @@ function addItem(cart, item, quantity) {
     });
 
     cart.price = getTotalPrice(cart);
-<<<<<<< HEAD
-=======
     cart.total = getTotalElements(cart);
->>>>>>> dev
 }
 
 /**
@@ -246,12 +211,6 @@ function addItem(cart, item, quantity) {
  */
 function removeItem(cart, item, quantity = 0) {
     if (quantity === 0) {
-<<<<<<< HEAD
-        const i = cart.items.indexOf(item);
-
-        if (i > -1) {
-            cart.items.splice(i, 1);
-=======
         let i = -1;
         let qty = 0;
 
@@ -266,23 +225,16 @@ function removeItem(cart, item, quantity = 0) {
             cart.items.splice(i, 1); // remove item
             cart.total -= qty; // update total quantity
             cart.price = getTotalPrice(cart); // update total price
->>>>>>> dev
         }
     } else {
         cart.items.forEach(element => {
             if (element.book.id === item.id) {
                 element.quantity -= quantity;
-<<<<<<< HEAD
-=======
-                total -= quantity;
->>>>>>> dev
+                cart.total -= quantity;
             }
         });
     }
 
-<<<<<<< HEAD
-    cart.price = getTotalPrice(cart);
-=======
     cart.total = getTotalElements(cart); // update total quantity
     cart.price = getTotalPrice(cart); // update total price
 }
@@ -300,7 +252,6 @@ function getTotalElements(cart) {
     });
 
     return total;
->>>>>>> dev
 }
 
 module.exports = router;

@@ -38,9 +38,9 @@ function addUser(user) {
  * @param {string} newPassword new password of user.
  * @returns {Promise<number>} id of updated user.
  */
-function updateUser(user, newPassword = null) {
+function updateUser(user, newPassword = undefined) {
     return new Promise(async (resolve, reject) => {
-        if (newPassword !== null) {
+        if (newPassword !== undefined) {
             user.password = await crypt.hash(newPassword, 10);
 
             const query = "UPDATE users SET fname = ?, lname = ?, email = ?, password = ?, type = ? WHERE id = ?"
@@ -209,7 +209,7 @@ function findAllUsers() {
             if (err) {
                 logger.logError(err);
                 reject(err);
-            } else if (rows === undefined) {
+            } else if (rows === undefined || rows.length === 0) {
                 logger.logWarn("No users found");
                 resolve([]);
             } else {

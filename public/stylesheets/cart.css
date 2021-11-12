@@ -27,8 +27,10 @@ h2 {
     margin-bottom: 1rem;
 }
 
-<<<<<<< HEAD
-=======
+table {
+    border-radius: 15px;
+}
+
 tr {
     transition: 0.3s ease-in-out;
 }
@@ -38,7 +40,6 @@ footer {
     position: absolute;
 }
 
->>>>>>> dev
 #empty-cart-img {
     margin-left: 40%;
     margin-bottom: 1rem;
@@ -73,13 +74,10 @@ footer {
     border-radius: 10px;
 }
 
-<<<<<<< HEAD
-=======
 .fade-effect {
     opacity: 0;
 }
 
->>>>>>> dev
 .social-link {
     text-decoration: none;
 }

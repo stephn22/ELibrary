@@ -16,7 +16,7 @@ function addFeature(feature) {
 
         db.run(query, [feature.bookId], function (err) {
             if (err) {
-                logger.error(err);
+                logger.logError(err);
                 reject(err);
             } else {
                 resolve(this.lastID);
@@ -36,7 +36,7 @@ function updateFeature(feature) {
 
         db.run(query, [feature.bookId, feature.id], (err) => {
             if (err) {
-                logger.error(err);
+                logger.logError(err);
                 reject(err);
             } else {
                 resolve(feature.id);
@@ -56,7 +56,7 @@ function deleteFeature(id) {
 
         db.run(query, [id], (err) => {
             if (err) {
-                logger.error(err);
+                logger.logError(err);
                 reject(err);
             } else {
                 resolve(id);
@@ -75,7 +75,7 @@ function deleteAllFeatures() {
 
         db.run(query, (err) => {
             if (err) {
-                logger.error(err);
+                logger.logError(err);
                 reject(err);
             } else {
                 logger.logInfo("All features deleted");
@@ -95,7 +95,7 @@ function findFeatureById(id) {
 
         db.get(query, [id], async function (err, row) {
             if (err) {
-                logger.error(err);
+                logger.logError(err);
                 reject(err);
             } else if (row === undefined) {
                 logger.logWarn("No such feature");
@@ -123,7 +123,7 @@ function findAllFeatures() {
 
         db.all(query, (err, rows) => {
             if (err) {
-                logger.error(err);
+                logger.logError(err);
                 reject(err);
             } else if (rows === undefined) {
                 logger.logWarn("No features found");

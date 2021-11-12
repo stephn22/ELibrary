@@ -8,7 +8,7 @@
 
     <hr />
 
-    <table class="table">
+    <table class="table shadow-lg">
         <thead>
             <tr class="table-primary">
                 <th>
@@ -23,6 +23,7 @@
                 <th>
                     Price
                 </th>
+                <th>
                     Type
                 </th>
                 <th></th>
@@ -32,9 +33,14 @@
             <% orders.forEach((order) => { %>
                 <tr>
                     <td><%= order.id %></td>
-                    <td><%= order.customer.email %></td>
+                    <% if (typeof order.customer !== "undefined") { %>
+                        <td><%= order.customer.email %></td>
+                    <% } else { %>
+                        <td><p class="text-danger">deleted customer</p></td>
+                    <% } %>    
+                        
                     <td><%= order.date %></td>
-                    <td><%= order.price %></td>
+                    <td><%= order.price === 0 ? '---' : order.price %></td>
                     <td><%= order.type %></td>
                     <td><a href="/orders/order-details/<%= order.id %>">Details</a></td>
                 </tr>

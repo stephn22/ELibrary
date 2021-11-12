@@ -1,13 +1,12 @@
-
-const baseEntity = require('./baseEntity');
+const BaseEntity = require('./baseEntity');
 const Book = require('./book');
 const User = require('./user');
 
 /**
  * @class Order represents an order entity
- * @extends baseEntity extends the base class for all entities
+ * @extends BaseEntity extends the base class for all entities
  */
-class Order extends baseEntity {
+class Order extends BaseEntity {
 
     /**
      * Constructor for Order
@@ -17,17 +16,22 @@ class Order extends baseEntity {
      * @param {number} price price of the order
      * @param {string} type type of the order (buy, reservation)
      */
-    constructor (id, customerId, date, price, type) {
+    constructor(id, customerId, date, price, type) {
         super(id);
         this.customerId = customerId;
+
+        /**
+         * @type {User}
+         */
         this.customer = undefined;
         this.date = date;
         this.price = price;
         this.type = type;
-        this.items = [{
-            book: undefined,
-            quantity: undefined
-        }];
+
+        /**
+         * @type {{book: Book, quantity: number}[]}
+         */
+        this.items = [];
     }
 }
 

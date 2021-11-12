@@ -4,30 +4,35 @@ const express = require("express");
 const { body, validationResult } = require('express-validator');
 const router = express.Router();
 const Order = require("../entities/order");
+const userDao = require("../models/user-dao");
 const orderDao = require("../models/order-dao");
 const bookDao = require("../models/book-dao");
 const logger = require("../util/logger");
 const Cart = require("../entities/cart");
 const orderType = require("../entities/constants/order-type");
 
-<<<<<<< HEAD
-router.get('/', async (req, res, _next) => {
-    const orders = await orderDao.findAllOrders();
-    const cart = req.session.cart;
-
-    if (orders.hasOwnProperty("error")) {
-        res.render('orders', {
-            user: req.user,
-            cart: cart,
-            message: "No orders found"
-=======
 router.get('/', (req, res, _next) => {
     orderDao.findAllOrders()
         .then((orders) => {
-            res.render('orders', {
-                user: req.user,
-                orders: orders,
-                styles: ['/stylesheets/orders.css'],
+
+            userDao.findAllUsers().then((users) => {
+                orders.forEach((order) => {
+                    order.customer = users.find(user => user.id === order.customerId);
+                });
+
+                res.render('orders', {
+                    user: req.user,
+                    orders: orders,
+                    styles: ['/stylesheets/orders.css'],
+                });
+            }).catch((err) => {
+                logger.logError(err);
+
+                res.render('orders', {
+                    user: req.user,
+                    errors: [err],
+                    styles: ['/stylesheets/orders.css'],
+                });
             });
         }).catch(err => {
             logger.logError(err);
@@ -37,7 +42,6 @@ router.get('/', (req, res, _next) => {
                 errors: [err],
                 styles: ['/stylesheets/orders.css'],
             });
->>>>>>> dev
         });
 });
 
@@ -45,125 +49,109 @@ router.get('/order-details/:id', async (req, res, _next) => {
     const id = parseInt(req.params.id);
 
     orderDao.findOrderById(id)
-        .then(order => {
-            res.render('order-details', {
-                user: req.user,
-                order: order,
-                styles: ['/stylesheets/order-details.css'],
-            });
+        .then(async (order) => {
+            const user = await userDao.findUserById(order.customerId);
+            order.customer = user;
+
+            orderDao.findOrderItems(order.id)
+                .then((items) => {
+
+                    bookDao.findAllBooks().then((books) => {
+                        items.forEach((item) => {
+                            let book = books.find(book => book.id === item.bookId);
+
+                            order.items.push({ book: book, quantity: item.quantity });
+                        });
+
+                        res.render('order-details', {
+                            user: req.user,
+                            order: order,
+                            styles: ['/stylesheets/order-details.css'],
+                        });
+                    })
+                }).catch(err => {
+                    logger.logError(err);
+
+                    res.render('order-details', {
+                        user: req.user,
+                        order: order,
+                        errors: [err],
+                        styles: ['/stylesheets/orders.css'],
+                    });
+                });
         })
         .catch(err => {
             logger.logError(err);
 
-            res.sendStatus(404);
+            res.render('order-details', {
+                user: req.user,
+                errors: [err],
+                styles: ['/stylesheets/order-details.css'],
+            });
         });
 });
 
 router.get('/customer-orders', async (req, res, _next) => {
     const id = parseInt(req.user.id);
-    const orders = await orderDao.findOrdersByCustomerId(id);
+    orderDao.findOrdersByCustomerId(id)
+        .then((orders => {
+            logger.logInfo(`Found ${orders.length} orders for customer with id ${id}`);
 
-    res.render('customer-orders', {
-        user: req.user,
-        orders: orders,
-        styles: ['/stylesheets/orders.css']
-    });
-});
+            orders.forEach(async (order) => {
+                let customer = await userDao.findUserById(order.customerId);
 
-router.get('/:id', (req, res, _next) => {
-    const id = parseInt(req.params.id);
-
-    orderDao.findOrderById(id).then(order => {
-        if (order.hasOwnProperty("error")) {
-            logger.logWarn(JSON.stringify(order));
-
-            res.render('order-details', {
-                user: req.user,
-                message: "No such order",
-
+                order.customer = customer;
             });
-        } else {
-            res.render('order', {
+
+            res.render('customer-orders', {
                 user: req.user,
-                order: order
+                orders: orders,
+                styles: ['/stylesheets/orders.css']
             });
-        }
-    }).catch(err => {
-        logger.logError(err);
-        res.render('order-details', {
-            user: req.user,
-            errors: [err]
+        })).catch(err => {
+            logger.logError(err);
+
+            res.render('customer-orders', {
+                user: req.user,
+                errors: [err],
+                styles: ['/stylesheets/orders.css']
+            });
         });
-    });
 });
 
 router.post('/reserve', async function (req, res, _next) {
     const customerId = parseInt(req.body.userId);
     const bookId = parseInt(req.body.bookId);
-    const price = parseFloat(req.body.price);
 
     const order = new Order(
         undefined,
         customerId,
         new Date(),
-        price,
+        0.00,
         orderType.RESERVATION,
     );
 
-<<<<<<< HEAD
-    orderDao.addOrder(order)
-        .then(async (id) => {
-            logger.logInfo(`Added order with id: ${id}`);
-            const cart = req.session.cart;
-            const orders = await orderDao.findAllOrders();
-            // TODO: render to customer orders
-=======
-    orderDao.addOrder(order, bookId, 0)
+    const book = await bookDao.findBookById(bookId);
+
+    orderDao.addOrder(order, [{ book: book, quantity: 0 }])
         .then(async (id) => {
             logger.logInfo(`Added order with id: ${id}`);
 
-            const orders = await orderDao.findOrdersByCustomerId(customerId);
+            res.redirect(`/orders/order-details/${id}`);
 
-            res.render('books', {
-                user: req.user,
-                orders: orders,
-                message: "Order added successfully",
-                styles: ['/stylesheets/books.css'],
-                scripts: ['/javascripts/books.js']
-            });
->>>>>>> dev
-        })
-        .catch(async (err) => {
+        }).catch(async (err) => {
             logger.logError(err);
 
-            const books = await bookDao.findAllBooks();
-<<<<<<< HEAD
-            const cart = req.session.cart;
-
-=======
->>>>>>> dev
-            res.render('books', {
+            const book = await bookDao.findBookById(bookId);
+            res.render('book-details', {
                 user: req.user,
-                cart: cart,
                 errors: [err],
-                books: books,
-                styles: ['/stylesheets/books.css'],
-                scripts: ['/javascripts/books.js']
+                book: book,
+                styles: ['/stylesheets/book-details.css'],
+                scripts: ['/javascripts/book-details.js']
             });
         });
 
-});
-
-router.get('/customer-orders', async (req, res, _next) => {
-    const id = req.user.id;
-
-    const orders = await orderDao.findOrdersByCustomerId(id);
-
-    res.render('customer-orders', {
-        user: req.user,
-        orders: orders,
-        styles: ['/stylesheets/orders.css']
-    });
 });
 
 router.post('/customer-orders', [
@@ -198,12 +186,13 @@ router.post('/customer-orders', [
                 undefined,
                 customerId,
                 new Date().toDateString(),
-                cart.price,
+                parseFloat(cart.price.toFixed(2)),
                 orderType.BUY);
 
             orderDao.addOrder(order, cart.items)
                 .then(async (id) => {
                     logger.logInfo(`Added order with id: ${id}`);
+
                     const orders = await orderDao.findOrdersByCustomerId(customerId);
 
                     res.render('customer-orders', {
