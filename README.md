@@ -1,4 +1,5 @@
 [![Node.js CI](https://github.com/stecrotti1/ELibrary/actions/workflows/node.js.yml/badge.svg?branch=master)](https://github.com/stecrotti1/ELibrary/actions/workflows/node.js.yml)
+[![CodeQL](https://github.com/stecrotti1/ELibrary/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/stecrotti1/ELibrary/actions/workflows/codeql-analysis.yml)
 
 # ELibrary
 
