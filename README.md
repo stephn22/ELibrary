@@ -6,6 +6,12 @@ Elibrary is an Express Web Application developed by [Stefano Crotti](https://git
 
 #
 
+## What's ELibrary?
+ELibrary is a website to organize books of a library. Customers can subscribe and decide whether to reserve (only paper) or buy a book.
+The administrator is in charge to manage the book list and registered users.
+
+#
+
 ## Technologies:
 
 * [Node JS](https://nodejs.org/en/)
