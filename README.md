@@ -2,8 +2,6 @@
 
 # ELibrary
 
-![Metrics](https://github.com/my-github-user/my-github-user/blob/master/github-metrics.svg)
-
 Elibrary is an Express Web Application developed by [Stefano Crotti](https://github.com/stecrotti1) at the [Computer Science Institute](http://www.di.unipmn.it/) of the [University of Piemonte Orientale](http://www.uniupo.it/) as assessment for the *Web Programming Metodologies* course.
 
 #
