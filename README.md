@@ -3,7 +3,7 @@
 
 # ELibrary
 
-Elibrary is an Express Web Application developed by [Stefano Crotti](https://github.com/stecrotti1) at the [Computer Science Institute](http://www.di.unipmn.it/) of the [University of Piemonte Orientale](http://www.uniupo.it/) as assessment for the *Web Programming Metodologies* course.
+Elibrary is an Express Web Application developed by [stecrotti1](https://github.com/stecrotti1) at the [Computer Science Institute](http://www.di.unipmn.it/) of the [University of Piemonte Orientale](http://www.uniupo.it/) as assessment for the *Web Programming Metodologies* course.
 
 #
 
