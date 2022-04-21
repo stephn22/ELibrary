@@ -108,16 +108,24 @@ const isLoggedIn = (req, res, next) => {
     }
 };
 
+const isNotLoggedIn = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        res.redirect("/");
+    } else {
+        return next();
+    }
+};
+
 /************** ROUTES *************/
 
 app.use('/', sessionsRouter);
 app.use('/', indexRouter);
-app.use('/register', regiserRouter);
+app.use('/register', isNotLoggedIn, regiserRouter);
 app.use('/profile', isLoggedIn, profileRouter);
 app.use('/books', booksRouter);
 app.use('/book-details', bookDetailsRouter);
-app.use('/api', apiRouter);
-app.use('/orders', ordersRouter);
+app.use('/api', isLoggedIn, apiRouter);
+app.use('/orders', isLoggedIn, ordersRouter);
 app.use('/checkout', isLoggedIn, checkoutRouter);
 app.use('/users', isLoggedIn, usersRouter);
 
