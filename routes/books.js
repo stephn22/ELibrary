@@ -9,6 +9,8 @@ const bookDao = require('../models/book-dao');
 const logger = require('../util/logger');
 const moment = require('moment');
 const bookType = require('../entities/constants/book-type');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const upload = multer({
     storage: multer.memoryStorage(),
@@ -41,6 +43,11 @@ router.post('/', upload.single('book-image'), async function (req, res, _next) {
     check('description').isString().isLength({ min: 1, max: 250 }).withMessage('Please enter a valid description');
 
     const errors = validationResult(req);
+
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) return res.sendStatus(401);
 
     if (errors.isEmpty()) {
         const book = new Book(
@@ -101,6 +108,11 @@ router.post('/', upload.single('book-image'), async function (req, res, _next) {
 
 router.delete('/:id', async function (req, res) {
     const bookId = req.params.id;
+
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+
+    if (token == null) return res.sendStatus(401)
 
     bookDao.deleteBook(parseInt(bookId))
         .then(async function () {

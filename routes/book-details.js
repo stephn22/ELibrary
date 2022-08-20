@@ -57,6 +57,10 @@ router.post('/:bookId', upload.single('new-img'), async function (req, res) {
 
     const errors = validationResult(req);
 
+    const token = authHeader && authHeader.split(' ')[1]
+
+    if (token == null) return res.sendStatus(401)
+
     if (errors.isEmpty()) {
 
         const oldBook = await bookDao.findBookById(bookId);

@@ -12,6 +12,11 @@ const Cart = require("../entities/cart");
 const orderType = require("../entities/constants/order-type");
 
 router.get('/', (req, res, _next) => {
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) return res.sendStatus(401);
+
     orderDao.findAllOrders()
         .then((orders) => {
 
@@ -47,6 +52,11 @@ router.get('/', (req, res, _next) => {
 
 router.get('/order-details/:id', async (req, res, _next) => {
     const id = parseInt(req.params.id);
+
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) return res.sendStatus(401);
 
     orderDao.findOrderById(id)
         .then(async (order) => {
@@ -92,6 +102,11 @@ router.get('/order-details/:id', async (req, res, _next) => {
 });
 
 router.get('/customer-orders', async (req, res, _next) => {
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) return res.sendStatus(401);
+
     const id = parseInt(req.user.id);
     orderDao.findOrdersByCustomerId(id)
         .then((orders => {
@@ -120,6 +135,11 @@ router.get('/customer-orders', async (req, res, _next) => {
 });
 
 router.post('/reserve', async function (req, res, _next) {
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) return res.sendStatus(401);
+
     const customerId = parseInt(req.body.userId);
     const bookId = parseInt(req.body.bookId);
 
@@ -172,6 +192,11 @@ router.post('/customer-orders', [
     body('cvv').isInt().isLength({ min: 3, max: 4 }).withMessage('Invalid CVV')
 ], async function (req, res, _next) {
     const errors = validationResult(req);
+
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) return res.sendStatus(401);
 
     if (errors.isEmpty()) {
         const customerId = parseInt(req.body.userId);

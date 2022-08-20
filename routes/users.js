@@ -6,6 +6,11 @@ const userDao = require("../models/user-dao");
 const logger = require("../util/logger");
 
 router.get('/', async (req, res) => {
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) return res.sendStatus(401);
+
     const users = await userDao.findAllUsers();
 
     res.render('users', {
@@ -17,31 +22,36 @@ router.get('/', async (req, res) => {
 });
 
 router.delete('/delete/:id', async (req, res) => {
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) return res.sendStatus(401);
+
     const id = parseInt(req.params.id); // user id
     const users = await userDao.findAllUsers();
 
     userDao.deleteUser(id)
-    .then((_id) => {
-        
-        res.render('users', {
-            user: req.user,
-            users: users,
-            message: "User deleted successfully",
-            styles: ['stylesheets/users.css'],
-            scripts: ['javascripts/users.js']
-        });
-    })
-    .catch((err) => {
-        logger.logError(err);
+        .then((_id) => {
 
-        res.render('users', {
-            user: req.user,
-            users: users,
-            errors: [err],
-            styles: ['stylesheets/users.css'],
-            scripts: ['javascripts/users.js']
+            res.render('users', {
+                user: req.user,
+                users: users,
+                message: "User deleted successfully",
+                styles: ['stylesheets/users.css'],
+                scripts: ['javascripts/users.js']
+            });
+        })
+        .catch((err) => {
+            logger.logError(err);
+
+            res.render('users', {
+                user: req.user,
+                users: users,
+                errors: [err],
+                styles: ['stylesheets/users.css'],
+                scripts: ['javascripts/users.js']
+            });
         });
-    });
 });
 
 module.exports = router;

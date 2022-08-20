@@ -30,6 +30,11 @@ router.get('/', async (req, res, _next) => {
 });
 
 router.post('/features', async function (req, res, _next) {
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) return res.sendStatus(401);
+
     const firstBook = parseInt(req.body['first-book']);
     const secondBook = parseInt(req.body['second-book']);
     const thirdBook = parseInt(req.body['third-book']);
@@ -37,6 +42,7 @@ router.post('/features', async function (req, res, _next) {
     const firstFeature = new Features(undefined, firstBook);
     const secondFeature = new Features(undefined, secondBook);
     const thirdFeature = new Features(undefined, thirdBook);
+    
 
     // delete existing features
     await featuresDao.deleteAllFeatures();

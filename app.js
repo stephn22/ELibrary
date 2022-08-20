@@ -9,6 +9,7 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const moment = require('moment');
+const jwt = require('jsonwebtoken');
 
 // auth and session
 const passport = require('passport');
@@ -16,7 +17,6 @@ const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
 const userDao = require('./models/user-dao.js');
 const cookieParser = require('cookie-parser');
-const userType = require('./entities/constants/user-type.js');
 
 // routes
 const indexRouter = require('./routes/index.js');
@@ -142,5 +142,9 @@ app.use((err, req, res, _next) => {
     res.status(err.status || 500);
     res.render("error");
 });
+
+function generateAccessToken(username) {
+    return jwt.sign({ username }, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
+}
 
 module.exports = app;

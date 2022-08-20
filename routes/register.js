@@ -7,6 +7,7 @@ const User = require('../entities/user');
 const userDao = require('../models/user-dao');
 const Type = require('../entities/constants/user-type');
 const logger = require('../util/logger');
+const { generateAccessToken } = require('../app');
 
 router.get("/", (_req, res, _next) => {
     res.render("register", {
@@ -46,6 +47,9 @@ router.post("/", [
             req.body.password,
             Type.CUSTOMER
         );
+
+        const token = generateAccessToken(user.email);
+        res.json(token);
 
         // add the new user to the database
         let userId = await userDao.addUser(user);
