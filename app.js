@@ -6,6 +6,7 @@ require('dotenv').config();
 
 const createError = require('http-errors');
 const express = require('express');
+const rateLimiter = require('express-rate-limit');
 const path = require('path');
 const logger = require('morgan');
 const moment = require('moment');
@@ -116,6 +117,13 @@ const isNotLoggedIn = (req, res, next) => {
     }
 };
 
+const limiter = rateLimiter.rateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 100, // limit each IP to 100 requests per windowMs
+});
+
+app.use(limiter);
+
 /************** ROUTES *************/
 
 app.use('/', sessionsRouter);
@@ -142,9 +150,5 @@ app.use((err, req, res, _next) => {
     res.status(err.status || 500);
     res.render("error");
 });
-
-function generateAccessToken(username) {
-    return jwt.sign({ username }, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
-}
 
 module.exports = app;
